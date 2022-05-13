@@ -1,0 +1,151 @@
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>Active Customer</h1>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="#">Home</a></li>
+                    <li class="breadcrumb-item active">Active Customer</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+    <!-- /.container-fluid -->
+</section>
+
+<!-- Main content -->
+<section class="content">
+    <div class="container-fluid">
+        <!-- <div class="row">
+            <tabset>
+                <tab heading="GeeksforGeeks">
+                    Tabs component in Angular ngx bootstrapdfsdfd
+                </tab>
+                <tab heading="GeeksforGeeks1">
+                    Tabs component in Angular ngx bootstrap45454
+                </tab>
+                <tab heading="GeeksforGeeks2">
+                    Tabs component in Angular ngx bootstrapx43ry
+                </tab>
+            </tabset>
+        </div> -->
+        <div class="card">
+            <div class="card-header">
+                <div class="row">
+                    <div class="col-sm-8">
+                        <h3>Customer List</h3>
+                    </div>
+                    <div class="col-sm-4 text-right">
+                        <button class="btn btn-sm btn-primary" (click)="openAddCustomerModal(addCustomer)">Add Customer</button>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <table id="example1" class="table table-bordered table-striped dataTable dtr-inline" datatable [dtOptions]="dtOptions">
+                            <thead>
+                                <tr>
+                                    <th>UserId</th>
+                                    <th>User Name</th>
+                                    <th>Phone Number</th>
+                                    <th>Email</th>
+                                    <th>Register On</th>
+                                    <th>Last Login</th>
+                                    <th>Last Ride On</th>
+                                    <th>Total Rides</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let data of customerData">
+                                   <td>{{data.user_id}}</td>
+                                   <td>{{data.name}}</td>
+                                   <td>{{data.phone}}</td>
+                                   <td>{{data.email}}</td>
+                                   <td>{{data.created_on | date:'dd-MM-yyyy hh:mm:ss'}}</td>
+                                   <td>-</td>
+                                   <td>-</td>
+                                   <td>10</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<ng-template #addCustomer let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Add Customer</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">×</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <form [formGroup]="customerForm" (ngSubmit)="onSubmit()">
+            <div class="row">
+                <div class="col-sm-12">
+                    <p class="form-group">
+                      <label for="firstname">Full Name </label>
+                      <input class="form-control" type="text" name="name" formControlName="name">
+                    </p>
+                </div>
+                <div class="col-sm-6">
+                    <p class="form-group">
+                      <label for="email">Email </label>
+                      <input class="form-control" type="text" name="email" formControlName="email">
+                    </p>
+                </div>
+                <div class="col-sm-6">
+                    <p class="form-group">
+                      <label for="phone">Phone No </label>
+                      <input class="form-control" type="text" name="phone" formControlName="phone">
+                    </p>
+                </div>
+                <div class="col-sm-6">
+                    <p class="form-group">
+                        <label for="gender">Gender </label><br>
+                        <input type="radio" value="male" name="gender" formControlName="gender"> Male
+                        <input type="radio" value="female" name="gender" formControlName="gender"> Female
+                    </p>
+                </div>
+                <div class="col-sm-6">
+                    <p class="form-group">
+                      <label for="state">State </label>
+                      <select class="form-control" name="state" formControlName="state">
+                        <option>Maharashtra</option>
+                      </select>
+                    </p>
+                </div>
+                <div class="col-sm-6">
+                    <p class="form-group">
+                      <label for="city">City </label>
+                      <select class="form-control" name="city" formControlName="city">
+                        <option>Mumbai</option>
+                      </select>
+                    </p>
+                </div>
+                <div class="col-sm-6">
+                    <p class="form-group">
+                      <label for="pincode">Pincode </label>
+                      <input class="form-control" type="text" name="pincode" formControlName="pincode">
+                    </p>
+                </div>
+                <div class="col-sm-12">
+                    <p class="form-group">
+                      <label for="address">Address </label>
+                      <textarea class="form-control" formControlName="address" name="address"></textarea>
+                    </p>
+                </div>
+            </div>
+            <p class="text-center">
+              <button type="submit" class="btn btn-primary">Submit</button>
+            </p>
+           
+        </form>
+    </div>
+</ng-template>

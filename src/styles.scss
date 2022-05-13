@@ -1,0 +1,215 @@
+
+// Custom Theming for Angular Material
+// For more information: https://material.angular.io/guide/theming
+@use '@angular/material' as mat;
+// Plus imports for other components in your app.
+
+// Include the common styles for Angular Material. We include this here so that you only
+// have to load a single css file for Angular Material in your app.
+// Be sure that you only ever include this mixin once!
+@include mat.core();
+
+// Define the palettes for your theme using the Material Design palettes available in palette.scss
+// (imported above). For each palette, you can optionally specify a default, lighter, and darker
+// hue. Available color palettes: https://material.io/design/color/
+$adminlte-primary: mat.define-palette(mat.$indigo-palette);
+$adminlte-accent: mat.define-palette(mat.$pink-palette, A200, A100, A400);
+
+// The warn palette is optional (defaults to red).
+$adminlte-warn: mat.define-palette(mat.$red-palette);
+
+// Create the theme object. A theme consists of configurations for individual
+// theming systems such as "color" or "typography".
+$adminlte-theme: mat.define-light-theme((
+  color: (
+    primary: $adminlte-primary,
+    accent: $adminlte-accent,
+    warn: $adminlte-warn,
+  )
+));
+
+// Include theme styles for core and each component used in your app.
+// Alternatively, you can import and @include the theme mixins for each component
+// that you are using.
+@include mat.all-component-themes($adminlte-theme);
+
+/* You can add global styles to this file, and also import other style files */
+// @import '~bootstrap/scss/bootstrap';
+
+/* Importing Bootstrap SCSS file. */
+// @import '~bootstrap/scss/bootstrap';
+
+@import url('https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css');
+@import url('https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.3.0/css/flag-icon.min.css');
+@import url('https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700');
+
+@import '~admin-lte/plugins/fontawesome-free/css/all.min.css';
+@import '~admin-lte/plugins/icheck-bootstrap/icheck-bootstrap.min.css';
+@import '~admin-lte/dist/css/adminlte.min.css';
+
+@import '~ngx-toastr/toastr';
+h3, h1{
+    margin-bottom: 0px !important;
+}
+
+body {
+    width: 100vw;
+    height: 100vh;
+}
+
+::-webkit-scrollbar {
+    width: 0px;
+    background: transparent;
+}
+
+.user-menu > .nav-link {
+    cursor: pointer;
+}
+
+.user-menu > .nav-link:after {
+    content: none;
+}
+
+.user-menu > .dropdown-menu {
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    padding: 0;
+    width: 280px;
+}
+
+.user-menu > .dropdown-menu,
+.user-menu > .dropdown-menu > .user-body {
+    border-bottom-right-radius: 4px;
+    border-bottom-left-radius: 4px;
+}
+
+.user-menu > .dropdown-menu > li.user-header {
+    height: 175px;
+    padding: 10px;
+    text-align: center;
+}
+
+.user-menu > .dropdown-menu > li.user-header > img {
+    z-index: 5;
+    height: 90px;
+    width: 90px;
+    border: 3px solid;
+    border-color: transparent;
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+.user-menu > .dropdown-menu > li.user-header > p {
+    z-index: 5;
+    font-size: 17px;
+    margin-top: 10px;
+}
+
+.user-menu > .dropdown-menu > li.user-header > p > small {
+    display: block;
+    font-size: 12px;
+}
+
+.user-menu > .dropdown-menu > .user-body {
+    border-bottom: 1px solid #495057;
+    border-top: 1px solid #dee2e6;
+    padding: 15px;
+}
+
+.user-menu > .dropdown-menu > .user-body::after {
+    display: block;
+    clear: both;
+    content: '';
+}
+
+@media (min-width: 576px) {
+    .user-menu > .dropdown-menu > .user-body a {
+        background: #ffffff !important;
+        color: #495057 !important;
+    }
+}
+
+.user-menu > .dropdown-menu > .user-footer {
+    background-color: #f8f9fa;
+    padding: 10px;
+}
+
+.user-menu > .dropdown-menu > .user-footer::after {
+    display: block;
+    clear: both;
+    content: '';
+}
+
+.user-menu > .dropdown-menu > .user-footer .btn-default {
+    color: #6c757d;
+}
+
+@media (min-width: 576px) {
+    .user-menu > .dropdown-menu > .user-footer .btn-default:hover {
+        background-color: #f8f9fa;
+    }
+}
+
+.user-menu .user-image {
+    border-radius: 50%;
+    float: left;
+    height: 2.1rem;
+    margin-right: 10px;
+    margin-top: -2px;
+    width: 2.1rem;
+}
+
+@media (min-width: 576px) {
+    .user-menu .user-image {
+        float: none;
+        line-height: 10px;
+        margin-right: 0.4rem;
+        margin-top: -8px;
+    }
+}
+
+.user-menu .user-image {
+    height: 1.6rem;
+    width: 1.6rem;
+    margin-right: 0;
+    margin-left: -8px;
+}
+
+.content {
+    padding: 0.5rem 0.5rem;
+}
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+.close{
+    opacity: 1;
+    color: #fff !important;
+}
+.modal-title{
+    margin-bottom: 0px !important;
+}
+
+.modal-header{
+    background-color: #000;
+    color: #ffffff;
+}
+
+tabset li.nav-item{
+    width: 33.3333%;
+}
+
+tabset .nav-tabs{
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link{
+    border-color: #dee2e6 #dee2e6 #e4e0e0 !important;
+    text-align: center;
+}
+
+.nav-tabs .nav-link.active {
+    background-color: #007bff !important;
+    color: #fff !important;
+}
+

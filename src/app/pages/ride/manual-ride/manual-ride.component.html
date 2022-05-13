@@ -1,0 +1,144 @@
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>Manual Dispatch</h1>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="#">Home</a></li>
+                    <li class="breadcrumb-item active">Manual Dispatch</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+    <!-- /.container-fluid -->
+</section>
+
+<!-- Main content -->
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="card">
+                    <div class="card-body">
+                        <form [formGroup]="rideForm">
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <p class="form-group">
+                                      <label for="phone">User Phone No </label>
+                                      <input class="form-control" type="text" name="phone" (change)="getUser($event)" formControlName="phone">
+                                    </p>
+                                </div>
+                                <div class="col-sm-6">
+                                    <p class="form-group">
+                                      <label for="firstname">User Name </label>
+                                      <input class="form-control" type="text" name="name" [(ngModel)]="username" formControlName="name" readonly>
+                                    </p>
+                                </div>
+                                <div class="col-sm-6">
+                                    <p class="form-group">
+                                      <label for="city">OutStation Type </label>
+                                      <select class="form-control" name="ostype" formControlName="ostype">
+                                        <option>Intracity</option>
+                                        <option>Inter State</option>
+                                      </select>
+                                    </p>
+                                </div>
+                                <div class="col-sm-6">
+                                    <p class="form-group">
+                                      <label for="city">Fuel Type </label>
+                                      <select class="form-control" name="fueltype" formControlName="fueltype">
+                                        <option>With Fuel</option>
+                                        <option>Without Fuel</option>
+                                      </select>
+                                    </p>
+                                </div>
+                                <div class="col-sm-6">
+                                    <p class="form-group">
+                                      <label for="city">Trip Type </label>
+                                      <select class="form-control" name="triptype" formControlName="triptype">
+                                        <option>One Way</option>
+                                        <option>Round Trip</option>
+                                      </select>
+                                    </p>
+                                </div>
+                                <div class="col-sm-6">
+                                    <p class="form-group">
+                                      <label for="vehicle_type">Vehicle Type </label>
+                                      <select class="form-control" name="vehicle_type" formControlName="vehicle_type">
+                                        <option>Sydan</option>
+                                        <option>SUV</option>
+                                      </select>
+                                    </p>
+                                </div>
+                                <div class="col-sm-6">
+                                    <p class="form-group">
+                                      <label for="vehicle_transmission">Vehicle Transmission </label>
+                                      <select class="form-control" name="vehicle_transmission" formControlName="vehicle_transmission">
+                                        <option>Manual</option>
+                                        <option>Automatic</option>
+                                      </select>
+                                    </p>
+                                </div>
+                                <div class="col-sm-6">
+                                    <p class="form-group">
+                                      <label for="car_no">Car Number </label>
+                                      <input type="text" class="form-control" formControlName="car_no" name="car_no">
+                                    </p>
+                                </div>
+                                <div class="col-sm-12">
+                                    <p class="form-group">
+                                      <label for="pickupaddress">Pickup Address </label>
+                                      <input type="text" class="form-control" (keydown.enter)="$event.preventDefault()" placeholder="Search Location" autocorrect="off" autocapitalize="off" spellcheck="off" type="text" formControlName="pickupaddress" name="pickupaddress" #searchpickup>
+                                    </p>
+                                </div>
+                                <div class="col-sm-12">
+                                    <p class="form-group">
+                                      <label for="dropaddress">Drop Address </label>
+                                      <input type="text" class="form-control" placeholder="Search Location" autocorrect="off" autocapitalize="off" spellcheck="off" type="text" formControlName="dropaddress" name="dropaddress" #searchdrop>
+                                    </p>
+                                </div>
+                                <div class="col-sm-12">
+                                    <p class="form-group">
+                                      <label for="drivernote">Driver Note </label>
+                                      <input type="text" class="form-control" formControlName="drivernote" name="drivernote">
+                                    </p>
+                                </div>
+                            </div>
+                            <input class="form-control" type="hidden" name="user_id" [(ngModel)]="userid" formControlName="user_id">
+                            <p class="text-center">
+                              <!-- <button class="btn btn-primary" (click)="openFareModal(openFare)">Get Istimated Fare</button> -->
+                              <button class="btn btn-primary" (click)="getDirection()">Get Direction</button>
+                              <button type="submit" class="btn btn-primary" (click)="onSubmit()" style="margin-left: 15px;">Submit</button>
+                            </p>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <agm-map [latitude]="lat" [longitude]="lng" [zoom]="zoom">
+                    <!-- <agm-marker [latitude]="lat" [longitude]="lng">
+                    </agm-marker> -->
+                    <agm-marker *ngFor="let marker of filteredMarkers" [latitude]="marker.latitude" [longitude]="marker.longitude" >
+                        <agm-info-window [disableAutoPan]="true">
+                            <a routerLink="/">Go there</a>
+                        </agm-info-window>
+                    </agm-marker>
+                    <agm-direction *ngIf="dir" [origin]="dir.origin" [destination]="dir.destination"  travelMode='DRIVING'></agm-direction>
+                </agm-map>
+            </div>
+        </div>
+    </div>
+</section>
+
+<ng-template #openFare let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Add Customer</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">×</span>
+        </button>
+    </div>
+    <div class="modal-body">
+    </div>
+</ng-template>

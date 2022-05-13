@@ -1,0 +1,274 @@
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>Driver Details</h1>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="#">Home</a></li>
+                    <li class="breadcrumb-item active">Driver Details</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+    <!-- /.container-fluid -->
+</section>
+
+<!-- Main content -->
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-4">
+                <div class="card">
+                    <div class="card-body text-center">
+                        <div class="row">
+                            <div class="col-sm-6" style="margin-bottom:30px;" *ngFor="let imageData of driverDocumentList">
+                                <label for="name">{{imageData.doc_name}}: </label> 
+                                <br>
+                                <div *ngFor="let data of driverData">
+                                    <img *ngIf="data.status === 3" src="../../../../assets/img/document/{{imageData.image_name}}" alt="" width="70" (click)="openuploadDocModal(addDocument, imageData.document_name,'')">
+                                    <img *ngIf="data.status === 4" src="../../../../assets/img/document/{{imageData.image_name}}" alt="" width="70">
+                                </div>
+                                
+                                <div *ngFor="let data of driverDocData">
+                                    <div *ngIf="data.document_name === imageData.document_name">
+                                        <br><img src="../../../../assets/img/document/reload.png" alt="" width="30" (click)="openuploadDocModal(viewDocImage, imageData.document_name,data.document_path)">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-5">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row" *ngFor="let data of driverData">
+                            <div class="col-sm-12">
+                                <div class="row">
+                                    <div class="col-sm-4"><label for="name">Driver Name: </label></div>
+                                    <div class="col-sm-8"><span> {{data.name}} </span></div>
+                                </div>
+                            </div>
+                            <div class="col-sm-12">
+                                <div class="row">
+                                    <div class="col-sm-4"><label for="name">Phone Number: </label></div>
+                                    <div class="col-sm-8"><span> {{data.phone}} </span></div>
+                                </div>
+                            </div>
+                            <div class="col-sm-12">
+                                <div class="row">
+                                    <div class="col-sm-4"><label for="name">Alt Phone Number: </label></div>
+                                    <div class="col-sm-8"><span> {{data.alt_phone}} </span></div>
+                                </div>
+                            </div>
+                            <div class="col-sm-12">
+                                <div class="row">
+                                    <div class="col-sm-4"><label for="name">Email Id: </label></div>
+                                    <div class="col-sm-8"><span> {{data.email}} </span></div>
+                                </div>
+                            </div>
+                            <div class="col-sm-12">
+                                <div class="row">
+                                    <div class="col-sm-4"><label for="name">Date Of Birth: </label></div>
+                                    <div class="col-sm-8"><span> {{data.dob}} </span></div>
+                                </div>
+                            </div>
+                            <div class="col-sm-12">
+                                <div class="row">
+                                    <div class="col-sm-4"><label for="name">Gender: </label></div>
+                                    <div class="col-sm-8"><span> {{data.gender}} </span></div>
+                                </div>
+                            </div>
+                            <div class="col-sm-12">
+                                <div class="row">
+                                    <div class="col-sm-4"><label for="name">City: </label></div>
+                                    <div class="col-sm-8"><span> {{data.city}} </span></div>
+                                </div>
+                            </div>
+                            <div class="col-sm-12">
+                                <div class="row">
+                                    <div class="col-sm-4"><label for="name">State: </label></div>
+                                    <div class="col-sm-8"><span> {{data.state}} </span></div>
+                                </div>
+                            </div>
+                            <div class="col-sm-12">
+                                <div class="row">
+                                    <div class="col-sm-4"><label for="name">Pincode: </label></div>
+                                    <div class="col-sm-8"><span> {{data.pincode}} </span></div>
+                                </div>
+                            </div>
+                            <div class="col-sm-12">
+                                <div class="row">
+                                    <div class="col-sm-4"><label for="name">Address: </label></div>
+                                    <div class="col-sm-8"><span> {{data.address}} </span></div>
+                                </div>
+                            </div>
+                            <div class="col-sm-12">
+                                <div class="row">
+                                    <div class="col-sm-4"><label for="name">Register On: </label></div>
+                                    <div class="col-sm-8"><span> {{data.created_on  | date:'dd-MM-yyyy hh:mm:ss'}} </span></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="card">
+                    <div class="card-body" *ngFor="let data of driverData">
+                        <div class="text-center" *ngIf="data.status === 3">
+                            <button type="button" class="btn btn-primary" (click)="openModalContent(deactivateDriver)">Deactivate Driver</button>
+                        </div>
+                        <div class="text-center" *ngIf="data.status === 4">
+                            <button type="button" class="btn btn-primary" (click)="openModalContent(activateDriver)">Activate Driver</button>
+                        </div>
+                        <div class="text-center">
+                            <button type="button" class="btn btn-primary" (click)="openModalContent(driverHistory)">Driver History</button>
+                        </div>
+                        <div class="text-center">
+                            <button type="button" class="btn btn-primary" (click)="openModalContent(rideDetails)">Ride Driver Details</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<ng-template #addDocument let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Add Document</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">×</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <form [formGroup]="driverDocumentForm" enctype="multipart/form-data" (ngSubmit)="onSubmit()">
+            <div class="row">
+                <div class="col-sm-12">
+                    <p class="form-group">
+                      <label for="document_img">Upload File </label>
+                      <input class="form-control" type="file" name="document_img" formControlName="document_img" (change)="onFileSelect($event)">
+                      {{fileInputLabel}}
+                    </p>
+                </div>
+                <div class="col-sm-12">
+                    <p class="form-group">
+                      <label for="document_no">Document Number </label>
+                      <input class="form-control" type="text" name="document_no" formControlName="document_no">
+                    </p>
+                </div>
+                <input type="hidden" class="form-control" name="driver_id" formControlName="driver_id" [(ngModel)]="driver_id">
+                <input type="hidden" class="form-control" name="document_name" formControlName="document_name" [(ngModel)]="document_name">
+            </div>
+            <p class="text-center">
+              <button type="submit" class="btn btn-primary">Submit</button>
+            </p>
+        </form>
+    </div>
+</ng-template>
+
+<ng-template #viewDocImage let-modal>
+    <img [src]="imageSrc" alt="" width="100%" style="padding: 20px;">
+</ng-template>
+
+<ng-template #deactivateDriver let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Deactivate Driver</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">×</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <form [formGroup]="driverDeactiveForm" (ngSubmit)="driverDeactiveSubmit()">
+            <div class="row">
+                <div class="col-sm-12">
+                    <p class="form-group">
+                      <label for="reason">Reason For Deactivation </label>
+                      <input class="form-control" type="text" name="reason" formControlName="reason">
+                    </p>
+                </div>
+                <div class="col-sm-12">
+                    <p class="form-group">
+                      <textarea class="form-control" type="text" name="remark" formControlName="remark"></textarea>
+                    </p>
+                </div>
+                <input type="hidden" class="form-control" name="driverhistorystatus" formControlName="driverhistorystatus" [(ngModel)]="driverDeactiveStatus">
+                <input type="hidden" class="form-control" name="action" formControlName="action" [(ngModel)]="driverDeactiveAction">
+                <input type="hidden" class="form-control" name="driver_id" formControlName="driver_id" [(ngModel)]="driver_id">
+            </div>
+            <p class="text-center">
+              <button type="submit" class="btn btn-primary">Submit</button>
+            </p>
+        </form>
+    </div>
+</ng-template>
+
+<ng-template #activateDriver let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Activate Driver</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">×</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <form [formGroup]="driverActiveForm" (ngSubmit)="driverActiveSubmit()">
+            <div class="row">
+                <div class="col-sm-12">
+                    <p class="form-group">
+                      <label for="reason">Reason For Activation </label>
+                      <input class="form-control" type="text" name="reason" formControlName="reason">
+                    </p>
+                </div>
+                <div class="col-sm-12">
+                    <p class="form-group">
+                      <textarea class="form-control" type="text" name="remark" formControlName="remark"></textarea>
+                    </p>
+                </div>
+                <input type="hidden" class="form-control" name="driverhistorystatus" formControlName="driverhistorystatus" [(ngModel)]="driverActiveStatus">
+                <input type="hidden" class="form-control" name="action" formControlName="action" [(ngModel)]="driverActiveAction">
+                <input type="hidden" class="form-control" name="driver_id" formControlName="driver_id" [(ngModel)]="driver_id">
+            </div>
+            <p class="text-center">
+              <button type="submit" class="btn btn-primary">Submit</button>
+            </p>
+        </form>
+    </div>
+</ng-template>
+
+<ng-template #driverHistory let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Driver History</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">×</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Sr.No</th>
+                    <th>Action</th>
+                    <th>Reason</th>
+                    <th>Remark</th>
+                    <th>Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let data of driverHistoryData; let i = index">
+                    <td>{{i + 1}}</td>
+                    <td>{{data.action}}</td>
+                    <td>{{data.reason}}</td>
+                    <td>{{data.remark}}</td>
+                    <td>{{data.created_on | date:'dd-MM-yyyy hh:mm:ss'}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</ng-template>
+
+<ng-template #rideDetails let-modal>
+
+</ng-template>
