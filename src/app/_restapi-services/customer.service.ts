@@ -4,6 +4,7 @@ import { Observable, throwError } from 'rxjs';
 import { catchError, retry } from 'rxjs/operators';
 
 const API_URL = 'https://nodeadminpaneldb.herokuapp.com/api/';
+// const API_URL = 'http://localhost:8080/api/';
 
 @Injectable({
     providedIn: 'root'

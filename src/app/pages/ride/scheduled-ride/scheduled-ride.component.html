@@ -45,7 +45,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr *ngFor="let data of rideData">
+                                <tr *ngFor="let data of rideData" (click)="openRideDetails(data.ride_id,data.status)">
                                    <td>{{data.user_id}}</td>
                                    <!-- <td>{{data.driver_id}}</td> -->
                                    <td>{{data.vehicle_type}}</td>

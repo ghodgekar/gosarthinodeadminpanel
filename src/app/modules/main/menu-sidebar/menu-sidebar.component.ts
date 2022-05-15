@@ -57,22 +57,22 @@ export const MENU = [
     {
         name: 'Ride',
         children: [
-            // {
-            //     name: 'Ongoing Rides',
-            //     path: ['/ongoing-ride']
-            // },
+            {
+                name: 'Ongoing Rides',
+                path: ['/ongoing-ride']
+            },
             {
                 name: 'Scheduled Rides',
                 path: ['/scheduled-ride']
             },
-            // {
-            //     name: 'Completed Rides',
-            //     path: ['/completed-ride']
-            // },
-            // {
-            //     name: 'Cancelled Rides',
-            //     path: ['/cancelled-ride']
-            // }
+            {
+                name: 'Completed Rides',
+                path: ['/completed-ride']
+            },
+            {
+                name: 'Cancelled Rides',
+                path: ['/cancelled-ride']
+            }
         ]
     },
     {

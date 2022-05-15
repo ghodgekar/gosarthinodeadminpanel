@@ -1,1 +1,205 @@
-<p>ride-details works!</p>
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>Ride Details</h1>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="#">Home</a></li>
+                    <li class="breadcrumb-item active">Ride Details</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+    <!-- /.container-fluid -->
+</section>
+
+<!-- Main content -->
+<section class="content">
+    <div class="container-fluid">
+        <div class="row" *ngFor="let data of rideData">
+            <div class="col-sm-12">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <h3>Booking Details</h3>
+                            </div>
+                            <div class="col-sm-8 text-right">
+                                <button *ngIf="data.ride.status == 2" class="btn btn-primary" (click)="startride()">Start Ride</button>
+                                <button *ngIf="data.ride.status == 3" class="btn btn-primary" (click)="reachedpickup()">Reached Pickup Location</button>
+                                <button *ngIf="data.ride.status == 4" class="btn btn-primary" (click)="reacheddrop()">Reached Drop Location</button>
+                                <button *ngIf="data.ride.status == 5" class="btn btn-primary" (click)="paymentdone()">Ride Payment Done</button>
+                                <button *ngIf="data.ride.status == 6" class="btn btn-primary" (click)="completedride(completeRide)">Complete Ride</button>
+                                <button *ngIf="data.ride.status != 8 && data.ride.status != 7" style="margin-left:15px;" class="btn btn-danger" (click)="cancelledride(cancelRide)">Cancel Ride</button>
+                                <h3 *ngIf="data.ride.status == 7" style="color: green;font-weight: bold;">Ride Completed</h3>
+                                <h3 *ngIf="data.ride.status == 8" style="color: red;font-weight: bold;">Ride Cancelled</h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <p><b>Booking Id</b>: {{data.ride.ride_id}}</p>
+                            </div>
+                            <div class="col-sm-4">
+                                <p><b>User Name</b>: {{data.customer.name}}</p>
+                            </div>
+                            <div class="col-sm-4">
+                                <p><b>User Phone No.</b>: {{data.customer.phone}}</p>
+                            </div>
+                            <div class="col-sm-4">
+                                <p><b>Driver Name</b>: {{data.driver.name}}</p>
+                            </div>
+                            <div class="col-sm-4">
+                                <p><b>Driver Phone no</b>: {{data.driver.phone}}</p>
+                            </div>
+                            <div class="col-sm-4">
+                                <p><b>Driver Note</b>: {{data.ride.drivernote}}</p>
+                            </div>
+                            <div class="col-sm-12" *ngIf="data.ride.status == 2">
+                                <p><b>Ride Cancelled Reason:</b></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <p><b>Outstation Type</b>: {{data.ride.ostype}}</p>
+                            </div>
+                            <div class="col-sm-12">
+                                <p><b>Trip Type</b>: {{data.ride.triptype}}</p>
+                            </div>
+                            <div class="col-sm-12">
+                                <p><b>Fuel type</b>: {{data.ride.fueltype}}</p>
+                            </div>
+                            <div class="col-sm-12">
+                                <p><b>Car No</b>: {{data.ride.car_no}}</p>
+                            </div>
+                            <div class="col-sm-12">
+                                <p><b>Vehicle Type</b>: {{data.ride.vehicle_type}}</p>
+                            </div>
+                            <div class="col-sm-12">
+                                <p><b>Vehicle Transmission</b>: {{data.ride.vehicle_transmission}}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <p><b>Pickup Address</b>: {{data.ride.pickupaddress}}</p>
+                            </div>
+                            <div class="col-sm-12">
+                                <p><b>Drop Address</b>: {{data.ride.dropaddress}}</p>
+                            </div>
+                            <div class="col-sm-12">
+                                <p><b>Request Time</b>: {{data.ride.requesttime | date:'dd-MM-yyyy hh:mm:ss'}}</p>
+                            </div>
+                            <div class="col-sm-12">
+                                <p><b>Pickup Time</b>: {{data.ride.pickuptime | date:'dd-MM-yyyy hh:mm:ss'}}</p>
+                            </div>
+                            <div class="col-sm-12">
+                                <p><b>Drop Time</b>: {{data.ride.droptime | date:'dd-MM-yyyy hh:mm:ss'}}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="card">
+                    <div class="card-body text-center">
+                        <ul class="StepProgress">
+                            <li class="StepProgress-item" [ngClass]="{'is-done': data.ride.status >= 2}"><strong>Ride Assign To Driver</strong></li>
+                            <li class="StepProgress-item" [ngClass]="{'is-done': data.ride.status >= 3}"><strong>Ride Started</strong></li>
+                            <li class="StepProgress-item" [ngClass]="{'is-done': data.ride.status >= 4}"><strong>Reached Pickup Location</strong></li>
+                            <li class="StepProgress-item" [ngClass]="{'is-done': data.ride.status >= 5}"><strong>Reached Drop Location</strong></li>
+                            <li class="StepProgress-item" [ngClass]="{'is-done': data.ride.status >= 6}"><strong>Payment Done</strong></li>
+                            <li class="StepProgress-item" *ngIf="data.ride.status == 7" [ngClass]="{'is-done': data.ride.status == 7}"><strong>Ride Completed</strong></li>
+                            <li class="StepProgress-item" *ngIf="data.ride.status == 8" [ngClass]="{'is-done': data.ride.status == 8}"><strong>Ride Cancelled</strong></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-12" *ngIf="data.ride.status > 5">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <p><b>Ride Price:</b> {{data.ride.price}}</p>
+                            </div>
+                            <div class="col-sm-4">
+                                <p><b>Ride Rating:</b> {{data.ride.rating}}</p>
+                            </div>
+                            <div class="col-sm-4">
+                                <p><b>Ride Feedback:</b> {{data.ride.feedback}}</p>
+                            </div>
+                            <div class="col-sm-12">
+                                <p><b>Ride Cancelled Reason:</b> {{data.ride.cancelled_reason}}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<ng-template #completeRide let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Ride Cancellation</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">×</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <form [formGroup]="completeRideForm" (ngSubmit)="completeRideSubmit()">
+            <div class="row">
+                <div class="col-sm-12">
+                    <p class="form-group">
+                      <label for="feedback">Driver Feedback </label>
+                      <textarea class="form-control" type="text" name="feedback" formControlName="feedback"></textarea>
+                    </p>
+                </div>
+                <input type="hidden" class="form-control" name="status" formControlName="status" [(ngModel)]="completedstatus">
+                <input type="hidden" class="form-control" name="ride_id" formControlName="ride_id" [(ngModel)]="ride_id">
+            </div>
+            <p class="text-center">
+              <button type="submit" class="btn btn-primary">Submit</button>
+            </p>
+        </form>
+    </div>
+</ng-template>
+<ng-template #cancelRide let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Ride Cancellation</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">×</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <form [formGroup]="cancelRideForm" (ngSubmit)="cancelRideSubmit()">
+            <div class="row">
+                <div class="col-sm-12">
+                    <p class="form-group">
+                      <label for="cancelled_reason">Reason For Cancellation </label>
+                      <textarea class="form-control" type="text" name="cancelled_reason" formControlName="cancelled_reason"></textarea>
+                    </p>
+                </div>
+                <input type="hidden" class="form-control" name="status" formControlName="status" [(ngModel)]="cancelledstatus">
+                <input type="hidden" class="form-control" name="ride_id" formControlName="ride_id" [(ngModel)]="ride_id">
+            </div>
+            <p class="text-center">
+              <button type="submit" class="btn btn-primary">Submit</button>
+            </p>
+        </form>
+    </div>
+</ng-template>

@@ -104,7 +104,7 @@ const routes: Routes = [
                 component: CancelledRideComponent
             },
             {
-                path: 'ride-details/:ride_id/:ride_status',
+                path: 'ride-details/:ride_id/:status_id',
                 component: RideDetailsComponent
             },
             {

@@ -90,13 +90,28 @@
                                 <div class="col-sm-12">
                                     <p class="form-group">
                                       <label for="pickupaddress">Pickup Address </label>
-                                      <input type="text" class="form-control" (keydown.enter)="$event.preventDefault()" placeholder="Search Location" autocorrect="off" autocapitalize="off" spellcheck="off" type="text" formControlName="pickupaddress" name="pickupaddress" #searchpickup>
+                                      <input type="text" class="form-control" (keydown.enter)="$event.preventDefault()" placeholder="Search Location" autocorrect="off" autocapitalize="off" spellcheck="off" type="text" formControlName="pickupaddress" name="pickupaddress" [(ngModel)]="pickupaddress" #searchpickup>
                                     </p>
                                 </div>
                                 <div class="col-sm-12">
                                     <p class="form-group">
                                       <label for="dropaddress">Drop Address </label>
-                                      <input type="text" class="form-control" placeholder="Search Location" autocorrect="off" autocapitalize="off" spellcheck="off" type="text" formControlName="dropaddress" name="dropaddress" #searchdrop>
+                                      <input type="text" class="form-control" placeholder="Search Location" autocorrect="off" autocapitalize="off" spellcheck="off" type="text" formControlName="dropaddress" name="dropaddress" [(ngModel)]="dropaddress" #searchdrop>
+                                    </p>
+                                </div>
+                                <div class="col-sm-6">
+                                    <p class="form-group">
+                                      <label for="requesttime">Request Time </label>
+                                      <input type="datetime-local" class="form-control" formControlName="requesttime" name="requesttime">
+                                    </p>
+                                </div>
+                                <div class="col-sm-6">
+                                    <p class="form-group">
+                                      <label for="driver_id">Assign To Driver </label>
+                                      <select class="form-control" name="driver_id" formControlName="driver_id">
+                                        <option value="">Select</option>
+                                        <option *ngFor="let data of driverData" [value]="data.driver_id">{{data.name}}</option>
+                                      </select>
                                     </p>
                                 </div>
                                 <div class="col-sm-12">
@@ -107,10 +122,14 @@
                                 </div>
                             </div>
                             <input class="form-control" type="hidden" name="user_id" [(ngModel)]="userid" formControlName="user_id">
+                            <input class="form-control" type="hidden" name="pickuplat" [(ngModel)]="pickuplat" formControlName="pickuplat">
+                            <input class="form-control" type="hidden" name="pickuplng" [(ngModel)]="pickuplng" formControlName="pickuplng">
+                            <input class="form-control" type="hidden" name="droplat" [(ngModel)]="droplat" formControlName="droplat">
+                            <input class="form-control" type="hidden" name="droplng" [(ngModel)]="droplng" formControlName="droplng">
                             <p class="text-center">
                               <!-- <button class="btn btn-primary" (click)="openFareModal(openFare)">Get Istimated Fare</button> -->
-                              <button class="btn btn-primary" (click)="getDirection()">Get Direction</button>
-                              <button type="submit" class="btn btn-primary" (click)="onSubmit()" style="margin-left: 15px;">Submit</button>
+                              <!-- <button class="btn btn-primary" (click)="getDirection()">Get Direction</button> -->
+                              <button type="submit" class="btn btn-primary" (click)="onSubmit()" style="margin-left: 15px;">Book Ride</button>
                             </p>
                         </form>
                     </div>

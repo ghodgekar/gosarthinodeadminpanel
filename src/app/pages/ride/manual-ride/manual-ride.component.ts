@@ -1,4 +1,5 @@
 import { CustomerService } from '@/_restapi-services/customer.service';
+import { DriverService } from '@/_restapi-services/driver.service';
 import { RideService } from '@/_restapi-services/ride.service';
 import { ModalService } from '@/_services/modal.service';
 import { MapsAPILoader } from '@agm/core';
@@ -26,8 +27,10 @@ export class ManualRideComponent implements OnInit {
 
   pickuplat:Number;
   pickuplng:Number;
+  pickupaddress: string;
   droplat:Number;
   droplng:Number;
+  dropaddress: string;
 
   zoom: Number = 14;
   markers = [];
@@ -36,10 +39,11 @@ export class ManualRideComponent implements OnInit {
   private geoCoder;
 
   userData:any=[];
-
-  constructor( private mapsAPILoader: MapsAPILoader, private ngZone: NgZone, private modalService: ModalService, private customerApi:CustomerService, private rideapi:RideService ) { }
+  driverData: any =[];
+  constructor( private mapsAPILoader: MapsAPILoader, private ngZone: NgZone, private modalService: ModalService, private customerApi:CustomerService, private rideapi:RideService, private driverApi:DriverService ) { }
 
   ngOnInit(): void {
+    this.getDriver();
     this.rideForm = new FormGroup({
       name: new FormControl(),
       phone: new FormControl(),
@@ -53,7 +57,14 @@ export class ManualRideComponent implements OnInit {
       pickupaddress: new FormControl(),
       dropaddress: new FormControl(),
       drivernote:new FormControl(),
-      user_id:new FormControl()
+      user_id:new FormControl(),
+      driver_id:new FormControl(),
+      pickuplat:new FormControl(),
+      pickuplng:new FormControl(),
+      droplat:new FormControl(),
+      droplng:new FormControl(),
+      requesttime:new FormControl(),
+      status:new FormControl(2)
     })
 
     //load Places Autocomplete
@@ -69,8 +80,8 @@ export class ManualRideComponent implements OnInit {
             }
             this.pickuplat = place.geometry.location.lat();
             this.pickuplng = place.geometry.location.lng();
+            this.pickupaddress = place.formatted_address;
             this.zoom = 12;
-            console.log(place.adr_address)
           });
         });
         let autocompleteDrop = new google.maps.places.Autocomplete(this.searchDropElementRef.nativeElement);
@@ -82,14 +93,12 @@ export class ManualRideComponent implements OnInit {
             }
             this.droplat = place.geometry.location.lat();
             this.droplng = place.geometry.location.lng();
+            this.dropaddress = place.formatted_address;
             this.zoom = 12;
           });
+          this.getDirection();
         });
       });
-  }
-
-  onSearchChange(e){
-    this.getDirection();
   }
 
   getDirection() {
@@ -111,7 +120,6 @@ export class ManualRideComponent implements OnInit {
   }
  
   markerDragEnd($event: any) {
-    console.log($event);
     this.lat = $event.coords.lat;
     this.lng = $event.coords.lng;
     this.getAddress(this.lat, this.lng);
@@ -119,12 +127,9 @@ export class ManualRideComponent implements OnInit {
  
   getAddress(latitude, longitude) {
     this.geoCoder.geocode({ 'location': { lat: latitude, lng: longitude } }, (results, status) => {
-      console.log(results);
-      console.log(status);
       if (status === 'OK') {
         if (results[0]) {
           this.zoom = 12;
-          console.log(latitude + "==> " + longitude)
         } else {
           window.alert('No results found');
         }
@@ -137,6 +142,12 @@ export class ManualRideComponent implements OnInit {
 
   openFareModal(content){
     this.modalService.open(content)
+  }
+
+  getDriver(){
+    this.driverApi.getDriver(3).subscribe(response => {
+      this.driverData = response.data;
+    })
   }
 
   getUser(e){

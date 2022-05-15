@@ -33,21 +33,32 @@
                             <thead>
                                 <tr>
                                     <th>Ride Id</th>
-                                    <th>Driver Name</th>
-                                    <th>User Name</th>
-                                    <th>User Phone Number</th>
+                                    <th>Driver Id</th>
+                                    <th>User Id</th>
+                                    <th>Vehicle Type</th>
                                     <th>Pickup</th>
                                     <th>Drop</th>
                                     <th>Pickup Time</th>
                                     <th>Drop Time</th>
-                                    <th>Vehicle Type</th>
                                     <th>Status</th>
                                     <th>Rating</th>
                                     <th>Feedback Comment</th>
-                                    <th>Feedback Reason</th>
                                 </tr>
                             </thead>
                             <tbody>
+                                <tr *ngFor="let data of rideData" (click)="openRideDetails(data.ride_id,data.status)">
+                                   <td>{{data.ride_id}}</td>
+                                   <td>{{data.user_id}}</td>
+                                   <td>{{data.driver_id}}</td>
+                                   <td>{{data.vehicle_type}}</td>
+                                   <td>{{data.pickupaddress}}</td>
+                                   <td>{{data.dropaddress}}</td>
+                                   <td>{{data.pickuptime | date:'dd-MM-yyyy hh:mm:ss'}}</td>
+                                   <td>{{data.droptime | date:'dd-MM-yyyy hh:mm:ss'}}</td>
+                                   <td>{{data.status}}</td>
+                                   <td>{{data.rating}}</td>
+                                   <td>{{data.feedback}}</td>
+                                </tr>
                             </tbody>
                         </table>
                     </div>

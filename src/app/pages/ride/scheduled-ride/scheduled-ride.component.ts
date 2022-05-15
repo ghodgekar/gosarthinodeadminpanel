@@ -1,5 +1,6 @@
 import { RideService } from '@/_restapi-services/ride.service';
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-scheduled-ride',
@@ -7,10 +8,10 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./scheduled-ride.component.scss']
 })
 export class ScheduledRideComponent implements OnInit {
-
   public dtOptions: DataTables.Settings = {};
   rideData:any=[];
-  constructor(private rideapi:RideService) { }
+  
+  constructor(private rideapi:RideService, private router:Router) { }
 
   ngOnInit(): void {
     this.dtOptions = {
@@ -22,9 +23,13 @@ export class ScheduledRideComponent implements OnInit {
   }
 
   getRide(){
-    this.rideapi.getRide().subscribe(response => {
+    this.rideapi.getRide(2).subscribe(response => {
       this.rideData = response.data;
     })
+  }
+
+  openRideDetails(ride_id,status_id){
+    this.router.navigate(['/ride-details',ride_id,status_id]);
   }
 
 }

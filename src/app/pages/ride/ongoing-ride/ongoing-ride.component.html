@@ -33,18 +33,28 @@
                             <thead>
                                 <tr>
                                     <th>Ride Id</th>
-                                    <th>Driver Name</th>
-                                    <th>User Name</th>
-                                    <th>User Phone Number</th>
+                                    <th>Driver Id</th>
+                                    <th>User Id</th>
                                     <th>Pickup</th>
                                     <th>Drop</th>
                                     <th>Request Time</th>
                                     <th>Vehicle Type</th>
+                                    <th>Driver Note</th>
                                     <th>Status</th>
-                                    <th>Action</th>
                                 </tr>
                             </thead>
                             <tbody>
+                                <tr *ngFor="let data of rideData" (click)="openRideDetails(data.ride_id,data.status)">
+                                   <td>{{data.ride_id}}</td>
+                                   <td>{{data.user_id}}</td>
+                                   <td>{{data.driver_id}}</td>
+                                   <td>{{data.pickupaddress}}</td>
+                                   <td>{{data.dropaddress}}</td>
+                                   <td>{{data.requesttime | date:'dd-MM-yyyy hh:mm:ss'}}</td>
+                                   <td>{{data.vehicle_type}}</td>
+                                   <td>{{data.drivernote}}</td>
+                                   <td>Ride Started</td>
+                                </tr>
                             </tbody>
                         </table>
                     </div>

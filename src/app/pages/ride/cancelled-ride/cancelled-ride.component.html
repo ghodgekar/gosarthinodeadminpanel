@@ -2,45 +2,12 @@
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-6">
-                <h1>Schedule Rides</h1>
+                <h1>Cancelled Rides</h1>
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
                     <li class="breadcrumb-item"><a href="#">Home</a></li>
-                    <li class="breadcrumb-item active">Schedule Rides</li>
-                </ol>
-            </div>
-        </div>
-    </div>
-    <!-- /.container-fluid -->
-</section>
-
-<!-- Main content -->
-<section class="content">
-    <div class="container-fluid">
-        <div class="card">
-            <div class="card-header">
-                <div class="row">
-                    <div class="col-sm-8">
-                        <h3>Ride List</h3>
-                    </div>
-                </div>
-            </div>
-            <div class="card-body">
-                <div class="row">
-                    <div class="col-sm-12">
-                        <table id="example1" class="table table-bordered table-striped dataTable dtr-inline" datatable [dtOptions]="dtOptions">
-                            <thead>
-                                <tr><section class="content-header">
-    <div class="container-fluid">
-        <div class="row mb-2">
-            <div class="col-sm-6">
-                <h1>Schedule Rides</h1>
-            </div>
-            <div class="col-sm-6">
-                <ol class="breadcrumb float-sm-right">
-                    <li class="breadcrumb-item"><a href="#">Home</a></li>
-                    <li class="breadcrumb-item active">Schedule Rides</li>
+                    <li class="breadcrumb-item active">Cancelled Rides</li>
                 </ol>
             </div>
         </div>
@@ -66,35 +33,30 @@
                             <thead>
                                 <tr>
                                     <th>Ride Id</th>
+                                    <th>Driver Name</th>
                                     <th>User Name</th>
-                                    <th>Phone Number</th>
+                                    <th>Vehicle Type</th>
                                     <th>Pickup</th>
                                     <th>Drop</th>
-                                    <th>Request Time</th>
-                                    <th>Reason</th>
+                                    <th>Pickup Time</th>
+                                    <th>Drop Time</th>
                                     <th>Status</th>
-                                    <th>Action</th>
+                                    <th>Cancellation Reason</th>
                                 </tr>
                             </thead>
                             <tbody>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-                                    <th>Phone Number</th>
-                                    <th>Driver Id</th>
-                                    <th>Pickup</th>
-                                    <th>Drop</th>
-                                    <th>Request Time</th>
-                                    <th>Driver Notes</th>
-                                    <th>Action</th>
+                                <tr *ngFor="let data of rideData" (click)="openRideDetails(data.ride_id,data.status)">
+                                   <td>{{data.ride_id}}</td>
+                                   <td>{{data.user_id}}</td>
+                                   <td>{{data.driver_id}}</td>
+                                   <td>{{data.vehicle_type}}</td>
+                                   <td>{{data.pickupaddress}}</td>
+                                   <td>{{data.dropaddress}}</td>
+                                   <td>{{data.pickuptime | date:'dd-MM-yyyy hh:mm:ss'}}</td>
+                                   <td>{{data.droptime | date:'dd-MM-yyyy hh:mm:ss'}}</td>
+                                   <td>{{data.status}}</td>
+                                   <td>{{data.cancelled_reason}}</td>
                                 </tr>
-                            </thead>
-                            <tbody>
                             </tbody>
                         </table>
                     </div>
