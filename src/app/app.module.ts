@@ -69,6 +69,9 @@ import { CompletedRideComponent } from './pages/ride/completed-ride/completed-ri
 import { CancelledRideComponent } from './pages/ride/cancelled-ride/cancelled-ride.component';
 import { RideDetailsComponent } from './pages/ride/ride-details/ride-details.component';   // agm-direction
 import { GooglePlaceModule } from "ngx-google-places-autocomplete";
+import { ActivePartnerComponent } from './pages/partner/active-partner/active-partner.component';
+import { LoginPartnerComponent } from './pages/partner/login-partner/login-partner.component';
+import { MenuSidebarPartnerComponent } from './modules/main/menu-sidebar-partner/menu-sidebar-partner.component';
 
 registerLocaleData(localeEn, 'en-EN');
 
@@ -114,7 +117,10 @@ registerLocaleData(localeEn, 'en-EN');
         OngoingRideComponent,
         CompletedRideComponent,
         CancelledRideComponent,
-        RideDetailsComponent
+        RideDetailsComponent,
+        ActivePartnerComponent,
+        LoginPartnerComponent,
+        MenuSidebarPartnerComponent
     ],
     imports: [
         BrowserModule,

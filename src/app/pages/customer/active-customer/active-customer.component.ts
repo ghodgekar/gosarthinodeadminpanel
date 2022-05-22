@@ -19,6 +19,7 @@ export class ActiveCustomerComponent implements OnInit {
   ngOnInit(){
     this.getCustomer();
     this.customerForm = new FormGroup({
+      user_id: new FormControl(),
       name: new FormControl(),
       email: new FormControl(),
       phone: new FormControl(),
@@ -47,6 +48,7 @@ export class ActiveCustomerComponent implements OnInit {
 
   onSubmit() {
     if(this.customerForm.valid){
+      this.customerForm.value.user_id = this.api.createCustomerId();
       this.api.postCustomer(this.customerForm.value).subscribe(response => {
         if(response.message){
           this.customerForm.reset();

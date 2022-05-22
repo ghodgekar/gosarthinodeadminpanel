@@ -102,6 +102,15 @@ export const MENU = [
         ]
     },
     {
+        name: 'Partner',
+        children: [
+            {
+                name: 'Active Partner',
+                path: ['/active-partner']
+            }
+        ]
+    },
+    {
         name: 'Manual Dispatch',
         path: ['/manual-dispatch']
     },

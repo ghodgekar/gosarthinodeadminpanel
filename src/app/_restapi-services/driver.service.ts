@@ -17,6 +17,10 @@ export class DriverService {
     };
     constructor(private http: HttpClient) {}
 
+    createDriverId(){
+        return "d_" + Math.floor(10000000000 + Math.random() * 90000000000);
+    }
+
     getDriver(statusid): Observable<any> {
         return this.http.get(API_URL + 'driver/' + statusid);
     }

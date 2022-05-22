@@ -32,6 +32,7 @@
                         <table id="example1" class="table table-bordered table-striped dataTable dtr-inline" datatable [dtOptions]="dtOptions">
                             <thead>
                                 <tr>
+                                    <th>Ride Id</th>
                                     <th>User Id</th>
                                     <!-- <th>Phone Number</th> -->
                                     <!-- <th>Driver Id</th> -->
@@ -46,6 +47,7 @@
                             </thead>
                             <tbody>
                                 <tr *ngFor="let data of rideData" (click)="openRideDetails(data.ride_id,data.status)">
+                                    <td>{{data.ride_id}}</td>
                                    <td>{{data.user_id}}</td>
                                    <!-- <td>{{data.driver_id}}</td> -->
                                    <td>{{data.vehicle_type}}</td>

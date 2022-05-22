@@ -1,0 +1,157 @@
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>Active Partner</h1>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="#">Home</a></li>
+                    <li class="breadcrumb-item active">Active Partner</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+    <!-- /.container-fluid -->
+</section>
+
+<!-- Main content -->
+<section class="content">
+    <div class="container-fluid">
+        <div class="card">
+            <div class="card-header">
+                <div class="row">
+                    <div class="col-sm-8">
+                        <h3>Partner List</h3>
+                    </div>
+                    <div class="col-sm-4 text-right">
+                        <button class="btn btn-sm btn-primary" (click)="openAddPartnerModal(addPartner)">Add Partner</button>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <table id="example1" class="table table-bordered table-striped dataTable dtr-inline" datatable [dtOptions]="dtOptions">
+                            <thead>
+                                <tr>
+                                    <th>PartnerId</th>
+                                    <th>Company Name</th>
+                                    <th>Company Number</th>
+                                    <th>Phone Number</th>
+                                    <th>Email</th>
+                                    <th>GST Number</th>
+                                    <th>Username</th>
+                                    <th>Register On</th>
+                                    <th>Total Rides</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let data of partnerData">
+                                   <td>{{data.partner_id}}</td>
+                                   <td>{{data.company_name}}</td>
+                                   <td>{{data.company_no}}</td>
+                                   <td>{{data.phone}}</td>
+                                   <td>{{data.email}}</td>
+                                   <td>{{data.gst_no}}</td>
+                                   <td>{{data.username}}</td>
+                                   <td>{{data.created_on | date:'dd-MM-yyyy hh:mm:ss'}}</td>
+                                   <td>10</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<ng-template #addPartner let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Add Partner</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">×</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <form [formGroup]="partnerForm" (ngSubmit)="onSubmit()">
+            <div class="row">
+                <div class="col-sm-12">
+                    <p class="form-group">
+                      <label for="firstname">Company Name </label>
+                      <input class="form-control" type="text" name="company_name" formControlName="company_name">
+                    </p>
+                </div>
+                <div class="col-sm-12">
+                    <p class="form-group">
+                      <label for="firstname">Company Number </label>
+                      <input class="form-control" type="text" name="company_no" formControlName="company_no">
+                    </p>
+                </div>
+                <div class="col-sm-6">
+                    <p class="form-group">
+                      <label for="email">Email </label>
+                      <input class="form-control" type="text" name="email" formControlName="email">
+                    </p>
+                </div>
+                <div class="col-sm-6">
+                    <p class="form-group">
+                      <label for="phone">Phone No </label>
+                      <input class="form-control" type="text" name="phone" formControlName="phone">
+                    </p>
+                </div>
+                <div class="col-sm-6">
+                    <p class="form-group">
+                      <label for="firstname">GST Number </label>
+                      <input class="form-control" type="text" name="gst_no" formControlName="gst_no">
+                    </p>
+                </div>
+                <div class="col-sm-6">
+                    <p class="form-group">
+                      <label for="state">State </label>
+                      <select class="form-control" name="state" formControlName="state">
+                        <option>Maharashtra</option>
+                      </select>
+                    </p>
+                </div>
+                <div class="col-sm-6">
+                    <p class="form-group">
+                      <label for="city">City </label>
+                      <select class="form-control" name="city" formControlName="city">
+                        <option>Mumbai</option>
+                      </select>
+                    </p>
+                </div>
+                <div class="col-sm-6">
+                    <p class="form-group">
+                      <label for="pincode">Pincode </label>
+                      <input class="form-control" type="text" name="pincode" formControlName="pincode">
+                    </p>
+                </div>
+                <div class="col-sm-12">
+                    <p class="form-group">
+                      <label for="address">Address </label>
+                      <textarea class="form-control" formControlName="address" name="address"></textarea>
+                    </p>
+                </div>
+                <div class="col-sm-6">
+                    <p class="form-group">
+                      <label for="username">Username </label>
+                      <input class="form-control" type="text" name="username" formControlName="username">
+                    </p>
+                </div>
+                <div class="col-sm-6">
+                    <p class="form-group">
+                      <label for="password">Password </label>
+                      <input class="form-control" type="text" name="password" formControlName="password">
+                    </p>
+                </div>
+            </div>
+            <p class="text-center">
+              <button type="submit" class="btn btn-primary">Submit</button>
+            </p>
+           
+        </form>
+    </div>
+</ng-template>

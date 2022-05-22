@@ -13,10 +13,15 @@ import {Observable} from 'rxjs';
 export class MainComponent implements OnInit {
     @HostBinding('class') class = 'wrapper';
     public ui: Observable<UiState>;
+    public tokenUserIsAdmin:Boolean=false;
 
     constructor(private renderer: Renderer2, private store: Store<AppState>) {}
 
     ngOnInit() {
+        let localVal = JSON.parse(localStorage.getItem('token'));
+        if(localVal.role == 'admin'){
+            this.tokenUserIsAdmin = true;
+        }
         this.ui = this.store.select('ui');
         this.renderer.removeClass(
             document.querySelector('app-root'),

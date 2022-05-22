@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import {Router} from '@angular/router';
 import {ToastrService} from 'ngx-toastr';
 import {Gatekeeper} from 'gatekeeper-client-sdk';
+import { AdminService } from '@/_restapi-services/admin.service';
 
 @Injectable({
     providedIn: 'root'
@@ -9,14 +10,17 @@ import {Gatekeeper} from 'gatekeeper-client-sdk';
 export class AppService {
     public user: any = null;
 
-    constructor(private router: Router, private toastr: ToastrService) {}
+    constructor(private router: Router, private toastr: ToastrService, private api:AdminService) {}
 
     async loginByAuth({email, password}) {
         try {
-            const token = await Gatekeeper.loginByAuth(email, password);
-            localStorage.setItem('token', token);
-            await this.getProfile();
-            this.router.navigate(['/']);
+            this.api.login({username:email, password:password}).subscribe(response => {
+                console.log(response.data)
+                localStorage.setItem('token', JSON.stringify(response.data));
+                // this.getProfile();
+                this.router.navigate(['/']);
+            })
+            // const token = await Gatekeeper.loginByAuth(email, password);
         } catch (error) {
             this.toastr.error(error.message);
         }
@@ -79,7 +83,8 @@ export class AppService {
 
     async getProfile() {
         try {
-            this.user = await Gatekeeper.getProfile();
+            // this.user = await Gatekeeper.getProfile();
+            this.user = localStorage.getItem('token');
         } catch (error) {
             this.logout();
             throw error;

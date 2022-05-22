@@ -1,6 +1,7 @@
 <app-header></app-header>
 
-<app-menu-sidebar class="sidebar-dark-primary"></app-menu-sidebar>
+<app-menu-sidebar *ngIf="tokenUserIsAdmin" class="sidebar-dark-primary"></app-menu-sidebar>
+<app-menu-sidebar-partner *ngIf="!tokenUserIsAdmin" class="sidebar-dark-primary"></app-menu-sidebar-partner>
 
 <div class="content-wrapper">
     <router-outlet></router-outlet>

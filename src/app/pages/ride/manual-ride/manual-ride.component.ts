@@ -18,6 +18,8 @@ export class ManualRideComponent implements OnInit {
   @ViewChild('searchdrop')
   public searchDropElementRef: ElementRef;
 
+  rideid:any;
+
   username:String;
   userid:String;
 
@@ -45,6 +47,7 @@ export class ManualRideComponent implements OnInit {
   ngOnInit(): void {
     this.getDriver();
     this.rideForm = new FormGroup({
+      ride_id:new FormControl(),
       name: new FormControl(),
       phone: new FormControl(),
       city: new FormControl(),
@@ -160,6 +163,7 @@ export class ManualRideComponent implements OnInit {
 
   onSubmit() {
     if(this.rideForm.valid){
+      this.rideForm.value.ride_id =  this.rideapi.createRideId();
       this.rideapi.postRide(this.rideForm.value).subscribe(response => {
         this.rideForm.reset();
       })

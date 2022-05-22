@@ -27,6 +27,8 @@ import { OngoingRideComponent } from '@pages/ride/ongoing-ride/ongoing-ride.comp
 import { CompletedRideComponent } from '@pages/ride/completed-ride/completed-ride.component';
 import { CancelledRideComponent } from '@pages/ride/cancelled-ride/cancelled-ride.component';
 import { RideDetailsComponent } from '@pages/ride/ride-details/ride-details.component';
+import { ActivePartnerComponent } from '@pages/partner/active-partner/active-partner.component';
+import { LoginPartnerComponent } from '@pages/partner/login-partner/login-partner.component';
 
 const routes: Routes = [
     {
@@ -108,6 +110,10 @@ const routes: Routes = [
                 component: RideDetailsComponent
             },
             {
+                path: 'active-partner',
+                component: ActivePartnerComponent
+            },
+            {
                 path: '',
                 component: DashboardComponent
             }
@@ -117,6 +123,10 @@ const routes: Routes = [
         path: 'login',
         component: LoginComponent,
         canActivate: [NonAuthGuard]
+    },
+    {
+        path: 'login-partner',
+        component: LoginPartnerComponent
     },
     {
         path: 'register',

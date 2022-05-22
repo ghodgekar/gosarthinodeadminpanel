@@ -20,6 +20,7 @@ export class EnrolledDriverComponent implements OnInit {
   ngOnInit(){
     this.getDriver(1);
     this.driverForm = new FormGroup({
+      driver_id: new FormControl(),
       name: new FormControl(),
       email: new FormControl(),
       phone: new FormControl(),
@@ -51,6 +52,7 @@ export class EnrolledDriverComponent implements OnInit {
   }
 
   onSubmit() {
+    this.driverForm.value.driver_id = this.api.createDriverId();
     this.api.postDriver(this.driverForm.value).subscribe(response => {
       if(response.message){
         this.driverForm.reset();

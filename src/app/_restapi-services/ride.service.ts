@@ -17,6 +17,10 @@ export class RideService {
     };
     constructor(private http: HttpClient) {}
 
+    createRideId(){
+        return "r_" + Math.floor(10000000000 + Math.random() * 90000000000);
+    }
+
     getRide(status_id): Observable<any> {
         return this.http.get(API_URL + 'ride/'+status_id);
     }
