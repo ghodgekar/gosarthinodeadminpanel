@@ -49,6 +49,8 @@
                             <thead>
                                 <tr>
                                     <th>UserId</th>
+                                    <th>Partner Id</th>
+                                    <th>Company Name</th>
                                     <th>User Name</th>
                                     <th>Phone Number</th>
                                     <th>Email</th>
@@ -61,6 +63,8 @@
                             <tbody>
                                 <tr *ngFor="let data of customerData">
                                    <td>{{data.user_id}}</td>
+                                   <td>{{data.partner_id}}</td>
+                                   <td>{{data.company_name}}</td>
                                    <td>{{data.name}}</td>
                                    <td>{{data.phone}}</td>
                                    <td>{{data.email}}</td>

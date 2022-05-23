@@ -31,6 +31,7 @@ export class LoginPartnerComponent implements OnInit {
   loginPartnerFormSubmit(){
     this.api.partnerLogin(this.loginPartnerForm.value).subscribe(response => {
       localStorage.setItem('token', JSON.stringify(response.data));
+      localStorage.setItem('role', response.role);
       this.router.navigate(['/']);
     })
   }

@@ -42,7 +42,10 @@
             <a [routerLink]="['/profile']" class="btn btn-default btn-flat">
                 Profile
             </a>
-            <a (click)="logout()" class="btn btn-default btn-flat float-right"
+            <a (click)="logout()" *ngIf="this.appService.role == 'admin'" class="btn btn-default btn-flat float-right"
+                >Sign out</a
+            >
+            <a (click)="logoutPartner()" *ngIf="this.appService.role == 'partner'" class="btn btn-default btn-flat float-right"
                 >Sign out</a
             >
         </li>

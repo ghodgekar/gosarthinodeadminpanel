@@ -4,12 +4,11 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-ongoing-ride',
-  templateUrl: './ongoing-ride.component.html',
-  styleUrls: ['./ongoing-ride.component.scss']
+  selector: 'app-assign-ride',
+  templateUrl: './assign-ride.component.html',
+  styleUrls: ['./assign-ride.component.scss']
 })
-export class OngoingRideComponent implements OnInit {
-
+export class AssignRideComponent implements OnInit {
   public dtOptions: DataTables.Settings = {};
   rideData:any=[];
   
@@ -31,8 +30,8 @@ export class OngoingRideComponent implements OnInit {
     }else{
       company_name = 'all';
     }
-    this.rideapi.getOngoingRide(company_name).subscribe(response => {
-      return this.rideData = response.data;
+    this.rideapi.getRide(1, company_name).subscribe(response => {
+      this.rideData = response.data;
     })
   }
 

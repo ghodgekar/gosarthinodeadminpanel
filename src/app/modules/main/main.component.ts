@@ -18,8 +18,8 @@ export class MainComponent implements OnInit {
     constructor(private renderer: Renderer2, private store: Store<AppState>) {}
 
     ngOnInit() {
-        let localVal = JSON.parse(localStorage.getItem('token'));
-        if(localVal.role == 'admin'){
+        let localVal = localStorage.getItem('role');
+        if(localVal == 'admin'){
             this.tokenUserIsAdmin = true;
         }
         this.ui = this.store.select('ui');

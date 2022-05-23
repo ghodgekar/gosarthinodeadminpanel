@@ -21,8 +21,8 @@
             />
         </div>
         <div class="info">
-            <a [routerLink]="['/profile']" class="d-block">
-                {{ user.username }}
+            <a [routerLink]="['/profile']" class="d-block" *ngIf="user">
+                {{ user.company_name }}
             </a>
         </div>
     </div>

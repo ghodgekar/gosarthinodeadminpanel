@@ -1,6 +1,7 @@
 import { CustomerService } from '@/_restapi-services/customer.service';
 import { DriverService } from '@/_restapi-services/driver.service';
 import { RideService } from '@/_restapi-services/ride.service';
+import { AppService } from '@/_services/app.service';
 import { ModalService } from '@/_services/modal.service';
 import { MapsAPILoader } from '@agm/core';
 import { Component, ElementRef, NgZone, OnInit, ViewChild } from '@angular/core';
@@ -42,7 +43,7 @@ export class ManualRideComponent implements OnInit {
 
   userData:any=[];
   driverData: any =[];
-  constructor( private mapsAPILoader: MapsAPILoader, private ngZone: NgZone, private modalService: ModalService, private customerApi:CustomerService, private rideapi:RideService, private driverApi:DriverService ) { }
+  constructor( private mapsAPILoader: MapsAPILoader, private ngZone: NgZone, private modalService: ModalService, private customerApi:CustomerService, private rideapi:RideService, private driverApi:DriverService, public appservice:AppService ) { }
 
   ngOnInit(): void {
     this.getDriver();
@@ -67,7 +68,9 @@ export class ManualRideComponent implements OnInit {
       droplat:new FormControl(),
       droplng:new FormControl(),
       requesttime:new FormControl(),
-      status:new FormControl(2)
+      status:new FormControl(1),
+      partner_id:new FormControl(null),
+      company_name: new FormControl(null),
     })
 
     //load Places Autocomplete
@@ -163,6 +166,10 @@ export class ManualRideComponent implements OnInit {
 
   onSubmit() {
     if(this.rideForm.valid){
+      if(this.appservice.role == 'partner'){
+        this.rideForm.value.partner_id = this.appservice.user.partner_id;
+        this.rideForm.value.company_name = this.appservice.user.company_name;
+      }
       this.rideForm.value.ride_id =  this.rideapi.createRideId();
       this.rideapi.postRide(this.rideForm.value).subscribe(response => {
         this.rideForm.reset();

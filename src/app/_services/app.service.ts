@@ -9,6 +9,7 @@ import { AdminService } from '@/_restapi-services/admin.service';
 })
 export class AppService {
     public user: any = null;
+    public role: any = null;
 
     constructor(private router: Router, private toastr: ToastrService, private api:AdminService) {}
 
@@ -17,6 +18,7 @@ export class AppService {
             this.api.login({username:email, password:password}).subscribe(response => {
                 console.log(response.data)
                 localStorage.setItem('token', JSON.stringify(response.data));
+                localStorage.setItem('role', response.role);
                 // this.getProfile();
                 this.router.navigate(['/']);
             })
@@ -84,7 +86,8 @@ export class AppService {
     async getProfile() {
         try {
             // this.user = await Gatekeeper.getProfile();
-            this.user = localStorage.getItem('token');
+            this.user = JSON.parse(localStorage.getItem('token'));
+            this.role = localStorage.getItem('role');
         } catch (error) {
             this.logout();
             throw error;
@@ -93,8 +96,17 @@ export class AppService {
 
     logout() {
         localStorage.removeItem('token');
+        localStorage.removeItem('role');
         localStorage.removeItem('gatekeeper_token');
         this.user = null;
         this.router.navigate(['/login']);
+    }
+
+    logoutPartner() {
+        localStorage.removeItem('token');
+        localStorage.removeItem('role');
+        localStorage.removeItem('gatekeeper_token');
+        this.user = null;
+        this.router.navigate(['/login-partner']);
     }
 }

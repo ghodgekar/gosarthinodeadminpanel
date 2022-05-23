@@ -54,6 +54,19 @@ export const MENU = [
           {
               name: 'Cancelled Rides',
               path: ['/cancelled-ride']
+          },
+          {
+              name: 'New Rides',
+              path: ['/assign-ride']
+          }
+      ]
+  },
+  {
+      name: 'Customer',
+      children: [
+          {
+              name: 'Active Customer',
+              path: ['/active-customer']
           }
       ]
   },

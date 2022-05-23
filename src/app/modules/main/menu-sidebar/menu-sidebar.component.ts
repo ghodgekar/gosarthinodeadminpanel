@@ -72,6 +72,10 @@ export const MENU = [
             {
                 name: 'Cancelled Rides',
                 path: ['/cancelled-ride']
+            },
+            {
+                name: 'Assign Rides',
+                path: ['/assign-ride']
             }
         ]
     },

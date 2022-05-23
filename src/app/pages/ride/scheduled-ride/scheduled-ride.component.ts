@@ -1,4 +1,5 @@
 import { RideService } from '@/_restapi-services/ride.service';
+import { AppService } from '@/_services/app.service';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
@@ -11,7 +12,7 @@ export class ScheduledRideComponent implements OnInit {
   public dtOptions: DataTables.Settings = {};
   rideData:any=[];
   
-  constructor(private rideapi:RideService, private router:Router) { }
+  constructor(private rideapi:RideService, private router:Router, public appservice:AppService) { }
 
   ngOnInit(): void {
     this.dtOptions = {
@@ -23,7 +24,13 @@ export class ScheduledRideComponent implements OnInit {
   }
 
   getRide(){
-    this.rideapi.getRide(2).subscribe(response => {
+    let company_name;
+    if(this.appservice.role == 'partner'){
+      company_name = this.appservice.user.company_name;
+    }else{
+      company_name = 'all';
+    }
+    this.rideapi.getRide(2, company_name).subscribe(response => {
       this.rideData = response.data;
     })
   }

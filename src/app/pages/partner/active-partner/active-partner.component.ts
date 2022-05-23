@@ -51,7 +51,7 @@ export class ActivePartnerComponent implements OnInit {
   }
 
   onSubmit() {
-    if(this.partnerForm.valid){
+    // if(this.partnerForm.valid){
       this.partnerForm.value.partner_id = this.api.createPartnerId();
       this.api.postPartner(this.partnerForm.value).subscribe(response => {
         if(response.message){
@@ -60,6 +60,6 @@ export class ActivePartnerComponent implements OnInit {
           this.modalService.dismissall();
         }
       })
-    }
+    // }
   }
 }

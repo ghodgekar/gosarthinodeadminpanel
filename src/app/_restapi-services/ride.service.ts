@@ -21,8 +21,8 @@ export class RideService {
         return "r_" + Math.floor(10000000000 + Math.random() * 90000000000);
     }
 
-    getRide(status_id): Observable<any> {
-        return this.http.get(API_URL + 'ride/'+status_id);
+    getRide(status_id,company_name): Observable<any> {
+        return this.http.get(API_URL + 'ride/'+ status_id + '/'+  company_name);
     }
 
     postRide(data): Observable<any> {
@@ -37,7 +37,11 @@ export class RideService {
         return this.http.post(API_URL + 'rideStatusUpdate/', data);
     }
 
-    getOngoingRide(): Observable<any> {
-        return this.http.get(API_URL + 'rideOngoingList/');
+    getOngoingRide(company_name): Observable<any> {
+        return this.http.get(API_URL + 'rideOngoingList/' + company_name);
+    }
+
+    postAssignRide(data): Observable<any> {
+        return this.http.post(API_URL + 'assignDriver', data, this.httpOptions);
     }
 }

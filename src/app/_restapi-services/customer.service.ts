@@ -21,8 +21,8 @@ export class CustomerService {
         return "c_" + Math.floor(10000000000 + Math.random() * 90000000000);
     }
 
-    getCustomer(): Observable<any> {
-        return this.http.get(API_URL + 'customer');
+    getCustomer(company_name): Observable<any> {
+        return this.http.get(API_URL + 'customer/' + company_name);
     }
 
     postCustomer(data): Observable<any> {

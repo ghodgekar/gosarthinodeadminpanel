@@ -1,4 +1,6 @@
+import { DriverService } from '@/_restapi-services/driver.service';
 import { RideService } from '@/_restapi-services/ride.service';
+import { AppService } from '@/_services/app.service';
 import { ModalService } from '@/_services/modal.service';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
@@ -17,8 +19,10 @@ export class RideDetailsComponent implements OnInit {
   rideData:any=[];
   cancelRideForm: FormGroup;
   completeRideForm: FormGroup;
+  driverData: any =[];
+  driver_id:string;
 
-  constructor(private Actrouter:ActivatedRoute, private rideapi:RideService, private modalService: ModalService, private router:Router) { }
+  constructor(private Actrouter:ActivatedRoute, private rideapi:RideService, private modalService: ModalService, private router:Router, private driverApi:DriverService, public appservice:AppService) { }
 
   ngOnInit(): void {
     this.Actrouter.params.subscribe(paramsId => {
@@ -36,6 +40,13 @@ export class RideDetailsComponent implements OnInit {
       status: new FormControl()
     })
     this.getSingleRide();
+    this.getDriver();
+  }
+
+  getDriver(){
+    this.driverApi.getDriver(3).subscribe(response => {
+      this.driverData = response.data;
+    })
   }
 
   getSingleRide(){
@@ -89,6 +100,12 @@ export class RideDetailsComponent implements OnInit {
       this.modalService.dismissall();
       this.cancelRideForm.reset();
       this.router.navigate(['/cancelled-ride']);
+    })
+  }
+
+  assignDriver(){
+    this.rideapi.postAssignRide({driver_id:this.driver_id, ride_id:this.ride_id,status:2}).subscribe(response => {
+      this.router.navigate(['/scheduled-ride']);
     })
   }
 }

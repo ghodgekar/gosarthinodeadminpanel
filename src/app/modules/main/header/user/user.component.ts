@@ -10,7 +10,7 @@ import {DateTime} from 'luxon';
 export class UserComponent implements OnInit {
     public user;
 
-    constructor(private appService: AppService) {}
+    constructor(public appService: AppService) {}
 
     ngOnInit(): void {
         this.user = this.appService.user;
@@ -18,6 +18,10 @@ export class UserComponent implements OnInit {
 
     logout() {
         this.appService.logout();
+    }
+
+    logoutPartner(){
+        this.appService.logoutPartner();
     }
 
     formatDate(date) {

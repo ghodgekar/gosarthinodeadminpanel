@@ -29,6 +29,7 @@ import { CancelledRideComponent } from '@pages/ride/cancelled-ride/cancelled-rid
 import { RideDetailsComponent } from '@pages/ride/ride-details/ride-details.component';
 import { ActivePartnerComponent } from '@pages/partner/active-partner/active-partner.component';
 import { LoginPartnerComponent } from '@pages/partner/login-partner/login-partner.component';
+import { AssignRideComponent } from '@pages/ride/assign-ride/assign-ride.component';
 
 const routes: Routes = [
     {
@@ -104,6 +105,10 @@ const routes: Routes = [
             {
                 path: 'cancelled-ride',
                 component: CancelledRideComponent
+            },
+            {
+                path: 'assign-ride',
+                component: AssignRideComponent
             },
             {
                 path: 'ride-details/:ride_id/:status_id',
