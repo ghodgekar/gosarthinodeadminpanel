@@ -9,22 +9,22 @@
     <ng-container dropdown-menu>
         <li class="user-header bg-primary">
             <img
-                [src]="user.picture || 'assets/img/default-profile.png'"
+                [src]="user.picture || 'assets/img/logo.png'"
                 class="img-circle elevation-2"
                 alt="User Image"
             />
 
             <p>
-                <span>{{ user.email }}</span>
-                <small>
+                <span>{{ user.username }}</span>
+                <!-- <small>
                     <span>Member since&nbsp;</span>
                     <span>{{ formatDate(user.createdAt) }}</span>
-                </small>
+                </small> -->
             </p>
         </li>
         <!-- Menu Body -->
-        <li class="user-body">
-            <div class="row">
+        <!-- <li class="user-body"> -->
+            <!-- <div class="row">
                 <div class="col-4 text-center">
                     <a [routerLink]="['/']">Followers</a>
                 </div>
@@ -34,18 +34,18 @@
                 <div class="col-4 text-center">
                     <a [routerLink]="['/']">Friends</a>
                 </div>
-            </div>
+            </div> -->
             <!-- /.row -->
-        </li>
+        <!-- </li> -->
         <!-- Menu Footer-->
-        <li class="user-footer">
-            <a [routerLink]="['/profile']" class="btn btn-default btn-flat">
+        <li class="user-footer text-center">
+            <!-- <a [routerLink]="['/profile']" class="btn btn-default btn-flat">
                 Profile
-            </a>
+            </a> -->
             <a (click)="logout()" *ngIf="this.appService.role == 'admin'" class="btn btn-default btn-flat float-right"
                 >Sign out</a
             >
-            <a (click)="logoutPartner()" *ngIf="this.appService.role == 'partner'" class="btn btn-default btn-flat float-right"
+            <a (click)="logoutPartner()" *ngIf="this.appService.role == 'partner'" class="btn btn-default btn-flat"
                 >Sign out</a
             >
         </li>
