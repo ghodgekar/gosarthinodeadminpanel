@@ -2,6 +2,7 @@ import { CustomerService } from '@/_restapi-services/customer.service';
 import { DriverService } from '@/_restapi-services/driver.service';
 import { RideService } from '@/_restapi-services/ride.service';
 import { AppService } from '@/_services/app.service';
+import { ExclService } from '@/_services/excl.service';
 import { ModalService } from '@/_services/modal.service';
 import { MapsAPILoader } from '@agm/core';
 import { Component, ElementRef, NgZone, OnInit, ViewChild } from '@angular/core';
@@ -14,6 +15,7 @@ declare var google;
   styleUrls: ['./manual-ride.component.scss']
 })
 export class ManualRideComponent implements OnInit {
+  @ViewChild('table') table: ElementRef;
   @ViewChild('searchpickup')
   public searchPickupElementRef: ElementRef;
   @ViewChild('searchdrop')
@@ -43,7 +45,7 @@ export class ManualRideComponent implements OnInit {
 
   userData:any=[];
   driverData: any =[];
-  constructor( private mapsAPILoader: MapsAPILoader, private ngZone: NgZone, private modalService: ModalService, private customerApi:CustomerService, private rideapi:RideService, private driverApi:DriverService, public appservice:AppService ) { }
+  constructor( private mapsAPILoader: MapsAPILoader, private ngZone: NgZone, private modalService: ModalService, private customerApi:CustomerService, private rideapi:RideService, private driverApi:DriverService, public appservice:AppService, public exclservice:ExclService ) { }
 
   ngOnInit(): void {
     this.getDriver();
@@ -177,6 +179,10 @@ export class ManualRideComponent implements OnInit {
     }else{
       alert("please enter all details")
     }
+  }
+
+  exportAsXLSX():void {
+    this.exclservice.exportAsExcelFile(this.table.nativeElement, 'cancelled rides');
   }
 
 }

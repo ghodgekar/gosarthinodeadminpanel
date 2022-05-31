@@ -2,7 +2,8 @@ import { AlertService } from '@/_services/alert.service';
 import { CustomerService } from '@/_restapi-services/customer.service';
 import { ModalService } from '@/_services/modal.service';
 import { ToastrNotifyService } from '@/_services/toastr-notify.service';
-import { Component, OnInit } from '@angular/core';
+import { ExclService } from '@/_services/excl.service';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { AppService } from '@/_services/app.service';
 
@@ -12,10 +13,11 @@ import { AppService } from '@/_services/app.service';
   styleUrls: ['./active-customer.component.scss']
 })
 export class ActiveCustomerComponent implements OnInit {
+  @ViewChild('table') table: ElementRef;
   public customerForm: FormGroup;
   public customerData:any=[];
   public dtOptions: DataTables.Settings = {};
-  constructor(private modalService: ModalService, private toastr:ToastrNotifyService,private alertService: AlertService, public api:CustomerService, public appservice:AppService) { }
+  constructor(private modalService: ModalService, private toastr:ToastrNotifyService,private alertService: AlertService, public api:CustomerService, public appservice:AppService, public exclservice:ExclService) { }
 
   ngOnInit(){
     this.customerForm = new FormGroup({
@@ -70,5 +72,9 @@ export class ActiveCustomerComponent implements OnInit {
         }
       })
     }
+  }
+
+  exportAsXLSX():void {
+    this.exclservice.exportAsExcelFile(this.table.nativeElement, 'active customers');
   }
 }

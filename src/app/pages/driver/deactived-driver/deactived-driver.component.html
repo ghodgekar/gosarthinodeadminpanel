@@ -19,12 +19,15 @@
 <section class="content">
     <div class="container-fluid">
         <div class="card">
-            <!-- <div class="card-header">
-            </div> -->
+            <div class="card-header">
+                <div class="col-sm-12 text-right">
+                    <button class="btn-sm btn-primary" (click)="exportAsXLSX()">Excel Download</button>
+                </div>
+            </div>
             <div class="card-body">
                 <div class="row">
                     <div class="col-sm-12">
-                        <table id="example1" class="table table-bordered table-striped dataTable dtr-inline" datatable [dtOptions]="dtOptions">
+                        <table id="example1" class="table table-bordered table-striped dataTable dtr-inline" datatable [dtOptions]="dtOptions" #table>
                             <thead>
                                 <tr>
                                     <th>Driver Id</th>

@@ -24,7 +24,10 @@
                     <div class="col-sm-8">
                         <h3>Partner List</h3>
                     </div>
-                    <div class="col-sm-4 text-right">
+                    <div class="col-sm-2 text-right">
+                        <button class="btn-sm btn-primary" (click)="exportAsXLSX()">Excel Download</button>
+                    </div>
+                    <div class="col-sm-2 text-right">
                         <button class="btn btn-sm btn-primary" (click)="openAddPartnerModal(addPartner)">Add Partner</button>
                     </div>
                 </div>
@@ -32,7 +35,7 @@
             <div class="card-body">
                 <div class="row">
                     <div class="col-sm-12">
-                        <table id="example1" class="table table-bordered table-striped dataTable dtr-inline" datatable [dtOptions]="dtOptions">
+                        <table id="example1" class="table table-bordered table-striped dataTable dtr-inline" datatable [dtOptions]="dtOptions" #table>
                             <thead>
                                 <tr>
                                     <th>PartnerId</th>

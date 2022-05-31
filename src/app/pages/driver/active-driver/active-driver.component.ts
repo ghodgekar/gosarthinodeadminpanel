@@ -1,5 +1,6 @@
 import { DriverService } from '@/_restapi-services/driver.service';
-import { Component, OnInit } from '@angular/core';
+import { ExclService } from '@/_services/excl.service';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 
 @Component({
@@ -8,10 +9,11 @@ import { Router } from '@angular/router';
   styleUrls: ['./active-driver.component.scss']
 })
 export class ActiveDriverComponent implements OnInit {
+  @ViewChild('table') table: ElementRef;
   public dtOptions: DataTables.Settings = {};
   driverData: any;
 
-  constructor(private api:DriverService, private router:Router) { }
+  constructor(private api:DriverService, private router:Router, public exclservice:ExclService) { }
 
   ngOnInit(): void {
     this.getDriver(3);
@@ -30,6 +32,10 @@ export class ActiveDriverComponent implements OnInit {
 
   openDriverDetailsPage(driver_id){
     this.router.navigate(['/driver-details',driver_id]);
+  }
+
+  exportAsXLSX():void {
+    this.exclservice.exportAsExcelFile(this.table.nativeElement, 'active rides');
   }
 
 }

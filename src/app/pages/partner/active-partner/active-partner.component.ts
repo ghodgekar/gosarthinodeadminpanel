@@ -1,8 +1,9 @@
 import { PartnerService } from '@/_restapi-services/partner.service';
 import { AlertService } from '@/_services/alert.service';
+import { ExclService } from '@/_services/excl.service';
 import { ModalService } from '@/_services/modal.service';
 import { ToastrNotifyService } from '@/_services/toastr-notify.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 
 @Component({
@@ -12,10 +13,11 @@ import { FormControl, FormGroup } from '@angular/forms';
 })
 export class ActivePartnerComponent implements OnInit {
 
+  @ViewChild('table') table: ElementRef;
   public partnerForm: FormGroup;
   public partnerData:any=[];
   public dtOptions: DataTables.Settings = {};
-  constructor(private modalService: ModalService, private toastr:ToastrNotifyService,private alertService: AlertService, public api:PartnerService) { }
+  constructor(private modalService: ModalService, private toastr:ToastrNotifyService,private alertService: AlertService, public api:PartnerService, public exclservice:ExclService) { }
 
   ngOnInit(){
     this.getPartner();
@@ -61,5 +63,9 @@ export class ActivePartnerComponent implements OnInit {
         }
       })
     // }
+  }
+
+  exportAsXLSX():void {
+    this.exclservice.exportAsExcelFile(this.table.nativeElement, 'active rides');
   }
 }

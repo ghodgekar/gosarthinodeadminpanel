@@ -1,6 +1,7 @@
 import { RideService } from '@/_restapi-services/ride.service';
 import { AppService } from '@/_services/app.service';
-import { Component, OnInit } from '@angular/core';
+import { ExclService } from '@/_services/excl.service';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 
 @Component({
@@ -9,10 +10,11 @@ import { Router } from '@angular/router';
   styleUrls: ['./assign-ride.component.scss']
 })
 export class AssignRideComponent implements OnInit {
+  @ViewChild('table') table: ElementRef;
   public dtOptions: DataTables.Settings = {};
   rideData:any=[];
   
-  constructor(private rideapi:RideService, private router:Router, public appservice:AppService) { }
+  constructor(private rideapi:RideService, private router:Router, public appservice:AppService, public exclservice:ExclService) { }
 
   ngOnInit(): void {
     this.dtOptions = {
@@ -37,5 +39,9 @@ export class AssignRideComponent implements OnInit {
 
   openRideDetails(ride_id,status_id){
     this.router.navigate(['/ride-details',ride_id,status_id]);
+  }
+
+  exportAsXLSX():void {
+    this.exclservice.exportAsExcelFile(this.table.nativeElement, 'assigned rides');
   }
 }

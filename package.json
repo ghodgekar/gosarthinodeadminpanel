@@ -43,6 +43,8 @@
     "core-js": "3.8.0",
     "datatables.net": "^1.11.5",
     "datatables.net-dt": "^1.11.5",
+    "express": "^4.17.3",
+    "file-saver": "^2.0.5",
     "gatekeeper-client-sdk": "0.4.2",
     "jquery": "^3.6.0",
     "luxon": "2.3.0",
@@ -54,8 +56,8 @@
     "sweetalert2": "^11.4.10",
     "tslib": "2.0.3",
     "uuid": "^8.3.2",
-    "zone.js": "~0.11.4",
-    "express": "^4.17.3"
+    "xlsx": "^0.18.5",
+    "zone.js": "~0.11.4"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "13.2.0",
