@@ -2,6 +2,7 @@ import { DriverService } from '@/_restapi-services/driver.service';
 import { ExclService } from '@/_services/excl.service';
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-active-driver',
@@ -11,6 +12,7 @@ import { Router } from '@angular/router';
 export class ActiveDriverComponent implements OnInit {
   @ViewChild('table') table: ElementRef;
   public dtOptions: DataTables.Settings = {};
+  dtTrigger: Subject<any> = new Subject();
   driverData: any;
 
   constructor(private api:DriverService, private router:Router, public exclservice:ExclService) { }
@@ -27,6 +29,7 @@ export class ActiveDriverComponent implements OnInit {
     };
     this.api.getDriver(statusid).subscribe(response => {
       this.driverData = response.data;
+      this.dtTrigger.next();
     })
   }
 

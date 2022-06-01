@@ -50,7 +50,7 @@ export class RideDetailsComponent implements OnInit {
   }
 
   getSingleRide(){
-    this.rideapi.getSingleRide(this.ride_id, this.status_id).subscribe(response => {
+    this.rideapi.getSingleRide(this.ride_id).subscribe(response => {
       this.rideData.push(response.data);
     })
   }

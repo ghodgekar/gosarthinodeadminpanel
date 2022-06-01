@@ -3,6 +3,7 @@ import { AppService } from '@/_services/app.service';
 import { ExclService } from '@/_services/excl.service';
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-scheduled-ride',
@@ -12,17 +13,18 @@ import { Router } from '@angular/router';
 export class ScheduledRideComponent implements OnInit {
   @ViewChild('table') table: ElementRef;
   public dtOptions: DataTables.Settings = {};
+  dtTrigger: Subject<any> = new Subject();
   rideData:any=[];
   
   constructor(private rideapi:RideService, private router:Router, public appservice:AppService, public exclservice:ExclService) { }
 
   ngOnInit(): void {
+    this.getRide();
     this.dtOptions = {
       pagingType: 'full_numbers',
       pageLength: 10,
       processing: true
     };
-    this.getRide();
   }
 
   getRide(){
@@ -34,6 +36,7 @@ export class ScheduledRideComponent implements OnInit {
     }
     this.rideapi.getRide(2, company_name).subscribe(response => {
       this.rideData = response.data;
+      this.dtTrigger.next();
     })
   }
 

@@ -5,6 +5,8 @@ import { ModalService } from '@/_services/modal.service';
 import { ToastrNotifyService } from '@/_services/toastr-notify.service';
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
+import { DataTableDirective } from 'angular-datatables';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-active-partner',
@@ -17,6 +19,10 @@ export class ActivePartnerComponent implements OnInit {
   public partnerForm: FormGroup;
   public partnerData:any=[];
   public dtOptions: DataTables.Settings = {};
+  dtTrigger: Subject<any> = new Subject();
+  dtElement: DataTableDirective;
+  isDtInitialized:boolean = false
+  
   constructor(private modalService: ModalService, private toastr:ToastrNotifyService,private alertService: AlertService, public api:PartnerService, public exclservice:ExclService) { }
 
   ngOnInit(){
@@ -45,6 +51,15 @@ export class ActivePartnerComponent implements OnInit {
     };
     this.api.getPartner().subscribe(response => {
       this.partnerData = response.data;
+      if (this.isDtInitialized) {
+        this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
+          dtInstance.destroy();
+          this.dtTrigger.next();
+        });
+      } else {
+        this.isDtInitialized = true
+        this.dtTrigger.next();
+      }
     })
   }
 

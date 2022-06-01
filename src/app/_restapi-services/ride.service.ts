@@ -29,8 +29,8 @@ export class RideService {
         return this.http.post(API_URL + 'rideSave', data, this.httpOptions);
     }
 
-    getSingleRide(ride_id, status_id): Observable<any> {
-        return this.http.get(API_URL + 'rideSingleDetails/' + ride_id + '/' + status_id);
+    getSingleRide(ride_id): Observable<any> {
+        return this.http.get(API_URL + 'rideSingleDetails/' + ride_id);
     }
 
     rideStatusUpdate(data): Observable<any> {

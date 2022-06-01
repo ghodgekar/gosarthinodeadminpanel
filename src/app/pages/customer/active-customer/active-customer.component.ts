@@ -6,6 +6,8 @@ import { ExclService } from '@/_services/excl.service';
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { AppService } from '@/_services/app.service';
+import { Subject } from 'rxjs';
+import { DataTableDirective } from 'angular-datatables';
 
 @Component({
   selector: 'app-active-customer',
@@ -17,9 +19,20 @@ export class ActiveCustomerComponent implements OnInit {
   public customerForm: FormGroup;
   public customerData:any=[];
   public dtOptions: DataTables.Settings = {};
-  constructor(private modalService: ModalService, private toastr:ToastrNotifyService,private alertService: AlertService, public api:CustomerService, public appservice:AppService, public exclservice:ExclService) { }
+  dtTrigger: Subject<any> = new Subject();
+  dtElement: DataTableDirective;
+  isDtInitialized:boolean = false
+
+  constructor(private modalService: ModalService, private toastr:ToastrNotifyService,private alertService: AlertService, public api:CustomerService, public appservice:AppService, public exclservice:ExclService) {
+    this.dtOptions = {
+      pagingType: 'full_numbers',
+      pageLength: 10,
+      processing: true
+    };
+  }
 
   ngOnInit(){
+    this.getCustomer();
     this.customerForm = new FormGroup({
       user_id: new FormControl(),
       name: new FormControl(),
@@ -33,22 +46,34 @@ export class ActiveCustomerComponent implements OnInit {
       partner_id:new FormControl(null),
       company_name: new FormControl(null),
     })
-    this.getCustomer();
   }
 
   getCustomer(){
-    this.dtOptions = {
-      pagingType: 'full_numbers',
-      pageLength: 10,
-      processing: true
-    };
     if(this.appservice.role == 'partner'){
       this.api.getCustomer(this.appservice.user.company_name).subscribe(response => {
         this.customerData = response.data;
+        if (this.isDtInitialized) {
+          this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
+            dtInstance.destroy();
+            this.dtTrigger.next();
+          });
+        } else {
+          this.isDtInitialized = true
+          this.dtTrigger.next();
+        }
       })
     }else{
       this.api.getCustomer('all').subscribe(response => {
         this.customerData = response.data;
+        if (this.isDtInitialized) {
+          this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
+            dtInstance.destroy();
+            this.dtTrigger.next();
+          });
+        } else {
+          this.isDtInitialized = true
+          this.dtTrigger.next();
+        }
       })
     }
   }

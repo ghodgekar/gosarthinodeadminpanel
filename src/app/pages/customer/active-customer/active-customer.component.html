@@ -34,13 +34,13 @@
         <div class="card">
             <div class="card-header">
                 <div class="row">
-                    <div class="col-sm-6">
+                    <div class="col-sm-8">
                         <h3>Customer List</h3>
                     </div>
-                    <div class="col-sm-3 text-right">
+                    <div class="col-sm-2 text-right">
                         <button class="btn-sm btn-primary" (click)="exportAsXLSX()">Excel Download</button>
                     </div>
-                    <div class="col-sm-3text-right">
+                    <div class="col-sm-2  text-right">
                         <button class="btn-sm btn-primary" (click)="openAddCustomerModal(addCustomer)">Add Customer</button>
                     </div>
                 </div>
@@ -48,7 +48,7 @@
             <div class="card-body">
                 <div class="row">
                     <div class="col-sm-12">
-                        <table id="example1" class="table table-bordered table-striped dataTable dtr-inline" datatable [dtOptions]="dtOptions" #table>
+                        <table id="example1" class="table table-bordered table-striped dataTable dtr-inline" datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" #table>
                             <thead>
                                 <tr>
                                     <th>UserId</th>
