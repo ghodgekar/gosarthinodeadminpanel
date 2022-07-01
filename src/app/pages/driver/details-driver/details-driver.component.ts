@@ -1,8 +1,9 @@
 import { DriverService } from '@/_restapi-services/driver.service';
+import { RideService } from '@/_restapi-services/ride.service';
 import { ModalService } from '@/_services/modal.service';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-details-driver',
@@ -27,6 +28,10 @@ export class DetailsDriverComponent implements OnInit {
   driverActiveAction:string='Activate Driver';
   driverHistoryData:any=[];
 
+  rideStatus:any=[
+    { '2': "Ride Assign To Driver", '3':"Ride Started", '4':'Reached Pickup Location', '5':'Reached Drop Location', '6':'Payment Done', '7':'Ride Completed', '8':'Ride Canclled'},
+  ]
+
   driverDocumentList:any=[
     { document_name: "profile_image", doc_name:"Profile Image", image_name:'licence.png'},
     { document_name: "aadhar_front", doc_name:"Aadhar Card Front", image_name:'aadhar.png'},
@@ -35,8 +40,9 @@ export class DetailsDriverComponent implements OnInit {
     { document_name: "licence", doc_name:"Driver Licence", image_name:'licence.png'},
     { document_name: "police_verification", doc_name:"Driver Police Verification", image_name:'licence.png'},
   ]
+  rideData: any;
 
-  constructor(private modalService: ModalService, private Actrouter:ActivatedRoute, private api:DriverService) { 
+  constructor(private modalService: ModalService, private Actrouter:ActivatedRoute, private api:DriverService, private rideApi:RideService, private router:Router) { 
     this.Actrouter.params.subscribe(paramsId => {
       this.driver_id = paramsId.driver_id;
     });
@@ -46,6 +52,7 @@ export class DetailsDriverComponent implements OnInit {
     this.getDriverDoc(this.driver_id);
     this.getDriverDetails();
     this.getDriverHistory();
+    this.getRideByDriver(this.driver_id)
     this.driverDocumentForm = new FormGroup({
       document_img: new FormControl(),
       document_no: new FormControl(),
@@ -140,5 +147,21 @@ export class DetailsDriverComponent implements OnInit {
     this.api.getDriverHistory(this.driver_id).subscribe(response => {
       this.driverHistoryData = response.data;
     })
+  }
+
+  getRideByDriver(driver_id){
+    this.rideApi.getRideByDriver(driver_id).subscribe(response => {
+      this.rideData = response.data;
+    })
+  }
+
+  openpageRide(url, id){
+    this.router.navigate([url,id,1]);
+    this.modalService.dismissall();
+  }
+
+  openpageDriver(url, id){
+    this.router.navigate([url,id]);
+    this.modalService.dismissall();
   }
 }

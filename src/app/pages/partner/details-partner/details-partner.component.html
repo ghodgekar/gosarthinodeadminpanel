@@ -2,12 +2,12 @@
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-6">
-                <h1>Driver Details</h1>
+                <h1>Partner Details</h1>
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
                     <li class="breadcrumb-item"><a href="#">Home</a></li>
-                    <li class="breadcrumb-item active">Driver Details</li>
+                    <li class="breadcrumb-item active">Partner Details</li>
                 </ol>
             </div>
         </div>
@@ -23,15 +23,15 @@
                 <div class="card">
                     <div class="card-body text-center">
                         <div class="row">
-                            <div class="col-sm-6" style="margin-bottom:30px;" *ngFor="let imageData of driverDocumentList">
+                            <div class="col-sm-6" style="margin-bottom:30px;" *ngFor="let imageData of partnerDocumentList">
                                 <label for="name">{{imageData.doc_name}}: </label> 
                                 <br>
-                                <div *ngFor="let data of driverData">
+                                <div *ngFor="let data of partnerData">
                                     <img *ngIf="data.status === 3" src="../../../../assets/img/document/{{imageData.image_name}}" alt="" width="70" (click)="openuploadDocModal(addDocument, imageData.document_name,'')">
                                     <img *ngIf="data.status === 4" src="../../../../assets/img/document/{{imageData.image_name}}" alt="" width="70">
                                 </div>
                                 
-                                <div *ngFor="let data of driverDocData">
+                                <div *ngFor="let data of partnerDocData">
                                     <div *ngIf="data.document_name === imageData.document_name">
                                         <br><img src="../../../../assets/img/document/reload.png" alt="" width="30" (click)="openuploadDocModal(viewDocImage, imageData.document_name,data.document_path)">
                                     </div>
@@ -44,11 +44,11 @@
             <div class="col-sm-5">
                 <div class="card">
                     <div class="card-body">
-                        <div class="row" *ngFor="let data of driverData">
+                        <div class="row" *ngFor="let data of partnerData">
                             <div class="col-sm-12">
                                 <div class="row">
-                                    <div class="col-sm-4"><label for="name">Driver Name: </label></div>
-                                    <div class="col-sm-8"><span> {{data.name}} </span></div>
+                                    <div class="col-sm-4"><label for="name">Partner Name: </label></div>
+                                    <div class="col-sm-8"><span> {{data.company_name}} </span></div>
                                 </div>
                             </div>
                             <div class="col-sm-12">
@@ -59,26 +59,8 @@
                             </div>
                             <div class="col-sm-12">
                                 <div class="row">
-                                    <div class="col-sm-4"><label for="name">Alt Phone Number: </label></div>
-                                    <div class="col-sm-8"><span> {{data.alt_phone}} </span></div>
-                                </div>
-                            </div>
-                            <div class="col-sm-12">
-                                <div class="row">
                                     <div class="col-sm-4"><label for="name">Email Id: </label></div>
                                     <div class="col-sm-8"><span> {{data.email}} </span></div>
-                                </div>
-                            </div>
-                            <div class="col-sm-12">
-                                <div class="row">
-                                    <div class="col-sm-4"><label for="name">Date Of Birth: </label></div>
-                                    <div class="col-sm-8"><span> {{data.dob}} </span></div>
-                                </div>
-                            </div>
-                            <div class="col-sm-12">
-                                <div class="row">
-                                    <div class="col-sm-4"><label for="name">Gender: </label></div>
-                                    <div class="col-sm-8"><span> {{data.gender}} </span></div>
                                 </div>
                             </div>
                             <div class="col-sm-12">
@@ -111,54 +93,24 @@
                                     <div class="col-sm-8"><span> {{data.created_on  | date:'dd-MM-yyyy hh:mm:ss'}} </span></div>
                                 </div>
                             </div>
-                            <div class="col-sm-12">
-                                <div class="row">
-                                    <div class="col-sm-4"><label for="name">Bank Name: </label></div>
-                                    <div class="col-sm-8"><span> {{data.bank_name}} </span></div>
-                                </div>
-                            </div>
-                            <div class="col-sm-12">
-                                <div class="row">
-                                    <div class="col-sm-4"><label for="name">Account Holder Name: </label></div>
-                                    <div class="col-sm-8"><span> {{data.acc_holder_name}} </span></div>
-                                </div>
-                            </div>
-                            <div class="col-sm-12">
-                                <div class="row">
-                                    <div class="col-sm-4"><label for="name">Account Number: </label></div>
-                                    <div class="col-sm-8"><span> {{data.acc_no}} </span></div>
-                                </div>
-                            </div>
-                            <div class="col-sm-12">
-                                <div class="row">
-                                    <div class="col-sm-4"><label for="name">IFSC Code: </label></div>
-                                    <div class="col-sm-8"><span> {{data.ifsc_code}} </span></div>
-                                </div>
-                            </div>
-                            <div class="col-sm-12">
-                                <div class="row">
-                                    <div class="col-sm-4"><label for="name">MICR Code: </label></div>
-                                    <div class="col-sm-8"><span> {{data.micr_code}} </span></div>
-                                </div>
-                            </div>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="col-sm-3">
                 <div class="card">
-                    <div class="card-body" *ngFor="let data of driverData">
+                    <div class="card-body" *ngFor="let data of partnerData">
                         <div class="text-center" *ngIf="data.status === 3">
-                            <button type="button" class="btn btn-primary" (click)="openModalContent(deactivateDriver)">Deactivate Driver</button>
+                            <button type="button" class="btn btn-primary" (click)="openModalContent(deactivatePartner)">Deactivate Partner</button>
                         </div>
                         <div class="text-center" *ngIf="data.status === 4">
-                            <button type="button" class="btn btn-primary" (click)="openModalContent(activateDriver)">Activate Driver</button>
+                            <button type="button" class="btn btn-primary" (click)="openModalContent(activatePartner)">Activate Partner</button>
                         </div>
                         <div class="text-center">
-                            <button type="button" class="btn btn-primary" (click)="openModalContent(driverHistory)">Driver History</button>
+                            <button type="button" class="btn btn-primary" (click)="openModalContent(partnerHistory)">Partner History</button>
                         </div>
                         <div class="text-center">
-                            <button type="button" class="btn btn-primary" (click)="openModalContent(rideDetails)">Ride Driver Details</button>
+                            <button type="button" class="btn btn-primary" (click)="openModalContent(rideDetails)">Ride Partner Details</button>
                         </div>
                     </div>
                 </div>
@@ -175,7 +127,7 @@
         </button>
     </div>
     <div class="modal-body">
-        <form [formGroup]="driverDocumentForm" enctype="multipart/form-data" (ngSubmit)="onSubmit()">
+        <form [formGroup]="partnerDocumentForm" enctype="multipart/form-data" (ngSubmit)="onSubmit()">
             <div class="row">
                 <div class="col-sm-12">
                     <p class="form-group">
@@ -190,7 +142,7 @@
                       <input class="form-control" type="text" name="document_no" formControlName="document_no">
                     </p>
                 </div>
-                <input type="hidden" class="form-control" name="driver_id" formControlName="driver_id" [(ngModel)]="driver_id">
+                <input type="hidden" class="form-control" name="partner_id" formControlName="partner_id" [(ngModel)]="partner_id">
                 <input type="hidden" class="form-control" name="document_name" formControlName="document_name" [(ngModel)]="document_name">
             </div>
             <p class="text-center">
@@ -204,15 +156,15 @@
     <img [src]="imageSrc" alt="" width="100%" style="padding: 20px;">
 </ng-template>
 
-<ng-template #deactivateDriver let-modal>
+<ng-template #deactivatePartner let-modal>
     <div class="modal-header">
-        <h4 class="modal-title" id="modal-basic-title">Deactivate Driver</h4>
+        <h4 class="modal-title" id="modal-basic-title">Deactivate Partner</h4>
         <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
         <span aria-hidden="true">×</span>
         </button>
     </div>
     <div class="modal-body">
-        <form [formGroup]="driverDeactiveForm" (ngSubmit)="driverDeactiveSubmit()">
+        <form [formGroup]="partnerDeactiveForm" (ngSubmit)="partnerDeactiveSubmit()">
             <div class="row">
                 <div class="col-sm-12">
                     <p class="form-group">
@@ -225,9 +177,9 @@
                       <textarea class="form-control" type="text" name="remark" formControlName="remark"></textarea>
                     </p>
                 </div>
-                <input type="hidden" class="form-control" name="driverhistorystatus" formControlName="driverhistorystatus" [(ngModel)]="driverDeactiveStatus">
-                <input type="hidden" class="form-control" name="action" formControlName="action" [(ngModel)]="driverDeactiveAction">
-                <input type="hidden" class="form-control" name="driver_id" formControlName="driver_id" [(ngModel)]="driver_id">
+                <input type="hidden" class="form-control" name="partnerhistorystatus" formControlName="partnerhistorystatus" [(ngModel)]="partnerDeactiveStatus">
+                <input type="hidden" class="form-control" name="action" formControlName="action" [(ngModel)]="partnerDeactiveAction">
+                <input type="hidden" class="form-control" name="partner_id" formControlName="partner_id" [(ngModel)]="partner_id">
             </div>
             <p class="text-center">
               <button type="submit" class="btn btn-primary">Submit</button>
@@ -236,15 +188,15 @@
     </div>
 </ng-template>
 
-<ng-template #activateDriver let-modal>
+<ng-template #activatePartner let-modal>
     <div class="modal-header">
-        <h4 class="modal-title" id="modal-basic-title">Activate Driver</h4>
+        <h4 class="modal-title" id="modal-basic-title">Activate Partner</h4>
         <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
         <span aria-hidden="true">×</span>
         </button>
     </div>
     <div class="modal-body">
-        <form [formGroup]="driverActiveForm" (ngSubmit)="driverActiveSubmit()">
+        <form [formGroup]="partnerActiveForm" (ngSubmit)="partnerActiveSubmit()">
             <div class="row">
                 <div class="col-sm-12">
                     <p class="form-group">
@@ -257,9 +209,9 @@
                       <textarea class="form-control" type="text" name="remark" formControlName="remark"></textarea>
                     </p>
                 </div>
-                <input type="hidden" class="form-control" name="driverhistorystatus" formControlName="driverhistorystatus" [(ngModel)]="driverActiveStatus">
-                <input type="hidden" class="form-control" name="action" formControlName="action" [(ngModel)]="driverActiveAction">
-                <input type="hidden" class="form-control" name="driver_id" formControlName="driver_id" [(ngModel)]="driver_id">
+                <input type="hidden" class="form-control" name="partnerhistorystatus" formControlName="partnerhistorystatus" [(ngModel)]="partnerActiveStatus">
+                <input type="hidden" class="form-control" name="action" formControlName="action" [(ngModel)]="partnerActiveAction">
+                <input type="hidden" class="form-control" name="partner_id" formControlName="partner_id" [(ngModel)]="partner_id">
             </div>
             <p class="text-center">
               <button type="submit" class="btn btn-primary">Submit</button>
@@ -268,9 +220,9 @@
     </div>
 </ng-template>
 
-<ng-template #driverHistory let-modal>
+<ng-template #partnerHistory let-modal>
     <div class="modal-header">
-        <h4 class="modal-title" id="modal-basic-title">Driver History</h4>
+        <h4 class="modal-title" id="modal-basic-title">Partner History</h4>
         <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
         <span aria-hidden="true">×</span>
         </button>
@@ -287,7 +239,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr *ngFor="let data of driverHistoryData; let i = index">
+                <tr *ngFor="let data of partnerHistoryData; let i = index">
                     <td>{{i + 1}}</td>
                     <td>{{data.action}}</td>
                     <td>{{data.reason}}</td>
@@ -312,7 +264,7 @@
                 <tr>
                     <th>Sr.No</th>
                     <th>Ride Id</th>
-                    <th>Partner Id</th>
+                    <th>Driver Id</th>
                     <th>Ride Date</th>
                     <th>Status</th>
                 </tr>
@@ -321,7 +273,7 @@
                 <tr *ngFor="let data of rideData; let i = index">
                     <td>{{i + 1}}</td>
                     <td style="cursor: pointer; color: blue;" (click)="openpageRide('/ride-details',data.ride_id)">{{data.ride_id}}</td>
-                    <td style="cursor: pointer; color: blue;" (click)="openpageDriver('/details-partner',data.partner_id)">{{data.partner_id}}</td>
+                    <td style="cursor: pointer; color: blue;" (click)="openpageDriver('/driver-details',data.driver_id)">{{data.driver_id}}</td>                  
                     <td>{{data.created_on | date:'dd-MM-yyyy hh:mm:ss'}}</td>
                     <td>{{rideStatus[0][data.status]}}</td>
                 </tr>

@@ -44,4 +44,12 @@ export class RideService {
     postAssignRide(data): Observable<any> {
         return this.http.post(API_URL + 'assignDriver', data, this.httpOptions);
     }
+
+    getRideByPartner(partner_id): Observable<any> {
+        return this.http.get(API_URL + 'rideByPartner/'+ partner_id);
+    }
+
+    getRideByDriver(driver_id): Observable<any> {
+        return this.http.get(API_URL + 'rideByDriver/'+ driver_id);
+    }
 }

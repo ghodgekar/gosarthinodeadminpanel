@@ -2,12 +2,12 @@
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-6">
-                <h1>Active Partner</h1>
+                <h1>Deactive Partner</h1>
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
                     <li class="breadcrumb-item"><a href="#">Home</a></li>
-                    <li class="breadcrumb-item active">Active Partner</li>
+                    <li class="breadcrumb-item active">Deactive Partner</li>
                 </ol>
             </div>
         </div>
@@ -20,13 +20,8 @@
     <div class="container-fluid">
         <div class="card">
             <div class="card-header">
-                <div class="row">
-                    <div class="col-sm-8">
-                        <h3>Partner List</h3>
-                    </div>
-                    <div class="col-sm-2 text-right">
-                        <button class="btn-sm btn-primary" (click)="exportAsXLSX()">Excel Download</button>
-                    </div>
+                <div class="col-sm-12 text-right">
+                    <button class="btn-sm btn-primary" (click)="exportAsXLSX()">Excel Download</button>
                 </div>
             </div>
             <div class="card-body">
@@ -35,30 +30,29 @@
                         <table id="example1" class="table table-bordered table-striped dataTable dtr-inline" datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" #table>
                             <thead>
                                 <tr>
-                                    <th>PartnerId</th>
-                                    <th>Company Name</th>
-                                    <th>Company Number</th>
+                                    <th>Partner Id</th>
+                                    <th>Partner Name</th>
                                     <th>Phone Number</th>
-                                    <th>Email</th>
-                                    <th>GST Number</th>
-                                    <th>Username</th>
-                                    <th>Password</th>
-                                    <th>Register On</th>
-                                    <th>Total Rides</th>
+                                    <th>Email Id</th>
+                                    <th>Registered On</th>
+                                    <th>Last Updated</th>
+                                    <th>No. Of Docs Uploaded</th>
                                 </tr>
                             </thead>
-                            <tbody>
-                                <tr *ngFor="let data of partnerData"  (click)="openPartnerDetailsPage(data.partner_id)">
+                            <tbody *ngIf="partnerData.length > 0">
+                                <tr *ngFor="let data of partnerData" (click)="openPartnerDetailsPage(data.partner_id)">
                                    <td>{{data.partner_id}}</td>
                                    <td>{{data.company_name}}</td>
-                                   <td>{{data.company_no}}</td>
                                    <td>{{data.phone}}</td>
                                    <td>{{data.email}}</td>
-                                   <td>{{data.gst_no}}</td>
-                                   <td>{{data.username}}</td>
-                                   <td>{{data.password}}</td>
                                    <td>{{data.created_on | date:'dd-MM-yyyy hh:mm:ss'}}</td>
-                                   <td>10</td>
+                                   <td>{{data.updated_on | date:'dd-MM-yyyy hh:mm:ss'}}</td>
+                                   <td>6</td>
+                                </tr>
+                            </tbody>
+                            <tbody *ngIf="partnerData.length == 0">
+                                <tr>
+                                    <td class="text-center" colspan="7">No Data Found</td>
                                 </tr>
                             </tbody>
                         </table>

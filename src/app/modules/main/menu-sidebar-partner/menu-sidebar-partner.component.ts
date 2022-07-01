@@ -62,10 +62,10 @@ export const MENU = [
       ]
   },
   {
-      name: 'Customer',
+      name: 'User',
       children: [
           {
-              name: 'Active Customer',
+              name: 'Active User',
               path: ['/active-customer']
           }
       ]

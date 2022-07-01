@@ -21,8 +21,8 @@ export class PartnerService {
         return "p_" + Math.floor(10000000000 + Math.random() * 90000000000);
     }
 
-    getPartner(): Observable<any> {
-        return this.http.get(API_URL + 'partner');
+    getPartner(statusid): Observable<any> {
+        return this.http.get(API_URL + 'partner/' + statusid);
     }
 
     postPartner(data): Observable<any> {
@@ -39,6 +39,39 @@ export class PartnerService {
 
     partnerLogin(data): Observable<any> {
         return this.http.post(API_URL + 'partnerLogin', data, this.httpOptions);
+    }
+
+
+    getSinglePartner(partner_id): Observable<any> {
+        return this.http.get(API_URL + 'singlePartner/' + partner_id);
+    }
+
+    postPartnerDoc(data): Observable<any> {
+        return this.http.post(API_URL + 'partnerDocSave', data);
+    }
+
+    getPartnerDoc(partner_id): Observable<any> {
+        return this.http.get(API_URL + 'partnerDoc/' + partner_id);
+    }
+
+    getPartnerDocImage(imagePath) {
+        return API_URL + 'partnerDocImg?imgpath='+imagePath;
+    }
+
+    PutPartnerStatus(data) {
+        return this.http.post(API_URL + 'partnerStatusUpdate', data);
+    }
+
+    partnerApproveReject(data){
+        return this.http.post(API_URL + 'partnerApproveReject', data);
+    }
+
+    postPartnerHistory(data){
+        return this.http.post(API_URL + 'partnerHistorySave', data);
+    }
+
+    getPartnerHistory(partner_id): Observable<any> {
+        return this.http.get(API_URL + 'partnerHistory/' + partner_id);
     }
 
 }

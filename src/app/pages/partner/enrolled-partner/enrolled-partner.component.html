@@ -2,12 +2,12 @@
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-6">
-                <h1>Enrolled Driver</h1>
+                <h1>Enrolled Partner</h1>
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
                     <li class="breadcrumb-item"><a href="#">Home</a></li>
-                    <li class="breadcrumb-item active">Enrolled Driver</li>
+                    <li class="breadcrumb-item active">Enrolled Partner</li>
                 </ol>
             </div>
         </div>
@@ -22,10 +22,10 @@
             <div class="card-header">
                 <div class="row">
                     <div class="col-sm-8">
-                        <h3>Driver List</h3>
+                        <h3>Partner List</h3>
                     </div>
                     <div class="col-sm-4 text-right">
-                        <button class="btn btn-sm btn-primary" (click)="openAddDriverModal(addDriver)">Add Driver</button>
+                        <button class="btn btn-sm btn-primary" (click)="openAddPartnerModal(addPartner)">Add Partner</button>
                     </div>
                 </div>
             </div>
@@ -33,97 +33,111 @@
                 <div class="row">
                     <div class="col-sm-12">
                         <tabset>
-                            <tab heading="Drivers - Not Uploaded Documents" (selectTab)="getDriver(1)">
+                            <tab heading="Partner Not Uploaded Documents" (selectTab)="getPartner(1)">
                                 <table id="example1" class="table table-bordered table-striped dataTable dtr-inline" datatable [dtOptions]="dtOptions" #table>
                                     <thead>
                                         <tr>
-                                            <th>Driver Id</th>
-                                            <th>Driver Name</th>
+                                            <th>PartnerId</th>
+                                            <th>Company Name</th>
+                                            <th>CIN / LLP</th>
                                             <th>Phone Number</th>
-                                            <th>Email Id</th>
-                                            <th>City</th>
-                                            <th>State</th>
+                                            <th>Email</th>
+                                            <th>GST Number</th>
+                                            <th>Username</th>
+                                            <th>Password</th>
                                             <th>Registered On</th>
                                             <th>Last Updated</th>
                                         </tr>
                                     </thead>
-                                    <tbody *ngIf="driverData.length > 0">
-                                        <tr *ngFor="let data of driverData" (click)="openUploadDocPage(data.driver_id)">
-                                           <td>{{data.driver_id}}</td>
-                                           <td>{{data.name}}</td>
-                                           <td>{{data.phone}}</td>
-                                           <td>{{data.email}}</td>
-                                           <td>{{data.city}}</td>
-                                           <td>{{data.state}}</td>
-                                           <td>{{data.created_on | date:'dd-MM-yyyy hh:mm:ss'}}</td>
-                                           <td>{{data.updated_on | date:'dd-MM-yyyy hh:mm:ss'}}</td>
+                                    <tbody *ngIf="partnerData.length > 0">
+                                        <tr *ngFor="let data of partnerData" (click)="openUploadDocPage(data.partner_id)">
+                                            <td>{{data.partner_id}}</td>
+                                            <td>{{data.company_name}}</td>
+                                            <td>{{data.company_no}}</td>
+                                            <td>{{data.phone}}</td>
+                                            <td>{{data.email}}</td>
+                                            <td>{{data.gst_no}}</td>
+                                            <td>{{data.username}}</td>
+                                            <td>{{data.password}}</td>
+                                            <td>{{data.created_on | date:'dd-MM-yyyy hh:mm:ss'}}</td>
+                                            <td>{{data.updated_on | date:'dd-MM-yyyy hh:mm:ss'}}</td>
                                         </tr>
                                     </tbody>
-                                    <tbody *ngIf="driverData.length == 0">
+                                    <tbody *ngIf="partnerData.length == 0">
                                         <tr>
-                                            <td class="text-center" colspan="8">No Data Found</td>
+                                            <td class="text-center" colspan="10">No Data Found</td>
                                         </tr>
                                     </tbody>
                                 </table>
                             </tab>
-                            <tab heading="Drivers - Uploaded Documents" (selectTab)="getDriver(2)">
+                            <tab heading="Partner Uploaded Documents" (selectTab)="getPartner(2)">
                                 <table id="example1" class="table table-bordered table-striped dataTable dtr-inline" datatable [dtOptions]="dtOptions">
                                     <thead>
                                         <tr>
-                                            <th>Driver Id</th>
-                                            <th>Driver Name</th>
+                                            <th>PartnerId</th>
+                                            <th>Company Name</th>
+                                            <th>CIN / LLP</th>
                                             <th>Phone Number</th>
-                                            <th>Email Id</th>
-                                            <th>Registered On</th>
-                                            <th>Last Updated</th>
+                                            <th>Email</th>
+                                            <th>GST Number</th>
+                                            <th>Username</th>
+                                            <th>Password</th>
+                                            <th>Register On</th>
                                             <th>No. Of Docs Uploaded</th>
                                         </tr>
                                     </thead>
-                                    <tbody *ngIf="driverData.length > 0">
-                                        <tr *ngFor="let data of driverData" (click)="openApproveDriverPage(data.driver_id)">
-                                           <td>{{data.driver_id}}</td>
-                                           <td>{{data.name}}</td>
-                                           <td>{{data.phone}}</td>
-                                           <td>{{data.email}}</td>
-                                           <td>{{data.created_on | date:'dd-MM-yyyy hh:mm:ss'}}</td>
-                                           <td>{{data.updated_on | date:'dd-MM-yyyy hh:mm:ss'}}</td>
-                                           <td>6</td>
+                                    <tbody *ngIf="partnerData.length > 0">
+                                        <tr *ngFor="let data of partnerData" (click)="openApprovePartnerPage(data.partner_id)">
+                                            <td>{{data.partner_id}}</td>
+                                            <td>{{data.company_name}}</td>
+                                            <td>{{data.company_no}}</td>
+                                            <td>{{data.phone}}</td>
+                                            <td>{{data.email}}</td>
+                                            <td>{{data.gst_no}}</td>
+                                            <td>{{data.username}}</td>
+                                            <td>{{data.password}}</td>
+                                            <td>{{data.created_on | date:'dd-MM-yyyy hh:mm:ss'}}</td>
+                                           <td>2</td>
                                         </tr>
                                     </tbody>
-                                    <tbody *ngIf="driverData.length == 0">
+                                    <tbody *ngIf="partnerData.length == 0">
                                         <tr>
-                                            <td class="text-center" colspan="7">No Data Found</td>
+                                            <td class="text-center" colspan="10">No Data Found</td>
                                         </tr>
                                     </tbody>
                                 </table>
                             </tab>
-                            <tab heading="Drivers - Active" (selectTab)="getDriver(3)">
+                            <tab heading="Partner Active" (selectTab)="getPartner(3)">
                                 <table id="example1" class="table table-bordered table-striped dataTable dtr-inline" datatable [dtOptions]="dtOptions">
                                     <thead>
                                         <tr>
-                                            <th>Driver Id</th>
-                                            <th>Driver Name</th>
+                                            <th>PartnerId</th>
+                                            <th>Company Name</th>
+                                            <th>CIN / LLP</th>
                                             <th>Phone Number</th>
-                                            <th>Email Id</th>
-                                            <th>Registered On</th>
-                                            <th>Last Updated</th>
-                                            <th>No. Of Docs Uploaded</th>
+                                            <th>Email</th>
+                                            <th>GST Number</th>
+                                            <th>Username</th>
+                                            <th>Password</th>
+                                            <th>Register On</th>
                                         </tr>
                                     </thead>
-                                    <tbody *ngIf="driverData.length > 0">
-                                        <tr *ngFor="let data of driverData" (click)="openApproveDriverPage(data.driver_id)">
-                                           <td>{{data.driver_id}}</td>
-                                           <td>{{data.name}}</td>
-                                           <td>{{data.phone}}</td>
-                                           <td>{{data.email}}</td>
-                                           <td>{{data.created_on | date:'dd-MM-yyyy hh:mm:ss'}}</td>
-                                           <td>{{data.updated_on | date:'dd-MM-yyyy hh:mm:ss'}}</td>
-                                           <td>6</td>
+                                    <tbody *ngIf="partnerData.length > 0">
+                                        <tr *ngFor="let data of partnerData" (click)="openApprovePartnerPage(data.partner_id)">
+                                            <td>{{data.partner_id}}</td>
+                                            <td>{{data.company_name}}</td>
+                                            <td>{{data.company_no}}</td>
+                                            <td>{{data.phone}}</td>
+                                            <td>{{data.email}}</td>
+                                            <td>{{data.gst_no}}</td>
+                                            <td>{{data.username}}</td>
+                                            <td>{{data.password}}</td>
+                                            <td>{{data.created_on | date:'dd-MM-yyyy hh:mm:ss'}}</td>
                                         </tr>
                                     </tbody>
-                                    <tbody *ngIf="driverData.length == 0">
+                                    <tbody *ngIf="partnerData.length == 0">
                                         <tr>
-                                            <td class="text-center" colspan="7">No Data Found</td>
+                                            <td class="text-center" colspan="10">No Data Found</td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -136,20 +150,26 @@
     </div>
 </section>
 
-<ng-template #addDriver let-modal>
+<ng-template #addPartner let-modal>
     <div class="modal-header">
-        <h4 class="modal-title" id="modal-basic-title">Add Driver</h4>
+        <h4 class="modal-title" id="modal-basic-title">Add Partner</h4>
         <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
         <span aria-hidden="true">×</span>
         </button>
     </div>
     <div class="modal-body">
-        <form [formGroup]="driverForm" (ngSubmit)="onSubmit()">
+        <form [formGroup]="partnerForm" (ngSubmit)="onSubmit()">
             <div class="row">
                 <div class="col-sm-12">
                     <p class="form-group">
-                      <label for="firstname">Full Name </label>
-                      <input class="form-control" type="text" name="name" formControlName="name">
+                      <label for="firstname">Company Name </label>
+                      <input class="form-control" type="text" name="company_name" formControlName="company_name">
+                    </p>
+                </div>
+                <div class="col-sm-6">
+                    <p class="form-group">
+                      <label for="firstname">CIN / LLP </label>
+                      <input class="form-control" type="text" name="company_no" formControlName="company_no">
                     </p>
                 </div>
                 <div class="col-sm-6">
@@ -166,21 +186,8 @@
                 </div>
                 <div class="col-sm-6">
                     <p class="form-group">
-                      <label for="alt_phone">Alternate Phone No </label>
-                      <input class="form-control" type="text" name="alt_phone" formControlName="alt_phone">
-                    </p>
-                </div>
-                <div class="col-sm-6">
-                    <p class="form-group">
-                        <label for="gender">Gender </label><br>
-                        <input type="radio" value="male" name="gender" formControlName="gender"> Male
-                        <input type="radio" value="female" name="gender" formControlName="gender"> Female
-                    </p>
-                </div>
-                <div class="col-sm-6">
-                    <p class="form-group">
-                      <label for="dob">Date Of Birth </label>
-                      <input class="form-control" type="date" name="dob" formControlName="dob">
+                      <label for="firstname">GST Number </label>
+                      <input class="form-control" type="text" name="gst_no" formControlName="gst_no">
                     </p>
                 </div>
                 <div class="col-sm-6">
@@ -230,22 +237,12 @@
                     <p class="form-group">
                       <label for="city">City </label>
                       <input class="form-control" type="text" name="city" formControlName="city">
-                      <!-- <select class="form-control" name="city" formControlName="city">
-                        <option>Mumbai</option>
-                      </select> -->
                     </p>
                 </div>
                 <div class="col-sm-6">
                     <p class="form-group">
                       <label for="pincode">Pincode </label>
                       <input class="form-control" type="text" name="pincode" formControlName="pincode">
-                    </p>
-                </div>
-                <div class="col-sm-6">
-                    <p class="form-group">
-                        <label for="device_type">Device Type </label><br>
-                        <input type="radio" value="Android" name="device_type" formControlName="device_type"> Android
-                        <input type="radio" value="IOS" name="device_type" formControlName="device_type"> IOS
                     </p>
                 </div>
                 <div class="col-sm-6">
@@ -278,27 +275,29 @@
                       <input class="form-control" type="text" name="micr_code" formControlName="micr_code">
                     </p>
                 </div>
-                <div class="col-sm-6">
-                    <p class="form-group">
-                      <label for="state">Vehicle Type </label>
-                      <select class="form-control" name="vehicle_type" formControlName="vehicle_type">
-                        <option>Manual</option>
-                        <option>Automatic</option>
-                        <option>Electric</option>
-                        <option>All</option>
-                      </select>
-                    </p>
-                </div>
                 <div class="col-sm-12">
                     <p class="form-group">
                       <label for="address">Address </label>
                       <textarea class="form-control" formControlName="address" name="address"></textarea>
                     </p>
                 </div>
+                <div class="col-sm-6">
+                    <p class="form-group">
+                      <label for="username">Username </label>
+                      <input class="form-control" type="text" name="username" formControlName="username">
+                    </p>
+                </div>
+                <div class="col-sm-6">
+                    <p class="form-group">
+                      <label for="password">Password </label>
+                      <input class="form-control" type="text" name="password" formControlName="password">
+                    </p>
+                </div>
             </div>
             <p class="text-center">
               <button type="submit" class="btn btn-primary">Submit</button>
             </p>
+           
         </form>
     </div>
 </ng-template>

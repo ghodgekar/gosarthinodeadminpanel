@@ -22,11 +22,11 @@ export class DashboardComponent implements OnInit{
         this.getCustomerCount();
         this.getOngoingRideCount();
         this.getCompletedCount();
-        throw new Error('Method not implemented.');
+        // throw new Error('Method not implemented.');
     }
 
     getPartnerCount(){
-        this.partnerapi.getPartner().subscribe(response => {
+        this.partnerapi.getPartner(3).subscribe(response => {
             this.partnerCount = response.data.length;
         })
     }

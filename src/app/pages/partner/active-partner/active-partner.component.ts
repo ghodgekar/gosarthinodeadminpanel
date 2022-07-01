@@ -5,6 +5,7 @@ import { ModalService } from '@/_services/modal.service';
 import { ToastrNotifyService } from '@/_services/toastr-notify.service';
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
+import { Router } from '@angular/router';
 import { DataTableDirective } from 'angular-datatables';
 import { Subject } from 'rxjs';
 
@@ -23,7 +24,7 @@ export class ActivePartnerComponent implements OnInit {
   dtElement: DataTableDirective;
   isDtInitialized:boolean = false
   
-  constructor(private modalService: ModalService, private toastr:ToastrNotifyService,private alertService: AlertService, public api:PartnerService, public exclservice:ExclService) { }
+  constructor(private modalService: ModalService, private toastr:ToastrNotifyService,private alertService: AlertService, public api:PartnerService, public exclservice:ExclService, private router:Router) { }
 
   ngOnInit(){
     this.getPartner();
@@ -49,7 +50,7 @@ export class ActivePartnerComponent implements OnInit {
       pageLength: 10,
       processing: true
     };
-    this.api.getPartner().subscribe(response => {
+    this.api.getPartner(3).subscribe(response => {
       this.partnerData = response.data;
       if (this.isDtInitialized) {
         this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
@@ -65,6 +66,10 @@ export class ActivePartnerComponent implements OnInit {
 
   openAddPartnerModal(content){
     this.modalService.open(content)
+  }
+
+  openPartnerDetailsPage(partner_id){
+    this.router.navigate(['/details-partner',partner_id]);
   }
 
   onSubmit() {

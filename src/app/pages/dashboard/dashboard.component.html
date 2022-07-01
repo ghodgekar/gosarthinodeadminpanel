@@ -24,7 +24,7 @@
     <div class="container-fluid">
         <!-- Small boxes (Stat box) -->
         <div class="row">
-            <div class="col-lg-3 col-6" *ngIf="this.appservice.role == 'admin'">
+            <div [routerLink]="['/active-partner']" class="col-lg-3 col-6" *ngIf="this.appservice.role == 'admin'">
                 <!-- small box -->
                 <div class="small-box bg-info">
                     <div class="inner">
@@ -41,7 +41,7 @@
                 </div>
             </div>
             <!-- ./col -->
-            <div class="col-lg-3 col-6">
+            <div [routerLink]="['/active-driver']" class="col-lg-3 col-6" *ngIf="this.appservice.role == 'admin'">
                 <!-- small box -->
                 <div class="small-box bg-success">
                     <div class="inner">
@@ -58,7 +58,7 @@
                 </div>
             </div>
             <!-- ./col -->
-            <div class="col-lg-3 col-6">
+            <div [routerLink]="['/ongoing-ride']" class="col-lg-3 col-6">
                 <!-- small box -->
                 <div class="small-box bg-warning">
                     <div class="inner">
@@ -75,7 +75,7 @@
                 </div>
             </div>
             <!-- ./col -->
-            <div class="col-lg-3 col-6">
+            <div [routerLink]="['/completed-ride']" class="col-lg-3 col-6">
                 <!-- small box -->
                 <div class="small-box bg-danger">
                     <div class="inner">

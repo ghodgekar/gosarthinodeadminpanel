@@ -32,7 +32,13 @@ export class EnrolledDriverComponent implements OnInit {
       city: new FormControl(),
       address: new FormControl(),
       device_type: new FormControl(),
-      pincode: new FormControl()
+      pincode: new FormControl(),
+      bank_name: new FormControl(),
+      acc_holder_name: new FormControl(),
+      acc_no: new FormControl(),
+      ifsc_code: new FormControl(),
+      micr_code: new FormControl(),
+      vehicle_type: new FormControl()
     })
   }
 

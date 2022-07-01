@@ -96,21 +96,29 @@ export const MENU = [
             }
         ]
     },
-    {
-        name: 'Customer',
-        children: [
-            {
-                name: 'Active Customer',
-                path: ['/active-customer']
-            }
-        ]
-    },
+    // {
+    //     name: 'Customer',
+    //     children: [
+    //         {
+    //             name: 'Active Customer',
+    //             path: ['/active-customer']
+    //         }
+    //     ]
+    // },
     {
         name: 'Partner',
         children: [
             {
                 name: 'Active Partner',
                 path: ['/active-partner']
+            },
+            {
+                name: 'Deactived Partner',
+                path: ['/deactive-partner']
+            },
+            {
+                name: 'Enrolled Partner',
+                path: ['/enrolled-partner']
             }
         ]
     },

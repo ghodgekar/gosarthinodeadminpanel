@@ -159,7 +159,7 @@ export class ManualRideComponent implements OnInit {
   }
 
   getUser(e){
-    this.customerApi.getCustomerByPhone(e.target.value).subscribe(response => {
+    this.customerApi.getCustomerByPhone(e.target.value,this.appservice.user.partner_id).subscribe(response => {
       this.userData = response.data[0];
       this.username = response.data[0].name;
       this.userid = response.data[0].user_id;

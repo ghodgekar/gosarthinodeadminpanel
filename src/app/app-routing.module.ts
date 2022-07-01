@@ -30,6 +30,11 @@ import { RideDetailsComponent } from '@pages/ride/ride-details/ride-details.comp
 import { ActivePartnerComponent } from '@pages/partner/active-partner/active-partner.component';
 import { LoginPartnerComponent } from '@pages/partner/login-partner/login-partner.component';
 import { AssignRideComponent } from '@pages/ride/assign-ride/assign-ride.component';
+import { EnrolledPartnerComponent } from '@pages/partner/enrolled-partner/enrolled-partner.component';
+import { DeactivedPartnerComponent } from '@pages/partner/deactived-partner/deactived-partner.component';
+import { ApproveDocPartnerComponent } from '@pages/partner/approve-doc-partner/approve-doc-partner.component';
+import { DetailsPartnerComponent } from '@pages/partner/details-partner/details-partner.component';
+import { UploadDocPartnerComponent } from '@pages/partner/upload-doc-partner/upload-doc-partner.component';
 
 const routes: Routes = [
     {
@@ -117,6 +122,26 @@ const routes: Routes = [
             {
                 path: 'active-partner',
                 component: ActivePartnerComponent
+            },
+            {
+                path: 'enrolled-partner',
+                component: EnrolledPartnerComponent
+            },
+            {
+                path: 'deactive-partner',
+                component: DeactivedPartnerComponent
+            },
+            {
+                path: 'approve-doc-partner/:partner_id',
+                component: ApproveDocPartnerComponent
+            },
+            {
+                path: 'details-partner/:partner_id',
+                component: DetailsPartnerComponent
+            },
+            {
+                path: 'upload-doc-partner/:partner_id',
+                component: UploadDocPartnerComponent
             },
             {
                 path: '',

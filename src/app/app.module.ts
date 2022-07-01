@@ -73,6 +73,11 @@ import { ActivePartnerComponent } from './pages/partner/active-partner/active-pa
 import { LoginPartnerComponent } from './pages/partner/login-partner/login-partner.component';
 import { MenuSidebarPartnerComponent } from './modules/main/menu-sidebar-partner/menu-sidebar-partner.component';
 import { AssignRideComponent } from './pages/ride/assign-ride/assign-ride.component';
+import { EnrolledPartnerComponent } from './pages/partner/enrolled-partner/enrolled-partner.component';
+import { DeactivedPartnerComponent } from './pages/partner/deactived-partner/deactived-partner.component';
+import { DetailsPartnerComponent } from './pages/partner/details-partner/details-partner.component';
+import { ApproveDocPartnerComponent } from './pages/partner/approve-doc-partner/approve-doc-partner.component';
+import { UploadDocPartnerComponent } from './pages/partner/upload-doc-partner/upload-doc-partner.component';
 
 registerLocaleData(localeEn, 'en-EN');
 
@@ -122,7 +127,12 @@ registerLocaleData(localeEn, 'en-EN');
         ActivePartnerComponent,
         LoginPartnerComponent,
         MenuSidebarPartnerComponent,
-        AssignRideComponent
+        AssignRideComponent,
+        EnrolledPartnerComponent,
+        DeactivedPartnerComponent,
+        DetailsPartnerComponent,
+        ApproveDocPartnerComponent,
+        UploadDocPartnerComponent
     ],
     imports: [
         BrowserModule,
