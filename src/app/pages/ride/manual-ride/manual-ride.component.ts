@@ -230,10 +230,11 @@ export class ManualRideComponent implements OnInit {
       this.OTPRand = Math.floor(100000 + Math.random() * 900000);
       let otpMessage = 'Your OTP Is ' + this.OTPRand; 
       let otpApi = 'NTQ1MTc0NDY2ZTQ0NTE1NzQzNDczMDU5NDE1OTU3NmQ=';
-      this.rideapi.postOTP({'apikey':otpApi,'numbers':phoneno,'sender':'TXTLCL','message':otpMessage}).subscribe(response => {
-        console.log(response)
+      // this.rideapi.postOTP({'apikey':otpApi,'numbers':phoneno,'sender':'TXTLCL','message':otpMessage}).subscribe(response => {
+      //   console.log(response)
+      //   this.modalService.open(content);
+      // })
         this.modalService.open(content);
-      })
     }else{
       this.tosterService.showError("Please enter valid phone no",'');
     }
