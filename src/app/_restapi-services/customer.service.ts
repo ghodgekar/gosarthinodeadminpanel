@@ -33,7 +33,7 @@ export class CustomerService {
         return this.http.post(API_URL + 'customerUpdate', data);
     }
 
-    getCustomerByPhone(phone,partner_id):Observable<any> {
+    getCustomerByPhone(phone,partner_id=null):Observable<any> {
         return this.http.get(API_URL + 'customerByPhone/' + phone + '/' + partner_id);
     }
 

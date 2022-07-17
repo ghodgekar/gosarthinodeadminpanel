@@ -52,4 +52,36 @@ export class RideService {
     getRideByDriver(driver_id): Observable<any> {
         return this.http.get(API_URL + 'rideByDriver/'+ driver_id);
     }
+
+    getVehicleType(): Observable<any> {
+        return this.http.get(API_URL + 'carcategory');
+    }
+
+    getCarModel(category): Observable<any> {
+        return this.http.get(API_URL + 'carmodel/' + category);
+    }
+
+    uploadRideImg(data):Observable<any> {
+        return this.http.post(API_URL + 'uploadRideCarImg', data);
+    }
+
+    getRideCarImgList(ride_id, ride_type): Observable<any> {
+        return this.http.get(API_URL + 'rideCarImgList/' + ride_id + '/' + ride_type);
+    }
+
+    getSingleRideCarImg(imagePath) {
+        return API_URL + 'rideCarImg?imgpath='+imagePath;
+    }
+
+    postReassignData(data):Observable<any> {
+        return this.http.post(API_URL + 'rideReassignDataSave', data);
+    }
+
+    getReassignData(ride_id, exist_parking_no): Observable<any> {
+        return this.http.get(API_URL + 'rideReassignDataList/' + ride_id + '/' + exist_parking_no);
+    }
+
+    postOTP(data){
+        return this.http.post('https://api.textlocal.in/send/', data);
+    }
 }

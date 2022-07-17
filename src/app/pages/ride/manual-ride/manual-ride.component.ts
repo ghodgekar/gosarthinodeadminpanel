@@ -1,12 +1,16 @@
+import firebase from 'firebase/compat/app';
 import { CustomerService } from '@/_restapi-services/customer.service';
 import { DriverService } from '@/_restapi-services/driver.service';
 import { RideService } from '@/_restapi-services/ride.service';
 import { AppService } from '@/_services/app.service';
 import { ExclService } from '@/_services/excl.service';
 import { ModalService } from '@/_services/modal.service';
+import { OtpService } from '@/_services/otp.service';
+import { ToastrNotifyService } from '@/_services/toastr-notify.service';
 import { MapsAPILoader } from '@agm/core';
 import { Component, ElementRef, NgZone, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
+import { response } from 'express';
 declare var google;
 
 @Component({
@@ -15,6 +19,7 @@ declare var google;
   styleUrls: ['./manual-ride.component.scss']
 })
 export class ManualRideComponent implements OnInit {
+  recaptchaVerifier: firebase.auth.RecaptchaVerifier;
   @ViewChild('table') table: ElementRef;
   @ViewChild('searchpickup')
   public searchPickupElementRef: ElementRef;
@@ -45,10 +50,18 @@ export class ManualRideComponent implements OnInit {
 
   userData:any=[];
   driverData: any =[];
-  constructor( private mapsAPILoader: MapsAPILoader, private ngZone: NgZone, private modalService: ModalService, private customerApi:CustomerService, private rideapi:RideService, private driverApi:DriverService, public appservice:AppService, public exclservice:ExclService ) { }
+  vehicleType:any =[];
+  CarModel:any =[];
+  OTPRand: number;
+  OTPVerify: number;
+  isOTPVerified:boolean;
+  hideOtpBtn: boolean;
+  constructor( private mapsAPILoader: MapsAPILoader, private ngZone: NgZone, private modalService: ModalService, private customerApi:CustomerService, private rideapi:RideService, private driverApi:DriverService, public appservice:AppService, public exclservice:ExclService, private otpService:OtpService, private tosterService:ToastrNotifyService ) {
+    }
 
-  ngOnInit(): void {
+  ngOnInit(){
     this.getDriver();
+    this.getVehicleType();
     this.rideForm = new FormGroup({
       ride_id:new FormControl(),
       name: new FormControl(),
@@ -73,8 +86,10 @@ export class ManualRideComponent implements OnInit {
       status:new FormControl(1),
       partner_id:new FormControl(null),
       company_name: new FormControl(null),
-    })
-
+      bookingtype: new FormControl(null),
+      appointment_no:new FormControl(),
+      car_model:new FormControl()
+    }) 
     //load Places Autocomplete
     this.mapsAPILoader.load().then(() => {
         this.setCurrentLocation();
@@ -107,6 +122,18 @@ export class ManualRideComponent implements OnInit {
           this.getDirection();
         });
       });
+  }
+
+  getVehicleType(){
+    this.rideapi.getVehicleType().subscribe(response => {
+      this.vehicleType = response.data;
+    })
+  }
+
+  getCarModel(e){
+    this.rideapi.getCarModel(e.target.value).subscribe(response => {
+      this.CarModel = response.data;
+    })
   }
 
   getDirection() {
@@ -183,6 +210,44 @@ export class ManualRideComponent implements OnInit {
 
   exportAsXLSX():void {
     this.exclservice.exportAsExcelFile(this.table.nativeElement, 'cancelled rides');
+  }
+
+  // recaptchaVerify(){
+  //   this.recaptchaVerifier = new firebase.auth.RecaptchaVerifier('recaptcha', {
+  //     size: 'invisible',
+  //     callback: (response) => {
+  //     },
+  //     'expired-callback': () => {
+  //     }
+  //   });
+  // }
+
+  sendOTP(content){
+    let phoneno = this.rideForm.value['phone'];
+    if(!phoneno){
+      this.tosterService.showError("Please enter valid phone no",'');
+    }else if(phoneno) {
+      this.OTPRand = Math.floor(100000 + Math.random() * 900000);
+      let otpMessage = 'Your OTP Is ' + this.OTPRand; 
+      let otpApi = 'NTQ1MTc0NDY2ZTQ0NTE1NzQzNDczMDU5NDE1OTU3NmQ=';
+      this.rideapi.postOTP({'apikey':otpApi,'numbers':phoneno,'sender':'TXTLCL','message':otpMessage}).subscribe(response => {
+        console.log(response)
+        this.modalService.open(content);
+      })
+    }else{
+      this.tosterService.showError("Please enter valid phone no",'');
+    }
+  }
+
+  verifyOTP(){
+    if(this.OTPRand == this.OTPVerify){
+      this.isOTPVerified =true;
+      this.hideOtpBtn = true;
+      this.tosterService.showSuccess("OTP Verify Successfully",'');
+      this.modalService.dismissall();
+    }else{
+      this.tosterService.showError("Invalid OTP",'');
+    }
   }
 
 }

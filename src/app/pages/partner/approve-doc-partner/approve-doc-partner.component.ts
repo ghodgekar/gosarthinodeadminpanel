@@ -22,7 +22,8 @@ export class ApproveDocPartnerComponent implements OnInit {
 
   partnerDocumentList:any=[
     { document_name: "pancard", doc_name:"Pancard", image_name:'pancard.png'},
-    { document_name: "cancel_cheque", doc_name:"Cancle Cheque", image_name:'bank.png'}
+    { document_name: "cancel_cheque", doc_name:"Cancle Cheque", image_name:'bank.png'},
+    { document_name: "gst", doc_name:"GST Certificate", image_name:'pancard.png'}
   ]
 
   constructor(private modalService: ModalService, private Actrouter:ActivatedRoute, private api:PartnerService) { 

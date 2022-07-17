@@ -3,7 +3,7 @@ import { RideService } from '@/_restapi-services/ride.service';
 import { AppService } from '@/_services/app.service';
 import { ModalService } from '@/_services/modal.service';
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
@@ -21,6 +21,18 @@ export class RideDetailsComponent implements OnInit {
   completeRideForm: FormGroup;
   driverData: any =[];
   driver_id:string;
+  RideCarImgDocumentForm: FormGroup;
+  selectedFiles:any;
+  pickupImgList:any=[];
+  dropImgList:any=[];
+  imageSrc: any;
+  reAssignDriverForm: FormGroup;
+  getExistingPointForm: FormGroup;
+  existparkingno:string;
+  isExistPartkingDiv:Boolean;
+  reassignDataPoint1:any=[];
+  reassignDataPoint2:any=[];
+  driver_name: any;
 
   constructor(private Actrouter:ActivatedRoute, private rideapi:RideService, private modalService: ModalService, private router:Router, private driverApi:DriverService, public appservice:AppService) { }
 
@@ -39,8 +51,29 @@ export class RideDetailsComponent implements OnInit {
       feedback: new FormControl(),
       status: new FormControl()
     })
+    this.RideCarImgDocumentForm = new FormGroup({
+      ride_img: new FormControl(),
+      ride_id: new FormControl(),
+      ride_type: new FormControl()
+    })
+    this.reAssignDriverForm = new FormGroup({
+      city: new FormControl(),
+      time: new FormControl(),
+      driver_id: new FormControl(),
+      driver_name: new FormControl(),
+      exist_parking_no: new FormControl(),
+      ride_id: new FormControl(),
+
+    })
+    this.getExistingPointForm = new FormGroup({
+      existingpoint: new FormControl('', Validators.required)
+    });
     this.getSingleRide();
     this.getDriver();
+    this.getRideCarImgPickupList();
+    this.getRideCarImgDropList();
+    this.getReassignDataPoint1();
+    this.getReassignDataPoint2();
   }
 
   getDriver(){
@@ -108,4 +141,69 @@ export class RideDetailsComponent implements OnInit {
       this.router.navigate(['/scheduled-ride']);
     })
   }
+
+  onFileSelect(event) {
+    this.selectedFiles = event.target.files;
+  }
+
+  uploadRideImg(status){
+    if(this.RideCarImgDocumentForm.valid){
+      for (let i = 0; i < this.selectedFiles.length; i++) {
+        const formData = new FormData();
+        formData.append('ride_img', this.selectedFiles[i]);
+        formData.append('ride_id', this.ride_id);
+        formData.append('ride_type', status);
+        this.rideapi.uploadRideImg(formData).subscribe(response => {
+          console.log(response)
+        })
+      }
+    }
+  }
+
+  getRideCarImgPickupList(){
+    this.rideapi.getRideCarImgList(this.ride_id,4).subscribe(response => {
+      this.pickupImgList = response.data;
+    })
+  }
+
+  getRideCarImgDropList(){
+    this.rideapi.getRideCarImgList(this.ride_id,5).subscribe(response => {
+      this.dropImgList = response.data;
+    })
+  }
+
+  submitExistingPoint(){
+    this.isExistPartkingDiv = true;
+    this.existparkingno = this.getExistingPointForm.value['existingpoint'];
+  }
+
+  getDriverName(e){
+    let text = e.target.value;
+    let toppingArr = text.split('|');
+    this.driver_name = toppingArr[1];
+  }
+
+  submitReAssignDriver(){
+    this.reAssignDriverForm.value['ride_id'] = this.ride_id;
+    this.reAssignDriverForm.value['exist_parking_no'] = this.existparkingno;
+    this.reAssignDriverForm.value['driver_name'] = this.driver_name;
+    this.rideapi.postReassignData(this.reAssignDriverForm.value).subscribe(response => {
+      this.isExistPartkingDiv = false;
+      this.getExistingPointForm.reset();
+      this.reAssignDriverForm.reset();
+    })
+  }
+
+  getReassignDataPoint1(){
+    this.rideapi.getReassignData(this.ride_id, "1").subscribe(response => {
+      this.reassignDataPoint1 = response.data
+    })
+  }
+
+  getReassignDataPoint2(){
+    this.rideapi.getReassignData(this.ride_id, "2").subscribe(response => {
+      this.reassignDataPoint2 = response.data
+    })
+  }
+  
 }

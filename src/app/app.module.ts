@@ -79,6 +79,13 @@ import { DetailsPartnerComponent } from './pages/partner/details-partner/details
 import { ApproveDocPartnerComponent } from './pages/partner/approve-doc-partner/approve-doc-partner.component';
 import { UploadDocPartnerComponent } from './pages/partner/upload-doc-partner/upload-doc-partner.component';
 
+import { AngularFireModule } from '@angular/fire/compat';
+import { AngularFireAuthModule } from '@angular/fire/compat/auth';
+import { AngularFireStorageModule } from '@angular/fire/compat/storage';
+import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
+import { AngularFireDatabaseModule } from '@angular/fire/compat/database';
+import { environment } from '../environments/environment';
+
 registerLocaleData(localeEn, 'en-EN');
 
 @NgModule({
@@ -141,6 +148,12 @@ registerLocaleData(localeEn, 'en-EN');
           apiKey: 'AIzaSyB5iQXg4Ftl8qA-7iLmHDdlH_2_r3CCyYk',
           libraries:['geometry','places'],
         }),
+        AngularFireModule.initializeApp(environment.firebaseConfig),
+        FormsModule,
+        AngularFireAuthModule,
+        AngularFirestoreModule,
+        AngularFireStorageModule,
+        AngularFireDatabaseModule,
         AgmDirectionModule,
         GooglePlaceModule,
         HttpClientModule,
@@ -157,7 +170,6 @@ registerLocaleData(localeEn, 'en-EN');
         TabsModule,
         MatProgressSpinnerModule,
         MatProgressBarModule,
-        FormsModule
     ],
     providers: [
         {
