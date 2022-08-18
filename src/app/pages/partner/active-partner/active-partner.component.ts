@@ -48,7 +48,8 @@ export class ActivePartnerComponent implements OnInit {
     this.dtOptions = {
       pagingType: 'full_numbers',
       pageLength: 10,
-      processing: true
+      processing: true,
+      responsive: true,
     };
     this.api.getPartner(3).subscribe(response => {
       this.partnerData = response.data;

@@ -22,6 +22,7 @@ export class EnrolledPartnerComponent implements OnInit {
     this.getPartner(1);
     this.partnerForm = new FormGroup({
       partner_id: new FormControl(),
+      partner_type: new FormControl(),
       company_name: new FormControl(),
       company_no: new FormControl(),
       email: new FormControl(),
@@ -45,7 +46,8 @@ export class EnrolledPartnerComponent implements OnInit {
     this.dtOptions = {
       pagingType: 'full_numbers',
       pageLength: 10,
-      processing: true
+      processing: true,
+      responsive: true,
     };
     this.api.getPartner(statusid).subscribe(response => {
       this.partnerData = response.data;

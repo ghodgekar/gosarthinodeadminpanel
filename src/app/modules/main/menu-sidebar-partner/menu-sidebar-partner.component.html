@@ -24,6 +24,10 @@
             <a [routerLink]="['/profile']" class="d-block" *ngIf="user">
                 {{ user.company_name }}
             </a>
+            <br>
+            <a href="#" class="d-block" *ngIf="user">
+                {{ user.partner_type }}
+            </a>
         </div>
     </div>
 

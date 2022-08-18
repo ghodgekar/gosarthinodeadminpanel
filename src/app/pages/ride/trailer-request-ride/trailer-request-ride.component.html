@@ -1,0 +1,73 @@
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>Trailer Request Ride</h1>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="#">Home</a></li>
+                    <li class="breadcrumb-item active">Trailer Request Ride</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+    <!-- /.container-fluid -->
+</section>
+
+<!-- Main content -->
+<section class="content">
+    <div class="container-fluid">
+        <div class="card">
+            <div class="card-header">
+                <div class="row">
+                    <div class="col-sm-8">
+                        <h3>Ride List</h3>
+                    </div>
+                    <div class="col-sm-4 text-right">
+                        <button class="btn-sm btn-primary" (click)="exportAsXLSX()">Excel Download</button>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <table id="example1" class="table table-bordered table-striped dataTable dtr-inline" datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" #table>
+                            <thead>
+                                <tr>
+                                    <th>Ride Id</th>
+                                    <th>User Id</th>
+                                    <th>Booking Type</th>
+                                    <!-- <th>Phone Number</th> -->
+                                    <!-- <th>Driver Id</th> -->
+                                    <th>Vehicle Tyoe</th>
+                                    <th>Car No</th>
+                                    <th>Pickup</th>
+                                    <th>Drop</th>
+                                    <th>Request Time</th>
+                                    <th>Driver Notes</th>
+                                    <!-- <th>Action</th> -->
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let data of rideData" (click)="openRideDetails(data.ride_id,data.status)">
+                                    <td>{{data.ride_id}}</td>
+                                   <td>{{data.user_id}}</td>
+                                   <td>{{data.bookingtype}}</td>
+                                   <!-- <td>{{data.driver_id}}</td> -->
+                                   <td>{{data.vehicle_type}}</td>
+                                   <td>{{data.car_no}}</td>
+                                   <td>{{data.pickupaddress}}</td>
+                                   <td>{{data.dropaddress}}</td>
+                                   <td>{{data.requesttime | date:'dd-MM-yyyy hh:mm:ss'}}</td>
+                                   <td>{{data.drivernote}}</td>
+                                   <!-- <td>10</td> -->
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

@@ -52,7 +52,7 @@
                                                     </div>
                                                 </form>
                                             </div>
-                                            <div class="col-sm-6" *ngIf="data.ride.status == 4 && this.appservice.role == 'admin'">
+                                            <div class="col-sm-6" *ngIf="data.ride.status == 4 && this.appservice.role == 'admin' && data.ride.bookingtype=='Trailer'">
                                                 <!--  && data.bookingtype=='Trailer' -->
                                                 <form [formGroup]="getExistingPointForm" (ngSubmit)="submitExistingPoint()">
                                                     <div class="form-group row">
@@ -62,6 +62,24 @@
                                                             </label>
                                                             <label class="radio-inline">
                                                                 <input type="radio" name="existingpoint" formControlName="existingpoint" value="2">Existing Point 2
+                                                            </label>
+                                                        </div>
+                                                        <div class="col-sm-3">
+                                                            <button class="btn btn-primary" type="submit" [disabled]="!getExistingPointForm.valid">Submit</button>
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                            <div class="col-sm-6" *ngIf="data.ride.status == 4 && this.appservice.role == 'admin' && data.ride.bookingtype=='Driver'">
+                                                <!--  && data.bookingtype=='Trailer' -->
+                                                <form [formGroup]="getExistingPointForm" (ngSubmit)="submitExistingPoint()">
+                                                    <div class="form-group row">
+                                                        <div class="col-sm-9" style="margin-top: 10px;">
+                                                            <label class="radio-inline">
+                                                                <input type="radio" name="existingpoint" formControlName="existingpoint" value="1" checked>Pickup Point
+                                                            </label>
+                                                            <label class="radio-inline">
+                                                                <input type="radio" name="existingpoint" formControlName="existingpoint" value="2">Drop Point
                                                             </label>
                                                         </div>
                                                         <div class="col-sm-3">
@@ -105,6 +123,7 @@
                                         <button *ngIf="data.ride.status == 1" style="margin-left:15px;" class="btn btn-danger" (click)="cancelledride(cancelRide)">Cancel Ride</button>
                                         <h3 *ngIf="data.ride.status == 7" style="color: green;font-weight: bold;">Ride Completed</h3>
                                         <h3 *ngIf="data.ride.status == 8" style="color: red;font-weight: bold;">Ride Cancelled</h3>
+                                        <h3 *ngIf="data.ride.status == 9" style="color: red;font-weight: bold;">Request For Trailer Ride</h3>
                                     </div>
                                 </div>
                             </div>
@@ -114,6 +133,9 @@
                         <div class="row">
                             <div class="col-sm-4">
                                 <p><b>Booking Id</b>: {{data.ride.ride_id}}</p>
+                            </div>
+                            <div class="col-sm-4">
+                                <p><b>Booking Type</b>: {{data.ride.bookingtype}}</p>
                             </div>
                             <div class="col-sm-4">
                                 <p><b>User Name</b>: {{data.customer.name}}</p>
@@ -146,31 +168,45 @@
             <div class="col-sm-12" *ngIf="(data.ride.status >= 4) && pickupImgList.length > 0">
                 <div class="card">
                     <div class="card-header">
-                        <h3>Pickup Images</h3>
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <h3>Pickup Images</h3>
+                            </div>
+                            <div class="col-sm-8 text-right">
+                                <button class="btn btn-sm btn-primary" (click)="openModal(openPickup)">Open Pickup Image</button>
+                            </div>
+                        </div>
                     </div>
-                    <div class="card-body">
+                    <!-- <div class="card-body">
                         <div class="row">
                             <div class="col-sm-3" *ngFor="let data of pickupImgList">
                                 <img src="https://nodeadminpaneldb.herokuapp.com/api/rideCarImg?imgpath=uploads/ride/pickup/{{data.img_path}}" alt="" width="100%" style="padding: 20px;">
                             </div>
                             <hr>
                         </div>
-                    </div>
+                    </div> -->
                 </div>
             </div>
             <div class="col-sm-12" *ngIf="(data.ride.status >= 4) && dropImgList.length > 0">
                 <div class="card">
                     <div class="card-header">
-                        <h3>Drop Images</h3>
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <h3>Drop Images</h3>
+                            </div>
+                            <div class="col-sm-8 text-right">
+                                <button class="btn btn-sm btn-primary" (click)="openModal(openDrop)">Open Drop Image</button>
+                            </div>
+                        </div>
                     </div>
-                    <div class="card-body">
+                    <!-- <div class="card-body">
                         <div class="row">
                             <div class="col-sm-3" *ngFor="let data of dropImgList">
                                 <img src="https://nodeadminpaneldb.herokuapp.com/api/rideCarImg?imgpath=uploads/ride/drop/{{data.img_path}}" alt="" width="100%" style="padding: 20px;">
                             </div>
                             <hr>
                         </div>
-                    </div>
+                    </div> -->
                 </div>
             </div>
             <div class="col-sm-4">
@@ -222,7 +258,67 @@
                     </div>
                 </div>
             </div>
-            <div class="col-sm-4">
+            <div class="col-sm-4" *ngIf="data.ride.status == 9 && this.appservice.role == 'admin'">
+                <div class="card">
+                    <div class="card-body text-center">
+                        <div *ngIf="data.ride.status == 9 && data.ride.price == null">
+                            <form [formGroup]="sendTrailerFareRideForm" (ngSubmit)="sendTrailerFareRideSubmit()">
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <p class="form-group">
+                                            <label for="price">Amount </label>
+                                            <input class="form-control" type="text" name="price" formControlName="price">
+                                        </p>
+                                        <p class="form-group">
+                                            <label for="gst">GST </label>
+                                            <input class="form-control" type="text" name="gst" formControlName="gst">
+                                        </p>
+                                    </div>
+                                    <input type="hidden" class="form-control" name="status" formControlName="status" [(ngModel)]="completedstatus">
+                                    <input type="hidden" class="form-control" name="ride_id" formControlName="ride_id" [(ngModel)]="ride_id">
+                                </div>
+                                <p class="text-center">
+                                <button type="submit" class="btn btn-primary">Submit</button>
+                                </p>
+                            </form>
+                        </div>
+                        <div *ngIf="data.ride.status == 9 && data.ride.price != null">
+                            <p>Requested Trailer Fare is : {{data.ride.price}}</p>
+                            <p>GST : {{data.ride.gst}}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-4" *ngIf="data.ride.status == 9 && this.appservice.role != 'admin'">
+                <div class="card">
+                    <div class="card-body text-center">
+                        <div *ngIf="data.ride.status == 9 && data.ride.price == null">
+                            <p>Waiting For Trailer Fare..</p>
+                        </div>
+                        <div *ngIf="data.ride.status == 9 && data.ride.price != null">
+                            <p>Requested Trailer Fare is : {{data.ride.price}}</p>
+                            <p>GST : {{data.ride.gst}}</p>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <form [formGroup]="sendTrailerFareRideApproveForm" (ngSubmit)="sendTrailerFareRideApproveSubmit()">
+                                        <p class="text-center">
+                                        <button type="submit" class="btn btn-primary">Approve</button>
+                                        </p>
+                                    </form>
+                                </div>
+                                <div class="col-sm-6">
+                                    <form [formGroup]="sendTrailerFareRideRejectForm" (ngSubmit)="sendTrailerFareRideRejectSubmit()">
+                                        <p class="text-center">
+                                        <button type="submit" class="btn btn-danger">Reject</button>
+                                        </p>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-4" *ngIf="data.ride.status <=7">
                 <div class="card">
                     <div class="card-body text-center">
                         <ul class="StepProgress" *ngIf="data.ride.bookingtype=='Trailer'">
@@ -231,12 +327,13 @@
                             <li class="StepProgress-item" [ngClass]="{'is-done': data.ride.status >= 4}"><i>Reached Pickup Location</i></li>
                             <li class="StepProgress-item" [ngClass]="{'is-done': data.ride.status >= 4}"><i>Existing Parcking Point 1</i>
                                 <ul class="StepProgress">
-                                    <li class="StepProgress-item" *ngFor="let val of reassignDataPoint1" [ngClass]="{'is-done': data.ride.status >= 4}"><i> {{data.driver.name}} | {{val.city}} | {{val.time}}</i></li>
+                                    <li class="StepProgress-item" *ngFor="let val of reassignDataPoint1" [ngClass]="{'is-done': data.ride.status >= 4}"><i> {{val.city}} | {{val.time}}</i></li>
                                 </ul>
                             </li>
                             <li class="StepProgress-item" [ngClass]="{'is-done': data.ride.status >= 4}"><i>Existing Parcking Point 2</i>
                                 <ul class="StepProgress" >
-                                    <li class="StepProgress-item" *ngFor="let val of reassignDataPoint2" [ngClass]="{'is-done': data.ride.status >= 4}"><i>{{val.driver_name}} | {{val.city}} | {{val.time}}</i></li>
+                                    <li class="StepProgress-item" *ngFor="let val of reassignDataPoint2" [ngClass]="{'is-done': data.ride.status >= 4}"><i>{{val.city}} | {{val.time}}</i></li> 
+                                    <!-- {{val.driver_name}} | -->
                                 </ul>
                             </li>
                             <li class="StepProgress-item" [ngClass]="{'is-done': data.ride.status >= 5}"><i>Reached Drop Location</i></li>
@@ -244,7 +341,27 @@
                             <li class="StepProgress-item" *ngIf="data.ride.status == 7" [ngClass]="{'is-done': data.ride.status == 7}"><i>Ride Completed</i></li>
                             <li class="StepProgress-item" *ngIf="data.ride.status == 8" [ngClass]="{'is-done': data.ride.status == 8}"><i>Ride Cancelled</i></li>
                         </ul>
-                        <ul class="StepProgress" *ngIf="data.ride.bookingtype!='Trailer'">
+                        <ul class="StepProgress" *ngIf="data.ride.bookingtype=='Driver'">
+                            <li class="StepProgress-item" [ngClass]="{'is-done': data.ride.status >= 2}"><i>Ride Assign To Driver</i></li>
+                            <li class="StepProgress-item" [ngClass]="{'is-done': data.ride.status >= 3}"><i>Ride Started</i></li>
+                            <li class="StepProgress-item" [ngClass]="{'is-done': data.ride.status >= 4}"><i>Reached Pickup Location</i></li>
+                            <li class="StepProgress-item" [ngClass]="{'is-done': data.ride.status >= 4}"><i>Pickup Point</i>
+                                <ul class="StepProgress">
+                                    <li class="StepProgress-item" *ngFor="let val of reassignDataPoint1" [ngClass]="{'is-done': data.ride.status >= 4}"><i> {{val.driver_name}} | {{val.city}} | {{val.time}}</i></li>
+                                </ul>
+                            </li>
+                            <li class="StepProgress-item" [ngClass]="{'is-done': data.ride.status >= 4}"><i>Drop Point</i>
+                                <ul class="StepProgress" >
+                                    <li class="StepProgress-item" *ngFor="let val of reassignDataPoint2" [ngClass]="{'is-done': data.ride.status >= 4}"><i> {{val.driver_name}} | {{val.city}} | {{val.time}}</i></li> 
+                                    <!-- {{val.driver_name}} | -->
+                                </ul>
+                            </li>
+                            <li class="StepProgress-item" [ngClass]="{'is-done': data.ride.status >= 5}"><i>Reached Drop Location</i></li>
+                            <li class="StepProgress-item" [ngClass]="{'is-done': data.ride.status >= 6}"><i>Payment Done</i></li>
+                            <li class="StepProgress-item" *ngIf="data.ride.status == 7" [ngClass]="{'is-done': data.ride.status == 7}"><i>Ride Completed</i></li>
+                            <li class="StepProgress-item" *ngIf="data.ride.status == 8" [ngClass]="{'is-done': data.ride.status == 8}"><i>Ride Cancelled</i></li>
+                        </ul>
+                        <ul class="StepProgress" *ngIf="data.ride.bookingtype=='Towing'">
                             <li class="StepProgress-item" [ngClass]="{'is-done': data.ride.status >= 2}"><i>Ride Assign To Driver</i></li>
                             <li class="StepProgress-item" [ngClass]="{'is-done': data.ride.status >= 3}"><i>Ride Started</i></li>
                             <li class="StepProgress-item" [ngClass]="{'is-done': data.ride.status >= 4}"><i>Reached Pickup Location</i></li>
@@ -256,8 +373,8 @@
                     </div>
                 </div>
             </div>
-            <div class="col-sm-12" *ngIf="data.ride.status > 5">
-                <div class="card">
+            <div class="col-sm-12" >
+                <div class="card" *ngIf="data.ride.status != 9">
                     <div class="card-body">
                         <div class="row">
                             <div class="col-sm-4">
@@ -328,5 +445,21 @@
               <button type="submit" class="btn btn-primary">Submit</button>
             </p>
         </form>
+    </div>
+</ng-template>
+<ng-template #openPickup let-modal>
+    <div class="row">
+        <div class="col-sm-3" *ngFor="let data of pickupImgList">
+            <a href="https://nodeadminpaneldb.herokuapp.com/api/rideCarImg?imgpath=uploads/ride/pickup/{{data.img_path}}" target="_blank"><img src="https://nodeadminpaneldb.herokuapp.com/api/rideCarImg?imgpath=uploads/ride/pickup/{{data.img_path}}" alt="" width="100%" style="padding: 20px;"></a>
+        </div>
+        <hr>
+    </div>
+</ng-template>
+<ng-template #openDrop let-modal>
+    <div class="row">
+        <div class="col-sm-4" *ngFor="let data of dropImgList">
+           <a href="https://nodeadminpaneldb.herokuapp.com/api/rideCarImg?imgpath=uploads/ride/drop/{{data.img_path}}" target="_blank"><img src="https://nodeadminpaneldb.herokuapp.com/api/rideCarImg?imgpath=uploads/ride/drop/{{data.img_path}}" alt="" width="100%" style="padding: 20px;"></a>
+        </div>
+        <hr>
     </div>
 </ng-template>

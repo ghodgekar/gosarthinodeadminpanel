@@ -38,6 +38,7 @@
                                     <thead>
                                         <tr>
                                             <th>PartnerId</th>
+                                            <th>Partner Type</th>
                                             <th>Company Name</th>
                                             <th>CIN / LLP</th>
                                             <th>Phone Number</th>
@@ -52,6 +53,7 @@
                                     <tbody *ngIf="partnerData.length > 0">
                                         <tr *ngFor="let data of partnerData" (click)="openUploadDocPage(data.partner_id)">
                                             <td>{{data.partner_id}}</td>
+                                            <td>{{data.partner_type}}</td>
                                             <td>{{data.company_name}}</td>
                                             <td>{{data.company_no}}</td>
                                             <td>{{data.phone}}</td>
@@ -75,6 +77,7 @@
                                     <thead>
                                         <tr>
                                             <th>PartnerId</th>
+                                            <th>Partner Type</th>
                                             <th>Company Name</th>
                                             <th>CIN / LLP</th>
                                             <th>Phone Number</th>
@@ -89,6 +92,7 @@
                                     <tbody *ngIf="partnerData.length > 0">
                                         <tr *ngFor="let data of partnerData" (click)="openApprovePartnerPage(data.partner_id)">
                                             <td>{{data.partner_id}}</td>
+                                            <td>{{data.partner_type}}</td>
                                             <td>{{data.company_name}}</td>
                                             <td>{{data.company_no}}</td>
                                             <td>{{data.phone}}</td>
@@ -112,6 +116,7 @@
                                     <thead>
                                         <tr>
                                             <th>PartnerId</th>
+                                            <th>Partner Type</th>
                                             <th>Company Name</th>
                                             <th>CIN / LLP</th>
                                             <th>Phone Number</th>
@@ -125,6 +130,7 @@
                                     <tbody *ngIf="partnerData.length > 0">
                                         <tr *ngFor="let data of partnerData" (click)="openApprovePartnerPage(data.partner_id)">
                                             <td>{{data.partner_id}}</td>
+                                            <td>{{data.partner_type}}</td>
                                             <td>{{data.company_name}}</td>
                                             <td>{{data.company_no}}</td>
                                             <td>{{data.phone}}</td>
@@ -160,7 +166,16 @@
     <div class="modal-body">
         <form [formGroup]="partnerForm" (ngSubmit)="onSubmit()">
             <div class="row">
-                <div class="col-sm-12">
+                <div class="col-sm-6">
+                    <p class="form-group">
+                        <label for="partner_type">Partner Type </label>
+                        <select class="form-control" name="partner_type" formControlName="partner_type">
+                            <option value="B2B">B2B</option>
+                            <option value="B2C">B2C</option>
+                        </select>
+                    </p>
+                </div>
+                <div class="col-sm-6">
                     <p class="form-group">
                       <label for="firstname">Company Name </label>
                       <input class="form-control" type="text" name="company_name" formControlName="company_name">

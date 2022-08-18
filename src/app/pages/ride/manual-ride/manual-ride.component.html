@@ -68,7 +68,7 @@
                 <div class="col-sm-6">
                   <p class="form-group">
                     <label for="vehicle_type">Vehicle Type </label>
-                    <select class="form-control" name="vehicle_type" formControlName="vehicle_type" (change)='getCarModel($event)'>
+                    <select class="form-control" name="vehicle_type" [(ngModel)]="vehicle_type" formControlName="vehicle_type" (change)='getCarModel($event)'>
                       <option></option>
                       <option *ngFor="let data of vehicleType">{{data}}</option>
                     </select>
@@ -85,7 +85,7 @@
                 <div class="col-sm-6">
                   <p class="form-group">
                     <label for="vehicle_transmission">Vehicle Transmission </label>
-                    <select class="form-control" name="vehicle_transmission" formControlName="vehicle_transmission">
+                    <select class="form-control" name="vehicle_transmission" [(ngModel)]="transmission" formControlName="vehicle_transmission">
                       <option>Manual</option>
                       <option>Automatic</option>
                     </select>
@@ -119,7 +119,7 @@
                 <div class="col-sm-6">
                   <p class="form-group">
                     <label for="city">Booking Type </label>
-                    <select class="form-control" name="bookingtype" formControlName="bookingtype">
+                    <select class="form-control" name="bookingtype" formControlName="bookingtype" [(ngModel)]="bookingtype">
                       <option>Driver</option>
                       <option>Trailer</option>
                       <option>Towing</option>
@@ -142,7 +142,11 @@
                 <!-- <button class="btn btn-primary" (click)="openFareModal(openFare)">Get Istimated Fare</button> -->
                 <!-- <button class="btn btn-primary" (click)="getDirection()">Get Direction</button> -->
                 <button class="btn btn-primary" (click)="sendOTP(otpVerify)" *ngIf="this.appservice.role != 'admin' || hideOtpBtn">Send OTP</button>
-                <button *ngIf="isOTPVerified || this.appservice.role == 'admin'" type="submit" class="btn btn-primary" (click)="onSubmit()" style="margin-left: 15px;" >Book Ride</button>
+                <button  class="btn btn-primary" *ngIf="bookingtype == 'Driver' && this.appservice.role != 'admin' && this.appservice.user.partner_type != 'B2B'" (click)="calculateB2CDriver()">Get Fare</button>
+                <button *ngIf="isOTPVerified || this.appservice.role == 'admin'" type="submit" class="btn btn-primary" (click)="onSubmit()" style="margin-left: 15px;" > <span *ngIf="bookingtype != 'Trailer'">Book Ride</span> <span *ngIf="bookingtype == 'Trailer' && this.appservice.user.partner_type != 'B2B'">Request For Fair</span> </button>
+              </p>
+              <p class="text-center">
+                <span *ngIf="bookingtype == 'Driver'">{{b2cDriverFare.msg}}</span>
               </p>
             </form>
           </div>

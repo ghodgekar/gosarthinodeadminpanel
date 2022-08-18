@@ -47,6 +47,12 @@
                         <div class="row" *ngFor="let data of partnerData">
                             <div class="col-sm-12">
                                 <div class="row">
+                                    <div class="col-sm-4"><label for="name">Partner Type: </label></div>
+                                    <div class="col-sm-8"><span> {{data.partner_type}} </span></div>
+                                </div>
+                            </div>
+                            <div class="col-sm-12">
+                                <div class="row">
                                     <div class="col-sm-4"><label for="name">Partner Name: </label></div>
                                     <div class="col-sm-8"><span> {{data.company_name}} </span></div>
                                 </div>

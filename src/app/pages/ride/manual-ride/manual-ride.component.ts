@@ -11,7 +11,7 @@ import { MapsAPILoader } from '@agm/core';
 import { Component, ElementRef, NgZone, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { response } from 'express';
-declare var google;
+declare let google;
 
 @Component({
   selector: 'app-manual-ride',
@@ -56,6 +56,15 @@ export class ManualRideComponent implements OnInit {
   OTPVerify: number;
   isOTPVerified:boolean;
   hideOtpBtn: boolean;
+
+  bookingtype:string;
+
+  vehicle_type:string;
+  transmission:string;
+  distancekm:any;
+  b2cDriverFare:any=[];
+
+
   constructor( private mapsAPILoader: MapsAPILoader, private ngZone: NgZone, private modalService: ModalService, private customerApi:CustomerService, private rideapi:RideService, private driverApi:DriverService, public appservice:AppService, public exclservice:ExclService, private otpService:OtpService, private tosterService:ToastrNotifyService ) {
     }
 
@@ -141,7 +150,39 @@ export class ManualRideComponent implements OnInit {
       origin: { lat: this.pickuplat, lng: this.pickuplng },
       destination: { lat: this.droplat, lng: this.droplng }
     }
+    this.calcCrow(this.pickuplat,this.pickuplng,this.droplat,this.droplng);
   }
+
+  calcCrow(lat1, lon1, lat2, lon2) 
+    {
+      var p1 = new google.maps.LatLng(lat1, lon1);
+      var p2 = new google.maps.LatLng(lat2, lon2);
+      this.distancekm = (google.maps.geometry.spherical.computeDistanceBetween(p1, p2) / 1000).toFixed(2);
+      console.log(this.distancekm)
+      // let R = 6371; // km
+      // let dLat = this.toRad(lat2-lat1);
+      // let dLon = this.toRad(lon2-lon1);
+      // lat1 = this.toRad(lat1);
+      // lat2 = this.toRad(lat2);
+
+      // let a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+      //   Math.sin(dLon/2) * Math.sin(dLon/2) * Math.cos(lat1) * Math.cos(lat2); 
+      // let c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
+      // let d = R * c;
+      // this.distancekm = Math.round(d);
+      // return d;
+    }
+
+    toRad(Value) 
+    {
+        return Value * Math.PI / 180;
+    }
+
+    calculateB2CDriver(){
+      this.rideapi.postB2CDriverFare({car_type:this.vehicle_type,transmission:this.transmission,fuel_type:'1',distancekm:this.distancekm.toString()}).subscribe(res => {
+        this.b2cDriverFare = res;
+      })
+    }
 
   private setCurrentLocation() {
     if ('geolocation' in navigator) {
@@ -162,6 +203,7 @@ export class ManualRideComponent implements OnInit {
  
   getAddress(latitude, longitude) {
     this.geoCoder.geocode({ 'location': { lat: latitude, lng: longitude } }, (results, status) => {
+      console.log(results)
       if (status === 'OK') {
         if (results[0]) {
           this.zoom = 12;
@@ -198,6 +240,9 @@ export class ManualRideComponent implements OnInit {
       if(this.appservice.role == 'partner'){
         this.rideForm.value.partner_id = this.appservice.user.partner_id;
         this.rideForm.value.company_name = this.appservice.user.company_name;
+      }
+      if(this.bookingtype == 'Trailer'  && this.appservice.user.partner_type == 'B2C'){
+        this.rideForm.value.status = 9;
       }
       this.rideForm.value.ride_id =  this.rideapi.createRideId();
       this.rideapi.postRide(this.rideForm.value).subscribe(response => {

@@ -23,7 +23,8 @@ export class AssignRideComponent implements OnInit {
     this.dtOptions = {
       pagingType: 'full_numbers',
       pageLength: 10,
-      processing: true
+      processing: true,
+      responsive: true,
     };
   }
 

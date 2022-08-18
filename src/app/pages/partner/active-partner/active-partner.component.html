@@ -36,6 +36,7 @@
                             <thead>
                                 <tr>
                                     <th>PartnerId</th>
+                                    <th>Partner Type</th>
                                     <th>Company Name</th>
                                     <th>Company Number</th>
                                     <th>Phone Number</th>
@@ -50,6 +51,7 @@
                             <tbody>
                                 <tr *ngFor="let data of partnerData"  (click)="openPartnerDetailsPage(data.partner_id)">
                                    <td>{{data.partner_id}}</td>
+                                   <td>{{data.partner_type}}</td>
                                    <td>{{data.company_name}}</td>
                                    <td>{{data.company_no}}</td>
                                    <td>{{data.phone}}</td>

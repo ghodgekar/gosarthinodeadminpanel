@@ -28,11 +28,17 @@ export class RideDetailsComponent implements OnInit {
   imageSrc: any;
   reAssignDriverForm: FormGroup;
   getExistingPointForm: FormGroup;
+  sendTrailerFareRideForm: FormGroup;
+  sendTrailerFareRideApproveForm: FormGroup;
+  sendTrailerFareRideRejectForm: FormGroup;
   existparkingno:string;
   isExistPartkingDiv:Boolean;
   reassignDataPoint1:any=[];
   reassignDataPoint2:any=[];
   driver_name: any;
+
+  price:any;
+  gst:any;
 
   constructor(private Actrouter:ActivatedRoute, private rideapi:RideService, private modalService: ModalService, private router:Router, private driverApi:DriverService, public appservice:AppService) { }
 
@@ -63,11 +69,28 @@ export class RideDetailsComponent implements OnInit {
       driver_name: new FormControl(),
       exist_parking_no: new FormControl(),
       ride_id: new FormControl(),
-
+      status: new FormControl()
     })
     this.getExistingPointForm = new FormGroup({
       existingpoint: new FormControl('', Validators.required)
     });
+    this.sendTrailerFareRideForm = new FormGroup({
+      ride_id: new FormControl(),
+      price: new FormControl(),
+      gst: new FormControl(),
+      status: new FormControl()
+    })
+    this.sendTrailerFareRideApproveForm = new FormGroup({
+      ride_id: new FormControl(),
+      price: new FormControl(),
+      gst: new FormControl(),
+      status: new FormControl()
+    })
+    this.sendTrailerFareRideRejectForm = new FormGroup({
+      ride_id: new FormControl(),
+      cancelled_reason: new FormControl(),
+      status: new FormControl()
+    })
     this.getSingleRide();
     this.getDriver();
     this.getRideCarImgPickupList();
@@ -85,6 +108,8 @@ export class RideDetailsComponent implements OnInit {
   getSingleRide(){
     this.rideapi.getSingleRide(this.ride_id).subscribe(response => {
       this.rideData.push(response.data);
+      this.price = response.data.ride.price;
+      this.gst = response.data.ride.gst;
     })
   }
 
@@ -194,6 +219,42 @@ export class RideDetailsComponent implements OnInit {
     })
   }
 
+  sendTrailerFareRideSubmit(){
+    this.sendTrailerFareRideForm.value['ride_id'] = this.ride_id;
+    this.sendTrailerFareRideForm.value['status'] = 9;
+    this.rideapi.rideStatusUpdate(this.sendTrailerFareRideForm.value).subscribe(response => {
+      this.modalService.dismissall();
+      this.cancelRideForm.reset();
+      this.router.navigate(['/trailer-request-ride']);
+    })
+  }
+
+  sendTrailerFareRideApproveSubmit(){
+    this.sendTrailerFareRideForm.value['ride_id'] = this.ride_id;
+    this.sendTrailerFareRideForm.value['status'] = 1;
+    this.sendTrailerFareRideForm.value['price'] = this.price;
+    this.sendTrailerFareRideForm.value['gst'] = this.gst;
+    // console.log(this.sendTrailerFareRideForm.value)
+    this.rideapi.rideStatusUpdate(this.sendTrailerFareRideForm.value).subscribe(response => {
+      this.modalService.dismissall();
+      this.cancelRideForm.reset();
+      this.router.navigate(['/scheduled-ride']);
+    })
+  }
+
+  sendTrailerFareRideRejectSubmit(){
+    this.sendTrailerFareRideForm.value['ride_id'] = this.ride_id;
+    this.sendTrailerFareRideForm.value['cancelled_reason'] = 'Trailer fare Rejected';
+    this.sendTrailerFareRideForm.value['status'] = 8;
+    this.sendTrailerFareRideForm.value['price'] = null;
+    this.sendTrailerFareRideForm.value['gst'] = null;
+    this.rideapi.rideStatusUpdate(this.sendTrailerFareRideForm.value).subscribe(response => {
+      this.modalService.dismissall();
+      this.cancelRideForm.reset();
+      this.router.navigate(['/cancelled-ride']);
+    })
+  }
+
   getReassignDataPoint1(){
     this.rideapi.getReassignData(this.ride_id, "1").subscribe(response => {
       this.reassignDataPoint1 = response.data
@@ -204,6 +265,10 @@ export class RideDetailsComponent implements OnInit {
     this.rideapi.getReassignData(this.ride_id, "2").subscribe(response => {
       this.reassignDataPoint2 = response.data
     })
+  }
+
+  openModal(content){
+    this.modalService.open(content)
   }
   
 }

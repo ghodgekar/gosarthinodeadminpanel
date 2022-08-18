@@ -76,6 +76,10 @@ export const MENU = [
             {
                 name: 'Assign Rides',
                 path: ['/assign-ride']
+            },
+            {
+                name: 'Trailer Request',
+                path: ['/trailer-request-ride']
             }
         ]
     },
@@ -123,7 +127,7 @@ export const MENU = [
         ]
     },
     {
-        name: 'Manual Dispatch',
+        name: 'Raise Request',
         path: ['/manual-dispatch']
     },
 ];

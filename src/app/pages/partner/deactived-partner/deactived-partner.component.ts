@@ -25,7 +25,8 @@ export class DeactivedPartnerComponent implements OnInit {
     this.dtOptions = {
       pagingType: 'full_numbers',
       pageLength: 10,
-      processing: true
+      processing: true,
+      responsive: true,
     };
     this.api.getPartner(statusid).subscribe(response => {
       this.partnerData = response.data;

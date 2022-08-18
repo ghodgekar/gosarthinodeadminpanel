@@ -36,6 +36,7 @@
                             <thead>
                                 <tr>
                                     <th>Ride Id</th>
+                                    <th>Booking Type</th>
                                     <th>Driver Id</th>
                                     <th>User Id</th>
                                     <th>Vehicle Type</th>
@@ -51,6 +52,7 @@
                             <tbody>
                                 <tr *ngFor="let data of rideData" (click)="openRideDetails(data.ride_id,data.status)">
                                    <td>{{data.ride_id}}</td>
+                                   <td>{{data.bookingtype}}</td>
                                    <td>{{data.user_id}}</td>
                                    <td>{{data.driver_id}}</td>
                                    <td>{{data.vehicle_type}}</td>

@@ -35,6 +35,7 @@ import { DeactivedPartnerComponent } from '@pages/partner/deactived-partner/deac
 import { ApproveDocPartnerComponent } from '@pages/partner/approve-doc-partner/approve-doc-partner.component';
 import { DetailsPartnerComponent } from '@pages/partner/details-partner/details-partner.component';
 import { UploadDocPartnerComponent } from '@pages/partner/upload-doc-partner/upload-doc-partner.component';
+import { TrailerRequestRideComponent } from '@pages/ride/trailer-request-ride/trailer-request-ride.component';
 
 const routes: Routes = [
     {
@@ -142,6 +143,10 @@ const routes: Routes = [
             {
                 path: 'upload-doc-partner/:partner_id',
                 component: UploadDocPartnerComponent
+            },
+            {
+                path: 'trailer-request-ride',
+                component: TrailerRequestRideComponent
             },
             {
                 path: '',

@@ -84,4 +84,8 @@ export class RideService {
     postOTP(data){
         return this.http.post('https://api.textlocal.in/send/', data);
     }
+
+    postB2CDriverFare(data){
+        return this.http.post(API_URL + 'b2cTrailerFare', data);
+    }
 }

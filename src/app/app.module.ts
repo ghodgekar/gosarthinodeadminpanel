@@ -85,6 +85,7 @@ import { AngularFireStorageModule } from '@angular/fire/compat/storage';
 import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
 import { AngularFireDatabaseModule } from '@angular/fire/compat/database';
 import { environment } from '../environments/environment';
+import { TrailerRequestRideComponent } from './pages/ride/trailer-request-ride/trailer-request-ride.component';
 
 registerLocaleData(localeEn, 'en-EN');
 
@@ -139,7 +140,8 @@ registerLocaleData(localeEn, 'en-EN');
         DeactivedPartnerComponent,
         DetailsPartnerComponent,
         ApproveDocPartnerComponent,
-        UploadDocPartnerComponent
+        UploadDocPartnerComponent,
+        TrailerRequestRideComponent
     ],
     imports: [
         BrowserModule,
