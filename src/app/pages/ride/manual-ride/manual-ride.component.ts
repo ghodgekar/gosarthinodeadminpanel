@@ -42,7 +42,7 @@ export class ManualRideComponent implements OnInit {
   droplng:Number;
   dropaddress: string;
 
-  zoom: Number = 14;
+  zoom: Number = 1;
   markers = [];
   filteredMarkers = [];
   dir = undefined;
@@ -113,7 +113,7 @@ export class ManualRideComponent implements OnInit {
             this.pickuplat = place.geometry.location.lat();
             this.pickuplng = place.geometry.location.lng();
             this.pickupaddress = place.formatted_address;
-            this.zoom = 12;
+            this.zoom = 3;
           });
         });
         let autocompleteDrop = new google.maps.places.Autocomplete(this.searchDropElementRef.nativeElement);
@@ -126,7 +126,7 @@ export class ManualRideComponent implements OnInit {
             this.droplat = place.geometry.location.lat();
             this.droplng = place.geometry.location.lng();
             this.dropaddress = place.formatted_address;
-            this.zoom = 12;
+            this.zoom = 3;
           });
           this.getDirection();
         });
@@ -158,7 +158,7 @@ export class ManualRideComponent implements OnInit {
       var p1 = new google.maps.LatLng(lat1, lon1);
       var p2 = new google.maps.LatLng(lat2, lon2);
       this.distancekm = (google.maps.geometry.spherical.computeDistanceBetween(p1, p2) / 1000).toFixed(2);
-      console.log(this.distancekm)
+      console.log(this.distancekm + 200)
       // let R = 6371; // km
       // let dLat = this.toRad(lat2-lat1);
       // let dLon = this.toRad(lon2-lon1);
