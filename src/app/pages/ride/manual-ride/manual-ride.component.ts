@@ -179,7 +179,7 @@ export class ManualRideComponent implements OnInit {
     }
 
     calculateB2CDriver(){
-      this.rideapi.postB2CDriverFare({car_type:this.vehicle_type,transmission:this.transmission,fuel_type:'1',distancekm:this.distancekm.toString()}).subscribe(res => {
+      this.rideapi.postB2CDriverFare({car_type:this.vehicle_type,transmission:this.transmission,fuel_type:1,distancekm: parseInt(this.distancekm) + 100}).subscribe(res => {
         this.b2cDriverFare = res;
       })
     }

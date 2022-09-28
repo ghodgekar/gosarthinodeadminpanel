@@ -29,13 +29,25 @@
                             <div class="col-sm-10">
                                 <div class="row">
                                     <div class="col-sm-9">
+                                        <div class="form-group row" *ngIf="data.ride.status == 3 && this.appservice.role == 'partner'">
+                                            <label for="staticEmail" class="col-sm-4 col-form-label">Before Ride Start Pay Advance</label>
+                                            <div class="col-sm-3">
+                                                <input type="text" [(ngModel)]="is_advance_pay" class="form-control">
+                                            </div>
+                                            <button type="button" (click)="advancepay()" class="btn btn-primary col-sm-2">Pay Advance</button>
+                                            <button style="margin-left:15px;" class="btn btn-danger" (click)="canceladvancepay()">Cancel Ride</button>
+                                        </div>
                                         <div class="form-group row" *ngIf="data.ride.status == 1 && this.appservice.role == 'admin'">
-                                            <label for="staticEmail" class="col-sm-4 col-form-label">Assign Driver</label>
-                                            <div class="col-sm-6">
+                                            <label for="staticEmail" class="col-sm-2 col-form-label">Assign Driver</label>
+                                            <div class="col-sm-4">
                                                 <select class="form-control" name="driver_id" [(ngModel)]="driver_id">
                                                   <option value="">Select</option>
                                                   <option *ngFor="let data of driverData" [value]="data.driver_id">{{data.name}}</option>
                                                 </select>
+                                            </div>
+                                            <label for="staticEmail" class="col-sm-2 col-form-label">Driver Fare</label>
+                                            <div class="col-sm-2">
+                                                <input type="text" [(ngModel)]="driver_fare" class="form-control">
                                             </div>
                                             <button type="button" (click)="assignDriver()" class="btn btn-primary col-sm-2">Submit</button>
                                         </div>
@@ -129,6 +141,92 @@
                             </div>
                         </div>
                     </div>
+                    <div class="card-header" *ngIf="this.appservice.role == 'admin' && data.ride.status < 6">
+                        <div class="row" >
+                            <div class="col-sm-3">
+                                <h3>Change PickUp Or Drop Address</h3>
+                            </div>
+                            <div class="col-sm-9">
+                                <form [formGroup]="RideAddrChangeForm" (ngSubmit)="saveRideAddrChange()">
+                                    <div class="row">
+                                        <div class="col-sm-4" style="margin-top: 10px;">
+                                            <label class="radio-inline">
+                                                <input type="radio" name="address_type" formControlName="address_type" value="pickup" checked>  Pickup Address
+                                            </label>
+                                            <label class="radio-inline" style="margin-left: 5px;">
+                                                <input type="radio" name="address_type" formControlName="address_type" value="drop">   Drop Address
+                                            </label>
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <input type="text" name="address" formControlName="address" class="form-control" placeholder="Enter Address">
+                                        </div>
+                                        <div class="col-sm-1">
+                                            <button type="submit" class="btn btn-primary">Update</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-header">
+                        <div class="row" *ngIf="(data.ride.status == 5 || data.ride.status == 4) && this.appservice.role == 'admin' && data.ride.accident_status == null">
+                            <div class="col-sm-3">
+                                <h3>Upload Accidental Image Or Videos</h3>
+                            </div>
+                            <div class="col-sm-9">
+                                <form [formGroup]="RideAccidentalImgForm" enctype="multipart/form-data" (ngSubmit)="uploadRideAccidentalImg()">
+                                    <div class="form-group row">
+                                        <div class="col-sm-3">
+                                            <input class="form-control" type="file" name="ride_accidental_img" formControlName="ride_accidental_img" (change)="onFileSelect2($event)" multiple>
+                                        </div>
+                                        <div class="col-sm-7">
+                                            <input class="form-control" type="text" name="ride_accidental_comment" formControlName="ride_accidental_comment" placeholder="Comment">
+                                        </div>
+                                        <div class="col-sm-1">
+                                            <button type="submit" class="btn btn-primary">Upload</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="row" *ngIf="data.ride.accident_status == null && (accidentImgList.length > 0 || accidentVideoList.length > 0)">
+                            <div class="col-sm-12">
+                                <p style="color: red;" *ngIf="data.ride.accident_status == 0"> Waiting For Approval from Partner for Accidental Images And Videos</p>
+                            </div>
+                        </div>
+                        <div class="row" *ngIf="data.ride.accident_status != null">
+                            <div class="col-sm-12">
+                                <p style="color: red;" *ngIf="data.ride.accident_status == 0">Accidental Images And Videos Rejected By partner</p>
+                                <p style="color: green;" *ngIf="data.ride.accident_status == 1">Accidental Images And Videos Approved By partner</p>
+                            </div>
+                        </div>
+                        <div class="row" *ngIf="(accidentImgList.length > 0 || accidentVideoList.length > 0) && this.appservice.role == 'partner' && data.ride.accident_status == null">
+                            <div class="col-sm-4"><h3>Please Check Videos Or Images</h3></div>
+                            <div class="col-sm-2">
+                                <form [formGroup]="sendRideAccidentImgVideoApproveForm" (ngSubmit)="sendRideAccidentImgVideoApproveSubmit()">
+                                    <p class="text-center">
+                                    <button type="submit" class="btn btn-primary">Approve</button>
+                                    </p>
+                                </form>
+                            </div>
+                            <div class="col-sm-6">
+                                <form [formGroup]="sendRideAccidentImgVideoRejectForm" (ngSubmit)="sendRideAccidentImgVideoRejectSubmit()">
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <p class="text-center">
+                                                <input class="form-control" type="text" name="accident_remark" formControlName="accident_remark" placeholder="Please Enter Rejection Reason">
+                                            </p>
+                                        </div>
+                                        <div class="col-sm-2">
+                                            <p class="text-center">
+                                                <button type="submit" class="btn btn-danger">Reject</button>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
                     <div class="card-body">
                         <div class="row">
                             <div class="col-sm-4">
@@ -143,17 +241,8 @@
                             <div class="col-sm-4">
                                 <p><b>User Phone No.</b>: {{data.customer.phone}}</p>
                             </div>
-                            <!-- <div class="col-sm-4" *ngIf="data.ride.status != 1">
-                                <p><b>Driver Name</b>: {{data.driver.name}}</p>
-                            </div>
-                            <div class="col-sm-4" *ngIf="data.ride.status != 1">
-                                <p><b>Driver Phone no</b>: {{data.driver.phone}}</p>
-                            </div>
-                            <div class="col-sm-4" *ngIf="data.ride.status != 1">
-                                <p><b>Driver Note</b>: {{data.ride.drivernote}}</p>
-                            </div> -->
-                            <div class="col-sm-12" *ngIf="data.ride.status == 2">
-                                <p><b>Ride Cancelled Reason:</b></p>
+                            <div class="col-sm-12" *ngIf="data.ride.driver_fare != null">
+                                <p><b>Driver Fare:</b> {{data.ride.driver_fare}}</p>
                             </div>
                             <div class="col-sm-12" *ngIf="data.ride.company_name != null">
                                 <p><b>Partner Name:</b>{{data.ride.company_name}}</p>
@@ -177,14 +266,6 @@
                             </div>
                         </div>
                     </div>
-                    <!-- <div class="card-body">
-                        <div class="row">
-                            <div class="col-sm-3" *ngFor="let data of pickupImgList">
-                                <img src="https://nodeadminpaneldb.herokuapp.com/api/rideCarImg?imgpath=uploads/ride/pickup/{{data.img_path}}" alt="" width="100%" style="padding: 20px;">
-                            </div>
-                            <hr>
-                        </div>
-                    </div> -->
                 </div>
             </div>
             <div class="col-sm-12" *ngIf="(data.ride.status >= 4) && dropImgList.length > 0">
@@ -199,14 +280,34 @@
                             </div>
                         </div>
                     </div>
-                    <!-- <div class="card-body">
+                </div>
+            </div>
+            <div class="col-sm-12" *ngIf="accidentImgList.length > 0">
+                <div class="card">
+                    <div class="card-header">
                         <div class="row">
-                            <div class="col-sm-3" *ngFor="let data of dropImgList">
-                                <img src="https://nodeadminpaneldb.herokuapp.com/api/rideCarImg?imgpath=uploads/ride/drop/{{data.img_path}}" alt="" width="100%" style="padding: 20px;">
+                            <div class="col-sm-4">
+                                <h3>Accidental Image</h3>
                             </div>
-                            <hr>
+                            <div class="col-sm-8 text-right">
+                                <button class="btn btn-sm btn-primary" (click)="openModal(openAccidentalImg)">Open Accidental Image</button>
+                            </div>
                         </div>
-                    </div> -->
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-12" *ngIf="accidentVideoList.length > 0">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <h3>Accidental Video</h3>
+                            </div>
+                            <div class="col-sm-8 text-right">
+                                <button class="btn btn-sm btn-primary" (click)="openModal(openAccidentalVideo)">Open Accidental Video</button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="col-sm-4">
@@ -451,6 +552,7 @@
     <div class="row">
         <div class="col-sm-3" *ngFor="let data of pickupImgList">
             <a href="https://nodeadminpaneldb.herokuapp.com/api/rideCarImg?imgpath=uploads/ride/pickup/{{data.img_path}}" target="_blank"><img src="https://nodeadminpaneldb.herokuapp.com/api/rideCarImg?imgpath=uploads/ride/pickup/{{data.img_path}}" alt="" width="100%" style="padding: 20px;"></a>
+            <!-- <a href="http://localhost:8080/api/rideCarImg?imgpath=uploads/ride/pickup/{{data.img_path}}" target="_blank"><img src="http://localhost:8080/api/rideCarImg?imgpath=uploads/ride/pickup/{{data.img_path}}" alt="" width="100%" style="padding: 20px;"></a> -->
         </div>
         <hr>
     </div>
@@ -459,6 +561,31 @@
     <div class="row">
         <div class="col-sm-4" *ngFor="let data of dropImgList">
            <a href="https://nodeadminpaneldb.herokuapp.com/api/rideCarImg?imgpath=uploads/ride/drop/{{data.img_path}}" target="_blank"><img src="https://nodeadminpaneldb.herokuapp.com/api/rideCarImg?imgpath=uploads/ride/drop/{{data.img_path}}" alt="" width="100%" style="padding: 20px;"></a>
+           <!-- <a href="http://localhost:8080/api/rideCarImg?imgpath=uploads/ride/drop/{{data.img_path}}" target="_blank"><img src="http://localhost:8080/api/rideCarImg?imgpath=uploads/ride/drop/{{data.img_path}}" alt="" width="100%" style="padding: 20px;"></a> -->
+        </div>
+        <hr>
+    </div>
+</ng-template>
+
+<ng-template #openAccidentalImg let-modal>
+    <div class="row">
+        <div class="col-sm-4" *ngFor="let data of accidentImgList">
+           <a href="https://nodeadminpaneldb.herokuapp.com/api/rideCarImg?imgpath=uploads/accident/img/{{data.path}}" target="_blank"><img src="https://nodeadminpaneldb.herokuapp.com/api/rideCarImg?imgpath=uploads/accident/img/{{data.path}}" alt="" width="100%" style="padding: 20px;"></a>
+           <!-- <a href="http://localhost:8080/api/rideCarImg?imgpath=uploads/accident/img/{{data.path}}" target="_blank"><img src="http://localhost:8080/api/rideCarImg?imgpath=uploads/accident/img/{{data.path}}" alt="" width="100%" style="padding: 20px;"></a> -->
+        </div>
+        <hr>
+    </div>
+</ng-template>
+
+<ng-template #openAccidentalVideo let-modal>
+    <div class="row">
+        <div class="col-sm-6" *ngFor="let data of accidentVideoList">
+            <a href="https://nodeadminpaneldb.herokuapp.com/api/rideCarImg?imgpath=uploads/accident/video/{{data.path}}" target="_blank">
+                <video src="https://nodeadminpaneldb.herokuapp.com/api/rideCarImg?imgpath=uploads/accident/video/{{data.path}}"  style="padding: 20px;"></video>
+            </a>
+            <!-- <a href="http://localhost:8080/api/rideCarImg?imgpath=uploads/accident/video/{{data.path}}" target="_blank">
+                 <video src="http://localhost:8080/api/rideCarImg?imgpath=uploads/accident/video/{{data.path}}" width="100%"  style="padding: 20px;"></video>
+             </a> -->
         </div>
         <hr>
     </div>

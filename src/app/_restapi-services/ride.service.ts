@@ -37,6 +37,10 @@ export class RideService {
         return this.http.post(API_URL + 'rideStatusUpdate/', data);
     }
 
+    rideAddressUpdate(data): Observable<any> {
+        return this.http.post(API_URL + 'updateRideAddress/', data);
+    }
+
     getOngoingRide(company_name): Observable<any> {
         return this.http.get(API_URL + 'rideOngoingList/' + company_name);
     }
@@ -69,8 +73,20 @@ export class RideService {
         return this.http.get(API_URL + 'rideCarImgList/' + ride_id + '/' + ride_type);
     }
 
+    getRideCarAccidentalImgList(ride_id, file_type): Observable<any> {
+        return this.http.get(API_URL + 'rideAccidentImgVideoList/' + ride_id + '/' + file_type);
+    }
+
     getSingleRideCarImg(imagePath) {
         return API_URL + 'rideCarImg?imgpath='+imagePath;
+    }
+
+    uploadRideAccidentImg(data):Observable<any> {
+        return this.http.post(API_URL + 'uploadRideAccidentImgVideo', data);
+    }
+
+    getRideCarAccidentImgList(ride_id, file_type): Observable<any> {
+        return this.http.get(API_URL + 'rideAccidentImgVideoList/' + ride_id + '/' + file_type);
     }
 
     postReassignData(data):Observable<any> {
@@ -86,6 +102,6 @@ export class RideService {
     }
 
     postB2CDriverFare(data){
-        return this.http.post(API_URL + 'b2cTrailerFare', data);
+        return this.http.post(API_URL + 'b2bFinalCalculationDriver', data);
     }
 }

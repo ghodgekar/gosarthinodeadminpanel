@@ -21,4 +21,16 @@ export class AdminService {
         return this.http.post(API_URL + 'login', data, this.httpOptions);
     }
 
+    adminSave(data): Observable<any> {
+        return this.http.post(API_URL + 'admin/signup', data, this.httpOptions);
+    }
+
+    adminLogin(data): Observable<any> {
+        return this.http.post(API_URL + 'admin/signin', data, this.httpOptions);
+    }
+
+    adminList(): Observable<any> {
+        return this.http.get(API_URL + 'admin/list', this.httpOptions);
+    }
+
 }

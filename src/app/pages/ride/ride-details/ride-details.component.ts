@@ -2,9 +2,11 @@ import { DriverService } from '@/_restapi-services/driver.service';
 import { RideService } from '@/_restapi-services/ride.service';
 import { AppService } from '@/_services/app.service';
 import { ModalService } from '@/_services/modal.service';
-import { Component, OnInit } from '@angular/core';
+import { MapsAPILoader } from '@agm/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+declare let google;
 
 @Component({
   selector: 'app-ride-details',
@@ -12,6 +14,7 @@ import { ActivatedRoute, Router } from '@angular/router';
   styleUrls: ['./ride-details.component.scss']
 })
 export class RideDetailsComponent implements OnInit {
+  // @ViewChild('searchaddress') public searchPickupElementRef: ElementRef;
   ride_id: string;
   status_id: string;
   cancelledstatus:string='8';
@@ -21,6 +24,7 @@ export class RideDetailsComponent implements OnInit {
   completeRideForm: FormGroup;
   driverData: any =[];
   driver_id:string;
+  driver_fare:string;
   RideCarImgDocumentForm: FormGroup;
   selectedFiles:any;
   pickupImgList:any=[];
@@ -31,6 +35,7 @@ export class RideDetailsComponent implements OnInit {
   sendTrailerFareRideForm: FormGroup;
   sendTrailerFareRideApproveForm: FormGroup;
   sendTrailerFareRideRejectForm: FormGroup;
+  RideAccidentalImgForm:FormGroup;
   existparkingno:string;
   isExistPartkingDiv:Boolean;
   reassignDataPoint1:any=[];
@@ -39,8 +44,21 @@ export class RideDetailsComponent implements OnInit {
 
   price:any;
   gst:any;
+  selectedFiles2: any;
+  accidentImgList: any;
+  accidentVideoList: any;
+  is_advance_pay:string;
 
-  constructor(private Actrouter:ActivatedRoute, private rideapi:RideService, private modalService: ModalService, private router:Router, private driverApi:DriverService, public appservice:AppService) { }
+  sendRideAccidentImgVideoApproveForm: FormGroup;
+  sendRideAccidentImgVideoRejectForm: FormGroup;
+  RideAddrChangeForm: FormGroup;
+  ngZone: any;
+  ridelat: number;
+  ridelng: number;
+  rideaddress: string;
+
+  constructor(private Actrouter:ActivatedRoute, private rideapi:RideService, private modalService: ModalService, private router:Router, private driverApi:DriverService, public appservice:AppService,private mapsAPILoader: MapsAPILoader) { 
+  }
 
   ngOnInit(): void {
     this.Actrouter.params.subscribe(paramsId => {
@@ -91,12 +109,51 @@ export class RideDetailsComponent implements OnInit {
       cancelled_reason: new FormControl(),
       status: new FormControl()
     })
+    this.sendRideAccidentImgVideoApproveForm = new FormGroup({
+      ride_id: new FormControl(),
+      accident_status: new FormControl()
+    })
+    this.sendRideAccidentImgVideoRejectForm = new FormGroup({
+      ride_id: new FormControl(),
+      accident_remark: new FormControl(),
+      accident_status: new FormControl()
+    })
+    this.RideAccidentalImgForm = new FormGroup({
+      ride_accidental_img: new FormControl(),
+      ride_accidental_comment: new FormControl(),
+      ride_id: new FormControl()
+    })
+    this.RideAddrChangeForm = new FormGroup({
+      address_type: new FormControl('', Validators.required),
+      ride_id: new FormControl(),
+      address: new FormControl('', Validators.required)
+    })
     this.getSingleRide();
     this.getDriver();
     this.getRideCarImgPickupList();
     this.getRideCarImgDropList();
     this.getReassignDataPoint1();
     this.getReassignDataPoint2();
+    this.getRideCarAccidentalImg();
+    this.getRideCarAccidentalVideo();
+
+    
+    //load Places Autocomplete
+    // this.mapsAPILoader.load().then(() => {
+    //   let autocompletePickup = new google.maps.places.Autocomplete(this.searchPickupElementRef.nativeElement);
+    //   autocompletePickup.addListener("place_changed", () => {
+    //     this.ngZone.run(() => {
+    //       let place: google.maps.places.PlaceResult = autocompletePickup.getPlace();
+    //       if (place.geometry === undefined || place.geometry === null) {
+    //         return;
+    //       }
+    //       this.ridelat = place.geometry.location.lat();
+    //       this.ridelng = place.geometry.location.lng();
+    //       this.rideaddress = place.formatted_address;
+    //     });
+    //   });
+    // });
+
   }
 
   getDriver(){
@@ -153,6 +210,20 @@ export class RideDetailsComponent implements OnInit {
     this.modalService.open(content)
   }
 
+  advancepay(){
+    this.rideapi.rideStatusUpdate({"ride_id":this.ride_id,"is_advancepay":'1', "price":this.is_advance_pay, "status":'4'}).subscribe(response => {
+      this.modalService.dismissall();
+      this.router.navigate(['/ongoing-ride']);
+    })
+  }
+
+  canceladvancepay(){
+    this.rideapi.rideStatusUpdate({"ride_id":this.ride_id,"is_advancepay":'0', "cancellation_charge":this.is_advance_pay, "status":'8', "cancelled_reason":'Ride Cancel By Partner After Driver Reached Pickup Localtion'}).subscribe(response => {
+      this.modalService.dismissall();
+      this.router.navigate(['/cancelled-ride']);
+    })
+  }
+
   cancelRideSubmit(){
     this.rideapi.rideStatusUpdate(this.cancelRideForm.value).subscribe(response => {
       this.modalService.dismissall();
@@ -162,7 +233,7 @@ export class RideDetailsComponent implements OnInit {
   }
 
   assignDriver(){
-    this.rideapi.postAssignRide({driver_id:this.driver_id, ride_id:this.ride_id,status:2}).subscribe(response => {
+    this.rideapi.postAssignRide({driver_id:this.driver_id,driver_fare:this.driver_fare, ride_id:this.ride_id,status:2}).subscribe(response => {
       this.router.navigate(['/scheduled-ride']);
     })
   }
@@ -185,6 +256,25 @@ export class RideDetailsComponent implements OnInit {
     }
   }
 
+  onFileSelect2(event) {
+    this.selectedFiles2 = event.target.files;
+    console.log(event)
+  }
+
+  uploadRideAccidentalImg(){
+    if(this.RideAccidentalImgForm.valid){
+      for (let i = 0; i < this.selectedFiles2.length; i++) {
+        const formData = new FormData();
+        formData.append('ride_accidental_img', this.selectedFiles2[i]);
+        formData.append('ride_accidental_comment', this.RideAccidentalImgForm.value['ride_accidental_comment']);
+        formData.append('ride_id', this.ride_id);
+        this.rideapi.uploadRideAccidentImg(formData).subscribe(response => {
+          console.log(response)
+        })
+      }
+    }
+  }
+
   getRideCarImgPickupList(){
     this.rideapi.getRideCarImgList(this.ride_id,4).subscribe(response => {
       this.pickupImgList = response.data;
@@ -194,6 +284,18 @@ export class RideDetailsComponent implements OnInit {
   getRideCarImgDropList(){
     this.rideapi.getRideCarImgList(this.ride_id,5).subscribe(response => {
       this.dropImgList = response.data;
+    })
+  }
+
+  getRideCarAccidentalImg(){
+    this.rideapi.getRideCarAccidentalImgList(this.ride_id,'img').subscribe(response => {
+      this.accidentImgList = response.data;
+    })
+  }
+
+  getRideCarAccidentalVideo(){
+    this.rideapi.getRideCarAccidentalImgList(this.ride_id,'video').subscribe(response => {
+      this.accidentVideoList = response.data;
     })
   }
 
@@ -255,6 +357,26 @@ export class RideDetailsComponent implements OnInit {
     })
   }
 
+  sendRideAccidentImgVideoApproveSubmit(){
+    this.sendRideAccidentImgVideoApproveForm.value['ride_id'] = this.ride_id;
+    this.sendRideAccidentImgVideoApproveForm.value['accident_status'] = 1;
+    this.rideapi.rideStatusUpdate(this.sendRideAccidentImgVideoApproveForm.value).subscribe(response => {
+      this.modalService.dismissall();
+      this.cancelRideForm.reset();
+      this.router.navigate(['/ongoing-ride']);
+    })
+  }
+
+  sendRideAccidentImgVideoRejectSubmit(){
+    this.sendRideAccidentImgVideoRejectForm.value['ride_id'] = this.ride_id;
+    this.sendRideAccidentImgVideoRejectForm.value['accident_status'] = 0;
+    this.rideapi.rideStatusUpdate(this.sendRideAccidentImgVideoRejectForm.value).subscribe(response => {
+      this.modalService.dismissall();
+      this.cancelRideForm.reset();
+      this.router.navigate(['/ongoing-ride']);
+    })
+  }
+
   getReassignDataPoint1(){
     this.rideapi.getReassignData(this.ride_id, "1").subscribe(response => {
       this.reassignDataPoint1 = response.data
@@ -269,6 +391,17 @@ export class RideDetailsComponent implements OnInit {
 
   openModal(content){
     this.modalService.open(content)
+  }
+
+  saveRideAddrChange(){
+    if(this.RideAddrChangeForm.valid){
+      this.RideAddrChangeForm.value['ride_id'] = this.ride_id;
+      this.rideapi.rideAddressUpdate(this.RideAddrChangeForm.value).subscribe(response => {
+        this.ngOnInit();
+      })
+    }else{
+      alert("Please Select Address Type And ENter new address")
+    }
   }
   
 }

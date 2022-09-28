@@ -36,6 +36,15 @@ export const MENU = [
         name: 'Dashboard',
         path: ['/']
     },
+    {
+        name: 'Admin',
+        children: [
+            {
+                name: 'Active Admin',
+                path: ['/active-admin']
+            }
+        ]
+    },
     // {
     //     name: 'Blank',
     //     path: ['/blank']

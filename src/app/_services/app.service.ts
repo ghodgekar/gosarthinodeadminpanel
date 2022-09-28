@@ -97,6 +97,7 @@ export class AppService {
     logout() {
         localStorage.removeItem('token');
         localStorage.removeItem('role');
+        localStorage.removeItem('is_admin_menu');
         localStorage.removeItem('gatekeeper_token');
         this.user = null;
         this.router.navigate(['/login']);
@@ -105,8 +106,18 @@ export class AppService {
     logoutPartner() {
         localStorage.removeItem('token');
         localStorage.removeItem('role');
+        localStorage.removeItem('is_admin_menu');
         localStorage.removeItem('gatekeeper_token');
         this.user = null;
         this.router.navigate(['/login-partner']);
+    }
+
+    logoutAdmin() {
+        localStorage.removeItem('token');
+        localStorage.removeItem('role');
+        localStorage.removeItem('is_admin_menu');
+        localStorage.removeItem('gatekeeper_token');
+        this.user = null;
+        this.router.navigate(['/login-admin']);
     }
 }

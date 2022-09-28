@@ -86,6 +86,9 @@ import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
 import { AngularFireDatabaseModule } from '@angular/fire/compat/database';
 import { environment } from '../environments/environment';
 import { TrailerRequestRideComponent } from './pages/ride/trailer-request-ride/trailer-request-ride.component';
+import { ActiveAdminComponent } from './pages/admin/active-admin/active-admin.component';
+import { AdminLoginComponent } from './pages/admin/admin-login/admin-login.component';
+import { MenuSidebarAdminComponent } from './modules/main/menu-sidebar-admin/menu-sidebar-admin.component';
 
 registerLocaleData(localeEn, 'en-EN');
 
@@ -141,7 +144,10 @@ registerLocaleData(localeEn, 'en-EN');
         DetailsPartnerComponent,
         ApproveDocPartnerComponent,
         UploadDocPartnerComponent,
-        TrailerRequestRideComponent
+        TrailerRequestRideComponent,
+        ActiveAdminComponent,
+        AdminLoginComponent,
+        MenuSidebarAdminComponent
     ],
     imports: [
         BrowserModule,

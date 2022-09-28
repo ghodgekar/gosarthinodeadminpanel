@@ -36,6 +36,8 @@ import { ApproveDocPartnerComponent } from '@pages/partner/approve-doc-partner/a
 import { DetailsPartnerComponent } from '@pages/partner/details-partner/details-partner.component';
 import { UploadDocPartnerComponent } from '@pages/partner/upload-doc-partner/upload-doc-partner.component';
 import { TrailerRequestRideComponent } from '@pages/ride/trailer-request-ride/trailer-request-ride.component';
+import { ActiveAdminComponent } from '@pages/admin/active-admin/active-admin.component';
+import { AdminLoginComponent } from '@pages/admin/admin-login/admin-login.component';
 
 const routes: Routes = [
     {
@@ -149,6 +151,10 @@ const routes: Routes = [
                 component: TrailerRequestRideComponent
             },
             {
+                path: 'active-admin',
+                component: ActiveAdminComponent
+            },
+            {
                 path: '',
                 component: DashboardComponent
             }
@@ -162,6 +168,10 @@ const routes: Routes = [
     {
         path: 'login-partner',
         component: LoginPartnerComponent
+    },
+    {
+        path: 'login-admin',
+        component: AdminLoginComponent
     },
     {
         path: 'register',

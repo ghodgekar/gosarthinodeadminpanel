@@ -14,13 +14,18 @@ export class MainComponent implements OnInit {
     @HostBinding('class') class = 'wrapper';
     public ui: Observable<UiState>;
     public tokenUserIsAdmin:Boolean=false;
+    is_admin_menu: boolean=false;
 
     constructor(private renderer: Renderer2, private store: Store<AppState>) {}
 
     ngOnInit() {
         let localVal = localStorage.getItem('role');
+        let is_admin_menu = localStorage.getItem('is_admin_menu');
         if(localVal == 'admin'){
             this.tokenUserIsAdmin = true;
+        }
+        if(is_admin_menu == '1'){
+            this.is_admin_menu = true;
         }
         this.ui = this.store.select('ui');
         this.renderer.removeClass(
